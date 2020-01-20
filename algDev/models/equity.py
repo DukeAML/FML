@@ -1,8 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 class equity:
+    
     def initialize(self, data_file):
         
         data = pd.read_csv(data_file)
@@ -28,19 +30,19 @@ class equity:
     def __init__(self,data_file):
         self.initialize(data_file)
     
-    def sma(self, period):
+    def sma(self, period, prices):
         '''
         Function to calculate the Simple Moving Average for the equity at a given period
         @param: period = length of closing prices to look at for each equity
         @return: simple_ma = array of SMA values for each day, 0 until 'period'
         '''
-        simple_ma = np.zeros(self.shape)
-        for i, p in enumerate(self.closes):
+        simple_ma = np.zeros((len(prices), ))
+        for i, p in enumerate(prices):
             sum = 0
-            if(i+period >= self.length):
+            if(i+period >= len(prices)):
                     break
             for j in range(period):
-                sum = self.closes[i+j] + sum
+                sum = prices[i+j] + sum
             ma = sum/period
             simple_ma[i+period] = ma
         
@@ -52,22 +54,33 @@ class equity:
         @param: period = length of closing prices to look at for each equity
         @return: exponential_ma = array of EMA values for each day, 0 until 'period'
         '''
-        exponential_ma = np.zeros(self.shape)
+       
+        exponential_ma = np.zeros((len(prices), ))
 
-        simple_ma = self.sma(period)
+        simple_ma = self.sma(period, prices)
 
         base_sma = simple_ma[period]
-        exponential_ma[period] = self.calc_ema(base_sma, self.closes[period],period)
-        multiplier = 2/(period+1)
+        print("Base SMA: ")
+        print(base_sma)
+        exponential_ma[period] = self.calc_ema(base_sma, prices[period],period)
+        
+        if(type=='wilder'):
+            multiplier = 1/period
+        else:
+            multiplier = 2/(period+1)
 
-        for i,close in enumerate(self.closes):
-            if(i+period+1 >= self.length):
+        for i,close in enumerate(prices):
+            if(i+period+1 >= len(prices)):
                 break
 
             exponential_ma[i+period+1] = self.calc_ema(exponential_ma[i+period], self.closes[i+period+1], multiplier)
         
+        for em in exponential_ma:
+            if(em < 0):
+                print(em)
+        
         return exponential_ma
-    
+
     def calc_ema(self, prev_ema, close, multiplier):
         '''
         Implements the Exponential Moving Average formula\n
@@ -100,7 +113,7 @@ class equity:
         return macd
 
     
-    def calc_moves(self, period=1):
+    def calc_moves(self, prices, period=1):
         '''
         Calculate the movement between two periods\n
         @param: period = number of days between closes\n
@@ -109,16 +122,41 @@ class equity:
             to the difference between the ith close and i - 10th close. 
             indexes 0-9 will be 0
         '''
-        moves = np.zeros(self.shape)
-        for i,close in enumerate(self.closes):
+        moves = np.zeros((len(prices),))
+        for i,close in enumerate(prices):
             index = i+period
-            if(index >= self.length):
+            if(index >= len(prices)):
                 break
-            moves[index] = self.closes[index] - self.closes[index-period]
+            moves[index] = prices[index] - prices[index-period]
         
         return moves
 
-    def calc_up_down(self, period=1):
+    def rsi(self, prices, period=20, type='sma'):
+        
+        up, down = self.calc_up_down(prices = prices)
+       
+        if(type=='sma'):
+            up_avg = self.sma(period, up)
+            down_avg = self.sma(period, down)
+        elif(type=='ema'):
+            up_avg = self.ema(period, up, '')
+            down_avg = self.ema(period, down, '')
+        else:
+            up_avg = self.ema(period, up, 'wilder')
+            down_avg = self.ema(period, down, 'wilder')
+
+        rsi = np.zeros((len(up_avg), ))
+        for i, num in enumerate(up_avg):
+            if(down_avg[i]==0):
+                relative_strength = float('inf')
+            else:
+                relative_strength = up_avg[i]/down_avg[i]
+            rsi[i] = 100 - (100/(1+relative_strength))
+        
+        return rsi
+
+
+    def calc_up_down(self, prices, period=1):
         '''
         Calculates the up-down of the equity for a given period\n
         @param: period = number of days between closes\n
@@ -130,7 +168,7 @@ class equity:
             index 0 will be 0
         '''
 
-        moves = self.calc_moves(period)
+        moves = self.calc_moves(prices, period)
 
         up = np.zeros(self.shape)
         down = np.zeros(self.shape)
@@ -139,10 +177,9 @@ class equity:
             if move > 0:
                 up[i] = move
             else:
-                down[i] = move
+                down[i] = -1 * move
 
         return up, down
-
 
     
 
