@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("VSLR.csv")
+df = pd.read_csv(r'./data/equities/energy/VSLR.csv')
 
 closes = []
 highs = []
