@@ -33,8 +33,6 @@ def ema(prices, period, type=''):
     exponential_ma = np.zeros((len(prices), ))
     simple_ma = sma(prices, period)
     base_sma = simple_ma[period]
-    print("Base SMA: ")
-    print(base_sma)
     
     if(type=='wilder'):
         multiplier = 1/period
@@ -59,12 +57,7 @@ def calc_ema(prev_ema, close, multiplier):
     @return: ema = the value of the EMA for the given day\n
     '''
     ema = close * multiplier + prev_ema * (1-multiplier)
-    if(ema < 0):
-        print(ema)
-        print(close)
-        print(prev_ema)
-        print(multiplier)
-        print('---------------')
+
     return ema
 def macd(prices, slow_period, fast_period):
     '''
@@ -83,6 +76,17 @@ def macd(prices, slow_period, fast_period):
     macd = slow_ema - fast_ema
     return macd
 
+def macd_indicator(prices, slow_period, fast_period):
+    macd_vals = macd(prices, slow_period, fast_period)
+
+    macd_sma = sma(macd_vals, 9)
+    
+    macd_ind = np.zeros((len(macd_vals),))
+
+    for i in range(len(macd_sma)):
+        macd_ind[i] = macd_vals[i] - macd_sma[i]
+
+    return macd_ind
 def calc_moves(prices, period=1):
     '''
     Calculate the movement between two periods\n
@@ -144,7 +148,7 @@ def calc_up_down(prices, period=1):
             down[i] = -1 * move
     return up, down
 
-def true_range(asset, period=10):
+def average_true_range(asset, period=10):
     true_ranges = np.zeros((len(asset.closes),))
     for i, close in enumerate(asset.closes):
         if(i==0):
@@ -163,3 +167,235 @@ def calc_average_true_range(true_ranges, period=10):
         atr[i] = (prevatr*(period-1) + true_ranges[i])/period
         prevatr = atr[i]
     return atr
+
+def roc(prices, period=10):
+    roc_vals = np.zeros((len(prices), ))
+    for i, price in enumerate(prices):
+        if i is 0:
+            continue
+        roc_vals[i] = ((price/prices[i-1]) - 1) * 100
+
+    return roc_vals
+
+def kst(prices):
+    rcma_1 = rcma(prices)
+    rcma_2 = rcma(prices,10, 15)
+    rcma_3 = rcma(prices, 10, 20)
+    rcma_4 = rcma(prices, 15, 30)
+
+    kst_vals = np.zeros((len(prices), ))
+    for i in range(len(prices)):
+        kst_vals[i] = rcma_1[i] + rcma_2[i] * 2 + rcma_3[i]*3 + rcma_4[i]*4
+    return kst_vals
+ 
+def kst_trix_indicator(prices):
+
+    kst_vals = kst(prices)
+    d_kst = d_(kst_vals)
+
+    trix_vals = trix(prices)
+    d_trix = d_(trix_vals)
+
+    ind = np.zeros((len(d_kst),))
+
+    for i in range(len(ind)):
+        ind[i] = d_kst[i] * d_trix[i]
+
+    return ind
+
+def d_(prices):
+
+    d_p = np.zeros((len(prices),))
+
+    for i in range(len(d_p)):
+        if(i==0):
+            continue
+        d_p[i] = prices[i] - prices[i-1]
+
+    return d_p
+
+def rcma(prices, sma_period=10, roc_period=10):
+    roc_vals = roc(prices, roc_period)
+    sma_vals = sma(prices, sma_period)
+    return sma_vals
+
+def pivot_points(equity):
+    closes = equity.closes
+    opens = equity.opens
+    highs = equity.highs
+    lows = equity.lows
+
+    pivots = np.zeros((len(closes),))
+    r1s = np.zeros((len(closes),))
+    r2s = np.zeros((len(closes),))
+    s1s = np.zeros((len(closes),))
+    s2s = np.zeros((len(closes),))
+
+    for i in range(len(closes)):
+        pivot, r1, r2, s1, s2 = calc_pivot_points(highs[i], lows[i], closes[i])
+        pivots[i] = pivot
+        r1s[i] = r1
+        r2s[i] = r2
+        s1s[i] = s1
+        s2s[i] = s2
+
+    return pivots, r1s, r2s, s1s, s2s
+
+def calc_pivot_points(high, low, close):
+    pivot = (high + low + close)/3
+
+    r1 = (pivot * 2) - low
+    r2 = pivot + (high - low)
+    s1 = (pivot * 2) - high
+    s2 = pivot - (high - low)
+
+    return pivot, r1, r2, s1, s2
+
+def pivot_indicator(equity):
+    pivots, _, _, _, _ = pivot_points(equity)
+
+    ind = np.zeros((len(pivots),))
+    for i in range(len(pivots)):
+        ind[i] = equity.closes[i] - pivots[i]
+
+    return ind
+
+def gop_range_index(equity, period=10):
+    gop = np.zeros((len(equity.closes),))
+
+    for i in range(len(equity.closes)):
+        if i < period:
+            continue
+        highest = np.max(equity.highs[i-period:i])
+        lowest = np.min(equity.lows[i-period:i])
+        price_range = highest - lowest
+        gop[i] = math.log(price_range)/math.log(period)
+
+    return gop
+
+def accumulative_swing_index(equity):
+
+    asi = np.zeros((len(equity.closes),))
+    for i in range(len(equity.closes)):
+        if i is 0:
+            continue
+        curr_close = equity.closes[i]
+        prev_close = equity.closes[i-1]
+        curr_open = equity.opens[i]
+        prev_open = equity.opens[i-1]
+        curr_high = equity.highs[i]
+        prev_high = equity.highs[i-1]
+        curr_low = equity.lows[i]
+        prev_low = equity.lows[i-1]
+        k = np.max([(prev_high-curr_close), (prev_low-curr_close)])
+        t = curr_high-curr_low
+        kt = k/t
+
+        num = (prev_close-curr_close+(0.5 * (prev_close - prev_open)) + (0.25 * (curr_close - curr_open)))
+        
+        r = get_r(curr_high, curr_low, curr_close, prev_close, prev_open)
+        
+        body = num / r
+
+        asi[i] = 50 * body * kt
+    return asi
+
+
+
+def get_r(curr_high, curr_low, curr_close, prev_close, prev_open):
+
+    one = curr_high - prev_close
+    two = curr_low - prev_close
+    three = curr_high - curr_low
+
+    if(one >= two and one >= three):
+        r = curr_high - prev_close - (0.5  * (curr_low - prev_close)) + (0.25 * (prev_close - prev_open))
+    if(two >= one and two >= three): 
+        r = curr_low - prev_close - (0.5  * (curr_high - prev_close)) + (0.25 * (prev_close - prev_open))
+    if(three >= one and three >= two):
+        r = curr_high - curr_low + (0.25 * (prev_close - prev_open))
+
+    return r
+
+def bolinger_bands(equity, period=20, stds=2):
+    tp = equity.typical_prices()
+
+    ma = sma(tp, period)
+
+    std = calc_std(tp, period)
+
+    bolu = np.zeros((len(tp),))
+    bold = np.zeros((len(tp),))
+    
+    for i in range(len(bolu)):
+        bolu[i] = ma[i] + stds * std[i]
+        bold[i] = ma[i] - stds * std[i]
+
+    return bolu, bold
+
+def calc_std(prices, period):
+    stds = np.zeros((len(prices),))
+
+    for i in range(len(prices)):
+        if i < period:
+            continue
+        stds[i] = np.std(prices[i-period:i])
+    
+    return stds
+
+def rainbow_ma(prices, periods=[1,3,5,7,9]):
+    mas = []
+    for period in periods:
+        ma = sma(prices, period)
+        mas.append(ma)
+    return mas
+
+def trix(prices):
+    single_smoothed_ema = ema(prices, 18)
+    double_smoothed_ema = ema(single_smoothed_ema, 18)
+    triple_smoothed_ema = ema(double_smoothed_ema, 18)
+
+    trix_vals = np.zeros((len(triple_smoothed_ema),))
+
+    for i in range(len(trix_vals)):
+        if(i is 0):
+            continue
+        if(triple_smoothed_ema[i-1]==0):
+            trix_vals[i] = 0
+            continue
+        
+        trix_vals[i] = (triple_smoothed_ema[i] - triple_smoothed_ema[i-1])/triple_smoothed_ema[i-1]
+
+    return trix_vals
+
+def trix_indicator(prices):
+    trix_vals = trix(prices)
+    
+    t_ma = ema(trix_vals, 9)
+
+    ti = np.zeros((len(trix_vals),))
+
+    for i in range(len(ti)):
+        ti[i] = trix_vals[i] - t_ma[i]
+
+    return ti
+
+def balance_of_power(equity):
+
+    bop = np.zeros((len(equity.closes),))
+
+    for i in range(len(bop)):
+        bop[i] = (equity.closes[i] - equity.opens[i]) / (equity.highs[i] - equity.lows[i])
+    
+    return bop
+
+def prings_know_sure_thing(prices):
+    kst_vec = kst(prices)
+
+    kst_sma = sma(kst_vec, 9)
+
+    pkst = np.zeros((len(kst_sma),))
+    for i in range(len(pkst)):
+        pkst[i] = kst_vec[i]-pkst[i]
+
+    return pkst

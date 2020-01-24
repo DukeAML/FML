@@ -3,26 +3,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-class equity:
+class reit:
     
     def initialize(self, data_file):
         
         data = pd.read_csv(data_file)
 
-        self.opens = []
         self.closes = []
-        self.highs = []
-        self.lows = []
         self.dates = []
-        self.volumes = []
         
         for index, row in data.iterrows():
-            self.closes.append(float(row["Close"]))
-            self.opens.append(float(row["Open"]))
-            self.lows.append(float(row["Low"]))
-            self.highs.append(float(row["High"]))
-            self.dates.append(row["Date"])
-            self.volumes.append(int(row["Volume"]))
+            row_data = row["Date,Close"].split(',')
+
+            if(row_data[1] is "."):
+                row_data[1] = self.closes[index-1]
+        
+            self.closes.append(float(row_data[1]))
+            self.dates.append(row_data[0])
 
         self.length = len(self.closes)
         self.shape = (self.length,)
@@ -155,7 +152,6 @@ class equity:
         
         return rsi
 
-
     def calc_up_down(self, prices, period=1):
         '''
         Calculates the up-down of the equity for a given period\n
@@ -181,25 +177,3 @@ class equity:
 
         return up, down
 
-    def ohlc(self):
-        ohlc_vals = np.zeros(self.shape)
-        for i in range(self.length):
-            open = self.opens[i]
-            high = self.highs[i]
-            low = self.lows[i]
-            close = self.closes[i]
-
-            ohlc_vals[i] = (open + high + low + close) / 4
-
-        return ohlc_vals
-
-    def typical_prices(self):
-        tp = np.zeros(self.shape)
-        for i in range(self.length):
-            high = self.highs[i]
-            low = self.lows[i]
-            close = self.closes[i]
-
-            tp[i] = (high + low + close) / 3
-
-        return tp

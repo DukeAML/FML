@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-class equity:
+class snp:
     
     def initialize(self, data_file):
         
@@ -17,12 +17,13 @@ class equity:
         self.volumes = []
         
         for index, row in data.iterrows():
-            self.closes.append(float(row["Close"]))
-            self.opens.append(float(row["Open"]))
-            self.lows.append(float(row["Low"]))
-            self.highs.append(float(row["High"]))
-            self.dates.append(row["Date"])
-            self.volumes.append(int(row["Volume"]))
+            row_data = row['Date,Open,High,Low,Close,Adj Close,Volume'].split(',')
+            self.closes.append(float(row_data[4]))
+            self.opens.append(float(row_data[1]))
+            self.lows.append(float(row_data[3]))
+            self.highs.append(float(row_data[2]))
+            self.dates.append(row_data[0])
+            self.volumes.append(int(row_data[6]))
 
         self.length = len(self.closes)
         self.shape = (self.length,)
