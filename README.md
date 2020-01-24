@@ -1,6 +1,10 @@
 # FML
 FML - Arizona Zervas
 
+## Running Instructions
+cd into the "frontend" directory and run `ng serve` after intalling all necessary dependences with `npm i`
+
+## Features
 Vector 0 - Volumes
 Vector 1 - Prices
 Vector 2 - SMA
