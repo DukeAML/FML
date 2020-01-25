@@ -5,3 +5,10 @@
 h1{
     padding-left: 5%;
 }
+
+.links{
+    text-align: start;
+    align-content: flex-end;
+    float: right;
+    padding-right: 5%;
+}
