@@ -53,7 +53,7 @@ export class BotComponent implements OnInit {
     })
 
     this.dataService.getAssetAllocationOverTime().subscribe( result => {
-      this.multi = result;
+      this.multi = result['data'];
     })
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 
@@ -9,9 +9,9 @@ import { Observable, of } from 'rxjs';
 })
 export class DataService {
 
-  constructor() { }
+  constructor( private http:HttpClient ) { }
 
-  private serverURL = "localhost:5000"
+  private serverURL = "http://localhost:5000"
 
   getAssetTypeAllocation(){
     let mock = [
@@ -26,130 +26,11 @@ export class DataService {
 
 
   getAssetAllocationOverTime(){
-    let mock = [
-      {
-        "name": "Stocks",
-        "series": [
-          {
-            "name": 10,
-            "value": 10
-          },
-          {
-            "name": 20,
-            "value": 20
-          },
-          {
-            "name": 30,
-            "value": 30
-          },
-          {
-              "name": 40,
-              "value": 40
-            },
-            {
-              "name": 50,
-              "value": 50
-            },
-            {
-              "name": 60,
-              "value": 40
-            }
-        ]
-      },
+    this.http.get(this.serverURL + '/allocation').subscribe(result => {
+      console.log('result', result);
+    })
     
-      {
-        "name": "Bonds",
-        "series": [
-          {
-            "name": 10,
-            "value": 60
-          },
-          {
-            "name": 20,
-            "value": 40
-          },
-          {
-            "name": 30,
-            "value": 20
-          },
-          {
-              "name": 40,
-              "value": 5
-            },
-            {
-              "name": 50,
-              "value": 10
-            },
-            {
-              "name": 60,
-              "value": 15
-            }
-        ]
-      },
-    
-      {
-        "name": "Latvian Brothels",
-        "series": [
-          {
-            "name": 10,
-            "value": 20
-          },
-          {
-            "name": 20,
-            "value": 10
-          },
-          {
-            "name": 30,
-            "value": 40
-          },
-          {
-              "name": 40,
-              "value": 27
-            },
-            {
-              "name": 50,
-              "value": 25
-            },
-            {
-              "name": 60,
-              "value": 25
-            }
-        ]
-      },
-  
-      {
-          "name": "Other",
-          "series": [
-              {
-                "name": 10,
-                "value": 10
-              },
-              {
-                "name": 20,
-                "value": 30
-              },
-              {
-                "name": 30,
-                "value": 10
-              },
-              {
-                  "name": 40,
-                  "value": 28
-                },
-                {
-                  "name": 50,
-                  "value": 15
-                },
-                {
-                  "name": 60,
-                  "value": 20
-                }
-            ]
-        }
-  
-    ];
-    
-    return of(mock);
+    return this.http.get(this.serverURL + '/allocation')
   }
 
 }
