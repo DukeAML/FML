@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { AboutComponent } from './components/about/about.component';
 
 
 
@@ -17,7 +18,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
     AppComponent,
     DashboardComponent,
     BotComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

@@ -48,12 +48,10 @@ export class BotComponent implements OnInit {
   }
 
   getData(): void{
-    this.dataService.getAssetTypeAllocation().subscribe( result => {
-      this.single = result;
-    })
 
     this.dataService.getAssetAllocationOverTime().subscribe( result => {
       this.multi = result['data'];
+      this.single = result['mostRecent'];
     })
   }
 
