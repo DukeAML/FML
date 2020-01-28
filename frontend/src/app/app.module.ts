@@ -10,7 +10,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AboutComponent } from './components/about/about.component';
-import { MatToolbarModule, MatIconModule } from '@angular/material'
+import { MatToolbarModule, MatIconModule, MatDialogModule } from '@angular/material';
+import { AssetModalComponent } from './components/asset-modal/asset-modal.component'
 
 
 
@@ -20,7 +21,8 @@ import { MatToolbarModule, MatIconModule } from '@angular/material'
     DashboardComponent,
     BotComponent,
     ToolbarComponent,
-    AboutComponent
+    AboutComponent,
+    AssetModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -28,8 +30,12 @@ import { MatToolbarModule, MatIconModule } from '@angular/material'
     BrowserAnimationsModule,
     HttpClientModule,
     MatIconModule,
-    MatToolbarModule,
+    MatToolbarModule, 
+    MatDialogModule, 
     NgxChartsModule
+  ],
+  entryComponents: [
+    AssetModalComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

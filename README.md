@@ -2,7 +2,10 @@
 FML - Arizona Zervas
 
 ## Running Instructions
-cd into the "frontend" directory and run `ng serve` after intalling all necessary dependences with `npm i`
+Two terminals are required to run this program.
+To run the frontend, cd into the "frontend" directory and run `ng serve`
+To run the backend, cd into the backend and run the script `./flask-restart-on-file-change.sh` after installing the necessary dependencies
+through `pip`. 
 
 ## Features
 

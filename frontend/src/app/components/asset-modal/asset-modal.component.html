@@ -1,2 +1,4 @@
-<h1 mat-dialog-title>Allocation of {{data.type}}</h1>
-<p *ngFor="let item of data['data']">{{item.name}}: {{item.value}}</p>
+<div class="main">
+    <h1 mat-dialog-title>Allocation of<br> <div class="allocationTitle">{{data.type}}</div></h1>
+    <p *ngFor="let item of data['data']">{{item.name}}: {{item.value}}</p>
+</div>

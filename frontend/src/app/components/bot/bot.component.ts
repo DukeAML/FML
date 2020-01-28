@@ -57,8 +57,11 @@ export class BotComponent implements OnInit {
 
   // INTERACTIVE FUNCTIONS
 
-  // NOTE - THIS FUNCTION ONLY RETURNS "CURRENT" DESRIPTION OF AN ASSET - WOULD EVENTUALLY NEED TO MODIFY IT TO 
-  // INCLUDE A TIMESTAMP, WHICH IS "CURRENT" FOR PIE, AND THEN IT'S GIVEN IN THE CLICK DATA FOR THE LINE CHART
+  // NOTE - THIS FUNCTION ONLY RETURNS "CURRENT" DESRIPTION OF AN ASSET - 
+  // eventually, gonna want to have a function that can get the allocation of an asset at different timesteps. To do that, 
+  // just need to feed in the day as an argument (which the line graph gives us when we click on it and which for the pie chart 
+  // we can just set to the max value of the data coming from the line graph), send that argument as part of the route we call, 
+  // and include that in whatever query we use to get the data in the first place.
   openDialog(data): void {
     // call service and get data for that stock
     let assetName:string = data;
