@@ -5,10 +5,26 @@ from tensorflow.keras import layers,models
 from keras.utils.vis_utils import model_to_dot
 from gensim.models import KeyedVectors
 
-#create model to reduce dimensionality: LSTM -> Dense + Regularization
-#input should be [batch_size, time_steps, features]
-#labels = ??
 
+#input should be [batch_size, time_steps, features]
+#labels = 10 classes
+
+#first model (w/o text)
+model_input = layers.Input(shape = (19,125)) #assuming we have 125 numerical features per time-step
+LSTM =  layers.LSTM(125, dropout = .2)(model_input)
+Batch_Norm = layers.BatchNormalization()(LSTM)
+Dense1 = layers.Dense(64)(Batch_Norm)
+LR = layers.LeakyReLU()(Dense1)
+Drop = layers.Dropout(.2)(Dense1)
+Dense2 = layers.Dense(28, activation = 'relu')(Drop)
+Batch_Norm2 = layers.BatchNormalization()(Dense2)
+model_output = layers.Dense(10, activation = "softmax")(Batch_Norm2) #use softmax if not binary, sigmoid otherwise 
+
+model1 = tf.keras.Model(model_input, model_output)
+model1.summary()
+
+
+#second model (w/ text)
 model_inputNum = layers.Input(shape = (19,125)) #assuming we have 125 numerical features per time-step
 model_inputText = layers.Input(shape = (19,200)) #assuming we have 200 words per time-step
 
@@ -21,7 +37,9 @@ Batch_Norm = layers.BatchNormalization()(LSTM)
 #wvmodel = shorttext.utils.load_word2vec_model('/Users/phoebeloveklett/Downloads/GoogleNews-vectors-negative300.bin.gz')
 wvmodel = KeyedVectors.load_word2vec_format('/Users/phoebeloveklett/Downloads/GoogleNews-vectors-negative300.bin.gz', binary=True)
 #index all input text
-Drop = layers.Dropout(.2)(wvmodel)
+word_vectors = wvmodel.wv
+Embed = (word_vectors)*(model_inputText) #this is wrong fix this
+Drop = layers.Dropout(.2)(Embed)
 
 #concatenate numerical, text inputs 
 Concat = layers.concat([Drop, Batch_Norm], axis =0)
@@ -30,10 +48,9 @@ Dense1 = layers.Dense(64)(Concat)
 LR = layers.LeakyRelu()(Dense1)
 Drop = layers.Dropout(.2)(Dense1)
 Dense2 = layers.Dense(28, activation = 'relu')(Drop)
-model_output = layers.Dense(1, activation = "sigmoid")(Dense2) #use softmax if not binary, sigmoid otherwise 
+model_output = layers.Dense(10, activation = "softmax")(Dense2) #use softmax if not binary, sigmoid otherwise 
 
-model = tf.keras.Model([model_inputNum, model_inputText], model_output)
-model.summary()
+model2 = tf.keras.Model([model_inputNum, model_inputText], model_output)
+model2.summary()
 
-keras.utils.plot_model(model, 'my_first_model.png')
 
