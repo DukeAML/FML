@@ -4,10 +4,6 @@ from tensorflow import keras
 from tensorflow.keras import layers,models
 from keras.utils.vis_utils import model_to_dot
 from gensim.models import KeyedVectors
-# from gensim.models.word2vec import Word2Vec
-# import gensim.downloader as api
-
-# import shorttext
 
 #create model to reduce dimensionality: LSTM -> Dense + Regularization
 #input should be [batch_size, time_steps, features]
@@ -24,11 +20,7 @@ Batch_Norm = layers.BatchNormalization()(LSTM)
 
 #wvmodel = shorttext.utils.load_word2vec_model('/Users/phoebeloveklett/Downloads/GoogleNews-vectors-negative300.bin.gz')
 wvmodel = KeyedVectors.load_word2vec_format('/Users/phoebeloveklett/Downloads/GoogleNews-vectors-negative300.bin.gz', binary=True)
-
-# api.load("GoogleNews-vectors-negative300.bin")
-# model = KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
-#model = KeyedVectors.load_word2vec_format('./model/GoogleNews-vectors-negative300.bin', binary=True)(model_inputText)  
-#Embed = api.load("word2vec-google-news-300")
+#index all input text
 Drop = layers.Dropout(.2)(wvmodel)
 
 #concatenate numerical, text inputs 
