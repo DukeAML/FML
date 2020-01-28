@@ -28,13 +28,19 @@ li{
     display: inline-block;
 }
 
-li :hover{
-    background-color: green;
-}
 
-a{
+
+a {
     color: #ffffff;
     display: block
+}
+
+a :hover{
+    background-color: #444444;
+}
+
+span{
+    padding-left: 5%;
 }
 
 .example-icon {
@@ -42,4 +48,9 @@ a{
 }
 .example-spacer {
     flex: 1 1 auto;
+  }
+
+mat-toolbar {
+    padding-top: 2%;
+    padding-bottom: 3%;
   }
