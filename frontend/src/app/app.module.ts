@@ -10,6 +10,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AboutComponent } from './components/about/about.component';
+import { MatToolbarModule, MatIconModule } from '@angular/material'
 
 
 
@@ -22,11 +23,13 @@ import { AboutComponent } from './components/about/about.component';
     AboutComponent
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
-    NgxChartsModule,
-    BrowserAnimationsModule
+    MatIconModule,
+    MatToolbarModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
