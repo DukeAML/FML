@@ -3,6 +3,23 @@ from flask import render_template, flash, redirect, url_for, session, request
 from flask import jsonify
 import random
 
+@app.route('/asset-description/<string:type>', methods=['GET'])
+def get_asset_description(type):
+  # EVENTUALLY CHANGE THESE TO SQL QUERIES OR SOMETHING? ALSO GOING TO BE RECEIVING TIME AT SOME POINT IN THE FUTURE (SEE
+  # COMMENT LEFT IN FRONTEND IN BOT COMPONENT OPENDIALOG FUNCTION)
+  if type == 'stocks':
+    mock = [ {'name': 'GS', 'value': 10}, {'name': 'AAPL', 'value': 20}, {'name': 'PZZA', 'value': 69}, {'name': 'FUN', 'value': 1} ]
+    return jsonify({'data': mock})
+    
+  elif type == 'bonds':
+    mock = [ {'name': 'US Government Bonds', 'value': 70}, {'name': 'Idk other bonds', 'value': 30} ]
+    return jsonify({'data': mock})
+
+  else:
+    mock = [ {'name': 'Pretend these', 'value': 40}, {'name': 'Are real', 'value': 60} ]
+    return jsonify({'data': mock})
+
+
 @app.route('/allocation', methods=['GET'])
 def get_alloc_info():
     print('got here')
