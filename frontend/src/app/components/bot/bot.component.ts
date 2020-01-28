@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
-
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { AssetModalComponent } from '../asset-modal/asset-modal.component'
+
 
 @Component({
   selector: 'app-bot',
@@ -10,9 +12,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 })
 export class BotComponent implements OnInit {
 
-  constructor(private dataService:DataService) { 
+  constructor(private dataService:DataService, public dialog:MatDialog) {
     this.getData();
-  }
+   }
 
   single: any[];
   multi: any[]
@@ -42,8 +44,6 @@ export class BotComponent implements OnInit {
   lineYaxisLabel: string = '% Allocation';
   lineTimeline: boolean = true;
 
-
-
   ngOnInit() {
   }
 
@@ -55,10 +55,45 @@ export class BotComponent implements OnInit {
     })
   }
 
+  // INTERACTIVE FUNCTIONS
 
-  // INTERACTIVE FUNCTIONS?
+  // NOTE - THIS FUNCTION ONLY RETURNS "CURRENT" DESRIPTION OF AN ASSET - WOULD EVENTUALLY NEED TO MODIFY IT TO 
+  // INCLUDE A TIMESTAMP, WHICH IS "CURRENT" FOR PIE, AND THEN IT'S GIVEN IN THE CLICK DATA FOR THE LINE CHART
+  openDialog(data): void {
+    // call service and get data for that stock
+    let assetName:string = data;
+    this.dataService.getAssetDescription(assetName.toLowerCase()).subscribe(result => {
+
+      // If it fails for some reason and data is null
+      if(!result['data']){
+        console.log('found an error, result looks like this', result);
+        const dialogRef = this.dialog.open(AssetModalComponent, {
+          width: '250px',
+          data: {'type': 'ERROR', 'data': []}
+        });
+        dialogRef.afterClosed().subscribe(closeResult => {
+          console.log('The dialog was closed');
+        });
+      }
+
+      else{
+        let constructorArg = {'type': assetName, 'data': result['data']}
+        const dialogRef = this.dialog.open(AssetModalComponent, {
+          width: '250px',
+          data: constructorArg
+        });
+        dialogRef.afterClosed().subscribe(closeResult => {
+          console.log('The dialog was closed');
+        });
+      }
+
+    })
+    
+  }
+
   pieOnSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    this.openDialog(data['name']);
   }
 
   pieOnActivate(data): void {
@@ -71,6 +106,7 @@ export class BotComponent implements OnInit {
 
   lineOnSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    this.openDialog(data['series']);
   }
 
   lineOnActivate(data): void {
@@ -80,5 +116,6 @@ export class BotComponent implements OnInit {
   lineOnDeactivate(data): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
+
 
 }
