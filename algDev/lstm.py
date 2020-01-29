@@ -13,7 +13,7 @@ from keras.utils import plot_model
 #first model (w/o text pipeline)
 def create_model1a():
     model = Sequential()
-    model.add(LSTM(125,  dropout = .2, input_shape= (19,125) ))
+    model.add(LSTM(125,  dropout = .2, input_shape= (20,25) ))
     model.add(BatchNormalization())
     model.add(Dense(64))
     model.add(LeakyReLU())
@@ -28,7 +28,7 @@ model1a = create_model1a()
 
 def create_model1b():
     model = Sequential()
-    model.add(LSTM(125,  dropout = .2, return_sequences=True, input_shape= (19,125)))
+    model.add(LSTM(125,  dropout = .2, return_sequences=True, input_shape= (20,25)))
     model.add(LSTM(125,  dropout = .2, return_sequences=True))
     model.add(LSTM(125,  dropout = .2, return_sequences=False))
     model.add(BatchNormalization())
