@@ -68,15 +68,15 @@ X_train, y_train, X_test, y_test = gen_data(eq, train_split, days, look_back, la
 
 |Label|
 |-----|
-| (p_1 - p_0)/p_0 >= -10% |
-| (p_1 - p_0)/p_0 >= -7% |
-| (p_1 - p_0)/p_0 >= -4% |
-| (p_1 - p_0)/p_0 >= -1% |
-| (p_1 - p_0)/p_0 >= 0% |
-| (p_1 - p_0)/p_0 >= 1% |
-| (p_1 - p_0)/p_0 >= 4% |
-| (p_1 - p_0)/p_0 >= 7% |
-| (p_1 - p_0)/p_0 >= 10% |
-| (p_1 - p_0)/p_0 >= 15% |
+| -10% <= (p_1 - p_0)/p_0 < - 7% |
+| - 7% <= (p_1 - p_0)/p_0 < - 5% |
+| - 5% <= (p_1 - p_0)/p_0 < - 3% |
+| - 3% <= (p_1 - p_0)/p_0 < - 1% |
+| - 1% <= (p_1 - p_0)/p_0 <   1% |
+|   1% <= (p_1 - p_0)/p_0 <   3% |
+|   3% <= (p_1 - p_0)/p_0 <   5% |
+|   5% <= (p_1 - p_0)/p_0 <   7% |
+|   7% <= (p_1 - p_0)/p_0 <   9% |
+|   9% <= (p_1 - p_0)/p_0 < 100% |
 
 Where p_1 is the price at the predicted day and p_0 is the price at ```predicted day - label_range```

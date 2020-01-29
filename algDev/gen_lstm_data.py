@@ -23,6 +23,7 @@ def gen_data(eq, days=500, look_back=19, label_range=5, verbose=False):
         print(test.shape)
 
     X_train, y_train = get_data_labelled(train, look_back, label_range)
+    print(y_train[0])
     X_test, y_test = get_data_labelled(test, look_back, label_range)
 
     return X_train, y_train, X_test, y_test
@@ -32,8 +33,10 @@ def gen_labels(p_0, p_1):
 
     c = dp/p_0
 
-    y = [c >= -0.1, c >= -0.07, c >= -0.04, c >= -0.01, c >= 0, c >= 0.01, c >= 0.04, c >= 0.07, c >= 0.1, c >= 0.15]
+    bounds = [[-.1,-.07],[-.07,-.05], [-.05,-.03],[-.03,-.01],[-.01,.01],[.01,.03],[.03,.05],[.05,.07],[.07,.09],[.09,1]]
 
+    y = [(1 if c>=bound[0] and c<bound[1] else 0) for bound in bounds]
+    
     return y
 
 def get_data_labelled(data, look_back, label_range):
@@ -48,3 +51,5 @@ def get_data_labelled(data, look_back, label_range):
     print(X.shape)
     print(y.shape)
     return X,y
+
+gen_data('VSLR')
