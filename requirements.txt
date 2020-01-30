@@ -1,0 +1,12 @@
+tensorflow
+pandas
+numpy
+matplotlib
+genism
+flask
+flask_cors
+flask_sqlalchemy
+flask_migrate
+flask_bcrypt
+flask_login
+csv

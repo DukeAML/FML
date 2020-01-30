@@ -12,6 +12,7 @@ from gen_lstm_data import gen_data, gen_labels, get_data_labelled
 
 (X_train, y_train, X_test, y_test) = gen_data(eq = "VSLR", verbose= True)
 print(y_train[0])
+print(X_train[0])
 
 #first model (w/o text pipeline)
 def create_model1a():
@@ -46,11 +47,15 @@ model1b = create_model1b()
 
 # plot_model(model1b, to_file='model1b.png')
 
-model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
-model1a.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
-score = model1a.evaluate(X_test, y_test, batch_size=30, verbose=2)
-print(score)
+# model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
+# model1a.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
+# score = model1a.evaluate(X_test, y_test, batch_size=30, verbose=2)
+# print(score)
 
 
+# model1b.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
+# model1b.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
+# score = model1b.evaluate(X_test, y_test, batch_size=30, verbose=2)
+# print(score)
 
-
+# we want labels to look like [batch, 19, 1]
