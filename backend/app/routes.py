@@ -1,7 +1,6 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, session, request
 from flask import jsonify
-import random
 
 @app.route('/asset-description/<string:type>', methods=['GET'])
 def get_asset_description(type):
