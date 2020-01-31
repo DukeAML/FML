@@ -10,3 +10,5 @@ flask_migrate
 flask_bcrypt
 flask_login
 csv
+python-dotenv
+unipath
