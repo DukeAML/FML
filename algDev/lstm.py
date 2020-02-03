@@ -47,10 +47,10 @@ model1b = create_model1b()
 
 # plot_model(model1b, to_file='model1b.png')
 
-# model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
-# model1a.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
-# score = model1a.evaluate(X_test, y_test, batch_size=30, verbose=2)
-# print(score)
+model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
+model1a.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
+score = model1a.evaluate(X_test, y_test, batch_size=30, verbose=2)
+print(score)
 
 
 # model1b.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])

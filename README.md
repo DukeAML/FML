@@ -1,5 +1,5 @@
 # FML
-FML - Arizona Zervas
+FML - Arizona Zervas (10/10 would recommend)
 
 ## Running Instructions
 Two terminals are required to run this program.
