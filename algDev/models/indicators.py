@@ -7,10 +7,11 @@ class Indicators:
 
     def __init__(self, data_file):
         self.data = pd.read_csv(data_file)
-        self.data['Close'].replace({'.': np.nan, '#N/A': np.nan}, inplace=True)
-        self.closes = data['Close'].ffil().values  # fills close with last price if given '.'
-        self.dates = data['Date'].values
-        self.length = len(data)
+        self.data['Close'].astype(dtype=float)
+        # self.data['Close'].replace({'.': np.nan, '#N/A': np.nan}, inplace=True)
+        self.closes = self.data['Close'].ffill().values  # fills close with last price if given '.'
+        self.dates = self.data['Date'].values
+        self.length = len(self.data)
         self.shape = (self.length,)
 
     @staticmethod
@@ -28,7 +29,8 @@ class Indicators:
             simple_ma[i + period] = ma
         return simple_ma
 
-    def ema(self, period):
+    @staticmethod
+    def ema(period, prices):
         """
         Function to calculate the Exponential Moving Average for the equity at a given period
         @param: period = length of closing prices to look at for each equity
@@ -37,12 +39,12 @@ class Indicators:
 
         exponential_ma = np.zeros((len(prices),))
 
-        simple_ma = self.sma(period, prices)
+        simple_ma = Indicators.sma(period, prices)
 
         base_sma = simple_ma[period]
         print("Base SMA: ")
         print(base_sma)
-        exponential_ma[period] = self.calc_ema(base_sma, prices[period], period)
+        exponential_ma[period] = Indicators.calc_ema(base_sma, prices[period], period)
 
         if type == 'wilder':
             multiplier = 1 / period
@@ -53,8 +55,9 @@ class Indicators:
             if i + period + 1 >= len(prices):
                 break
 
-            exponential_ma[i + period + 1] = self.calc_ema(exponential_ma[i + period], self.closes[i + period + 1],
-                                                           multiplier)
+            exponential_ma[i + period + 1] = Indicators.calc_ema(exponential_ma[i + period],
+                                                                 self.closes[i + period + 1],
+                                                                 multiplier)
 
         for em in exponential_ma:
             if em < 0:
@@ -71,8 +74,7 @@ class Indicators:
         @param: multiplier = weight for current data\n
         @return: ema = the value of the EMA for the given day\n
         """
-        ema = (close - prev_ema) * multiplier + prev_ema
-        return ema
+        return (close - prev_ema) * multiplier + prev_ema
 
     def macd(self, slow_period, fast_period):
 
@@ -339,7 +341,7 @@ def get_r(curr_high, curr_low, prev_close, prev_open):
     return r
 
 
-def bolinger_bands(equity, period=20, stds=2):
+def bollinger_bands(equity, period=20, stds=2):
     tp = equity.typical_prices()
     ma = sma(tp, period)
     std = calc_std(tp, period)

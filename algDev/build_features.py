@@ -1,11 +1,15 @@
-from models.equity import equity
-from models.commodity import commodity
-from models.snp import snp
-from models.reit import reit
-from models.indicators import *
+from algDev.models.equity import Equity
+from algDev.models.commodity import Commodity
+from algDev.models.snp import SNP
+from algDev.models.reit import REIT
+from algDev.models.indicators import *
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+
+here = os.path.abspath(os.path.dirname(__file__))
+data_directory = os.path.join(here, 'data')
 
 
 def gen_features(equity_file, num_days, save=False):
@@ -38,7 +42,7 @@ def gen_features(equity_file, num_days, save=False):
     |Vector 23  |Wilshire US Real Estate                                |
     |Vector 24  |SNP                                                    |
     """
-    e = equity(equity_file)
+    e = Equity(equity_file)
     volumes = e.volumes
     closes = e.closes
     opens = e.opens
@@ -68,7 +72,7 @@ def gen_features(equity_file, num_days, save=False):
     wilder_vec = wilder_vec.T
     ## Compute the wilder ma on the last num_days + period days, then take the last num_days
     ## [num_days x 1]
-    upper_bol_vec, lower_bol_vec = bolinger_bands(e)
+    upper_bol_vec, lower_bol_vec = bollinger_bands(e)
 
     upper_bol_vec = np.array(upper_bol_vec[(-1 * num_days):])
     upper_bol_vec = upper_bol_vec.T
@@ -131,20 +135,20 @@ def gen_features(equity_file, num_days, save=False):
     rainbow_vec_9 = np.array(rainbow_vecs[4][(-1 * num_days):])
     rainbow_vec_9 = rainbow_vec_9.T
 
-    wti_file = r'./data/commodities/OIL.csv'
-    wti = commodity(wti_file)
+    wti_file = os.path.join(data_directory, 'commodities', 'OIL.csv')
+    wti = Commodity(wti_file)
 
     wti_closes = np.array(wti.closes[(-1 * num_days):])
     wti_closes = wti_closes.T
 
-    reit_file = r'./data/indexes/RE.csv'
-    reit_eq = reit(reit_file)
+    reit_file = os.path.join(data_directory, 'indexes', 'RE.csv')
+    reit_eq = REIT(reit_file)
 
     reit_closes = np.array(reit_eq.closes[(-1 * num_days):])
     reit_closes = reit_closes.T
 
-    snp_file = r'./data/indexes/SNP.csv'
-    snp_eq = snp(snp_file)
+    snp_file = os.path.join(data_directory, 'indexes', 'SNP.csv')
+    snp_eq = SNP(snp_file)
 
     snp_closes = np.array(snp_eq.closes[(-1 * num_days):])
     snp_closes = snp_closes.T
@@ -183,8 +187,8 @@ def gen_features(equity_file, num_days, save=False):
     return features
 
 
-vslr_file = r'./data/equities/energy/VSLR.csv'
-vslr = equity(vslr_file)
+vslr_file = os.path.join(data_directory, 'equities', 'VSLR.csv')
+vslr = Equity(vslr_file)
 
 volumes = vslr.volumes
 closes = vslr.closes
@@ -205,11 +209,11 @@ close_vec = closes[(-1 * train_size):]
 ma_period = 9
 ## Compute the sma on the last train_size + period days, then take the last train_size
 ## [train_size x 1]
-sma_vec = sma(closes, ma_period)[(-1 * train_size):]
+sma_vec = Indicators.sma(prices=closes, period=ma_period)[(-1 * train_size):]
 
 ## Compute the ema on the last train_size + period days, then take the last train_size
 ## [train_size x 1]
-ema_vec = ema(closes, ma_period)[(-1 * train_size):]
+ema_vec = Indicators.ema(prices=closes, period=ma_period)[(-1 * train_size):]
 
 ## Compute the wilder ma on the last train_size + period days, then take the last train_size
 ## [train_size x 1]
@@ -217,7 +221,7 @@ wilder_vec = ema(closes, ma_period, 'wilder')[(-1 * train_size):]
 
 ## Compute the wilder ma on the last train_size + period days, then take the last train_size
 ## [train_size x 1]
-upper_bol_vec, lower_bol_vec = bolinger_bands(vslr)
+upper_bol_vec, lower_bol_vec = bollinger_bands(vslr)
 
 upper_bol_vec = upper_bol_vec[(-1 * train_size):]
 lower_bol_vec = lower_bol_vec[(-1 * train_size):]
@@ -258,18 +262,18 @@ rainbow_vec_5 = rainbow_vecs[2][(-1 * train_size):]
 rainbow_vec_7 = rainbow_vecs[3][(-1 * train_size):]
 rainbow_vec_9 = rainbow_vecs[4][(-1 * train_size):]
 
-wti_file = r'./data/commodities/OIL.csv'
-wti = commodity(wti_file)
+wti_file = os.path.join(data_directory, 'commodities', 'OIL.csv')
+wti = Commodity(wti_file)
 
 wti_closes = wti.closes[(-1 * train_size):]
 
-reit_file = r'./data/indexes/RE.csv'
-reit = reit(reit_file)
+reit_file = os.path.join(data_directory, 'indexes', 'RE.csv')
+reit = REIT(reit_file)
 
 reit_closes = reit.closes[(-1 * train_size):]
 
-snp_file = r'./data/indexes/SNP.csv'
-snp = snp(snp_file)
+snp_file = os.path.join(data_directory, 'indexes', 'SNP.csv')
+snp = SNP(snp_file)
 
 snp_closes = snp.closes[(-1 * train_size):]
 
