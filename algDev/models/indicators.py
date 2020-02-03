@@ -1,6 +1,5 @@
 import pandas as pd
 import math
-import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -29,7 +28,7 @@ class Indicators:
             simple_ma[i + period] = ma
         return simple_ma
 
-    def ema(self, period, prices):
+    def ema(self, period):
         """
         Function to calculate the Exponential Moving Average for the equity at a given period
         @param: period = length of closing prices to look at for each equity
@@ -87,13 +86,8 @@ class Indicators:
             index will correspond to the difference between the ith EMA(20) and ith EMA(10). 
             indexes 0-19 will be 0
         """
-        assert (slow_period > fast_period)
-
-        slow_ema = self.ema(slow_period)
-        fast_ema = self.ema(fast_period)
-
-        macd = slow_ema - fast_ema
-        return macd
+        assert slow_period > fast_period
+        return self.ema(slow_period) - self.ema(fast_period)
 
     @staticmethod
     def calc_moves(prices, period=1):
@@ -243,8 +237,7 @@ def d_(prices):
 
 
 def rcma(prices, sma_period=10):
-    sma_vals = sma(prices, sma_period)
-    return sma_vals
+    return sma(prices, sma_period)
 
 
 def pivot_points(equity):
@@ -369,11 +362,7 @@ def calc_std(prices, period):
 
 
 def rainbow_ma(prices, periods=(1, 3, 5, 7, 9)):
-    mas = []
-    for period in periods:
-        ma = sma(prices, period)
-        mas.append(ma)
-    return mas
+    return [sma(prices, period) for period in periods]
 
 
 def trix(prices):
