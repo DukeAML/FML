@@ -4,6 +4,7 @@ import numpy as np
 
 
 class Indicators:
+    """Contains commonly used technical indicators for various asset classes."""
 
     def __init__(self, data_file):
         self.data = pd.read_csv(data_file)
@@ -242,28 +243,6 @@ def rcma(prices, sma_period=10):
     return sma(prices, sma_period)
 
 
-def pivot_points(equity):
-    closes = equity.closes
-    highs = equity.highs
-    lows = equity.lows
-
-    pivots = np.zeros((len(closes),))
-    r1s = np.zeros((len(closes),))
-    r2s = np.zeros((len(closes),))
-    s1s = np.zeros((len(closes),))
-    s2s = np.zeros((len(closes),))
-
-    for i in range(len(closes)):
-        pivot, r1, r2, s1, s2 = calc_pivot_points(highs[i], lows[i], closes[i])
-        pivots[i] = pivot
-        r1s[i] = r1
-        r2s[i] = r2
-        s1s[i] = s1
-        s2s[i] = s2
-
-    return pivots, r1s, r2s, s1s, s2s
-
-
 def calc_pivot_points(high, low, close):
     pivot = (high + low + close) / 3
 
@@ -273,57 +252,6 @@ def calc_pivot_points(high, low, close):
     s2 = pivot - (high - low)
 
     return pivot, r1, r2, s1, s2
-
-
-def pivot_indicator(equity):
-    pivots, *_ = pivot_points(equity)
-
-    ind = np.zeros((len(pivots),))
-    for i in range(len(pivots)):
-        ind[i] = equity.closes[i] - pivots[i]
-
-    return ind
-
-
-def gop_range_index(equity, period=10):
-    gop = np.zeros((len(equity.closes),))
-
-    for i in range(len(equity.closes)):
-        if i < period:
-            continue
-        highest = np.max(equity.highs[i - period:i])
-        lowest = np.min(equity.lows[i - period:i])
-        price_range = highest - lowest
-        gop[i] = math.log(price_range) / math.log(period)
-
-    return gop
-
-
-def accumulative_swing_index(equity):
-    asi = np.zeros((len(equity.closes),))
-    for i in range(len(equity.closes)):
-        if i is 0:
-            continue
-        curr_close = equity.closes[i]
-        prev_close = equity.closes[i - 1]
-        curr_open = equity.opens[i]
-        prev_open = equity.opens[i - 1]
-        curr_high = equity.highs[i]
-        prev_high = equity.highs[i - 1]
-        curr_low = equity.lows[i]
-        prev_low = equity.lows[i - 1]
-        k = np.max([(prev_high - curr_close), (prev_low - curr_close)])
-        t = curr_high - curr_low
-        kt = k / t
-
-        num = (prev_close - curr_close + (0.5 * (prev_close - prev_open)) + (0.25 * (curr_close - curr_open)))
-
-        r = get_r(curr_high, curr_low, curr_close, prev_close, prev_open)
-
-        body = num / r
-
-        asi[i] = 50 * body * kt
-    return asi
 
 
 def get_r(curr_high, curr_low, prev_close, prev_open):
@@ -339,17 +267,6 @@ def get_r(curr_high, curr_low, prev_close, prev_open):
         r = curr_high - curr_low + (0.25 * (prev_close - prev_open))
 
     return r
-
-
-def bollinger_bands(equity, period=20, stds=2):
-    tp = equity.typical_prices()
-    ma = sma(tp, period)
-    std = calc_std(tp, period)
-
-    bolu = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
-    bold = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
-
-    return bolu, bold
 
 
 def calc_std(prices, period):
@@ -391,10 +308,6 @@ def trix_indicator(prices):
     t_ma = ema(trix_vals, 9)
 
     return np.array([trix_vals[i] - t_ma[i] for i in range(len(trix_vals))])
-
-
-def balance_of_power(equity):
-    return (equity.closes - equity.opens) / (equity.highs - equity.lows)
 
 
 def prings_know_sure_thing(prices):

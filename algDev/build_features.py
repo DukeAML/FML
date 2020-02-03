@@ -72,7 +72,7 @@ def gen_features(equity_file, num_days, save=False):
     wilder_vec = wilder_vec.T
     ## Compute the wilder ma on the last num_days + period days, then take the last num_days
     ## [num_days x 1]
-    upper_bol_vec, lower_bol_vec = bollinger_bands(e)
+    upper_bol_vec, lower_bol_vec = e.bollinger_bands()
 
     upper_bol_vec = np.array(upper_bol_vec[(-1 * num_days):])
     upper_bol_vec = upper_bol_vec.T
@@ -80,21 +80,21 @@ def gen_features(equity_file, num_days, save=False):
     lower_bol_vec = np.array(lower_bol_vec[(-1 * num_days):])
     lower_bol_vec = lower_bol_vec.T
 
-    accum_swing_vec = np.array(accumulative_swing_index(e)[(-1 * num_days):])
+    accum_swing_vec = np.array(e.accumulative_swing_index()[(-1 * num_days):])
     accum_swing_vec = accum_swing_vec.T
 
     atr_period = 10
     atr_vec = np.array(average_true_range(e, atr_period)[(-1 * num_days):])
     atr_vec = atr_vec.T
 
-    bop_vec = np.array(balance_of_power(e)[(-1 * num_days):])
+    bop_vec = np.array(e.balance_of_power()[(-1 * num_days):])
     bop_vec = bop_vec.T
 
     gop_period = 10
-    gop_vec = np.array(gop_range_index(e, gop_period)[(-1 * num_days):])
+    gop_vec = np.array(e.gop_range_index(gop_period)[(-1 * num_days):])
     gop_vec = gop_vec.T
 
-    pivot_ind_vec = np.array(pivot_indicator(e)[(-1 * num_days):])
+    pivot_ind_vec = np.array(e.pivot_indicator()[(-1 * num_days):])
     pivot_ind_vec = pivot_ind_vec.T
 
     prings_vec = np.array(prings_know_sure_thing(closes)[(-1 * num_days):])
@@ -221,22 +221,22 @@ wilder_vec = ema(closes, ma_period, 'wilder')[(-1 * train_size):]
 
 ## Compute the wilder ma on the last train_size + period days, then take the last train_size
 ## [train_size x 1]
-upper_bol_vec, lower_bol_vec = bollinger_bands(vslr)
+upper_bol_vec, lower_bol_vec = vslr.bollinger_bands()
 
 upper_bol_vec = upper_bol_vec[(-1 * train_size):]
 lower_bol_vec = lower_bol_vec[(-1 * train_size):]
 
-accum_swing_vec = accumulative_swing_index(vslr)[(-1 * train_size):]
+accum_swing_vec = vslr.accumulative_swing_index()[(-1 * train_size):]
 
 atr_period = 10
 atr_vec = average_true_range(vslr, atr_period)[(-1 * train_size):]
 
-bop_vec = balance_of_power(vslr)[(-1 * train_size):]
+bop_vec = vslr.balance_of_power()[(-1 * train_size):]
 
 gop_period = 10
-gop_vec = gop_range_index(vslr, gop_period)[(-1 * train_size):]
+gop_vec = vslr.gop_range_index(gop_period)[(-1 * train_size):]
 
-pivot_ind_vec = pivot_indicator(vslr)[(-1 * train_size):]
+pivot_ind_vec = vslr.pivot_indicator()[(-1 * train_size):]
 
 prings_vec = prings_know_sure_thing(closes)[(-1 * train_size):]
 
