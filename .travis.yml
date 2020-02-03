@@ -13,10 +13,9 @@ matrix:
     - python: 3.8
 
 install:
-  - pip install -qq flake8
-  - pip install pytest
+  - pip install -qq flake8 pytest
   - if [[ $DOCBUILD ]]; then
-    pip install doctr sphinx sphinx_rtd_theme ipython matplotlib;  # for docs later
+    pip install -qq doctr sphinx sphinx_rtd_theme ipython matplotlib;  # for docs later
     fi
   - python setup.py install
 

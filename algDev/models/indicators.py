@@ -29,8 +29,7 @@ class Indicators:
             simple_ma[i + period] = ma
         return simple_ma
 
-    @staticmethod
-    def ema(period):
+    def ema(self, period, prices):
         """
         Function to calculate the Exponential Moving Average for the equity at a given period
         @param: period = length of closing prices to look at for each equity
@@ -404,12 +403,7 @@ def trix_indicator(prices):
 
 
 def balance_of_power(equity):
-    bop = np.zeros((len(equity.closes),))
-
-    for i in range(len(bop)):
-        bop[i] = (equity.closes[i] - equity.opens[i]) / (equity.highs[i] - equity.lows[i])
-
-    return bop
+    return (equity.closes - equity.opens) / (equity.highs - equity.lows)
 
 
 def prings_know_sure_thing(prices):
