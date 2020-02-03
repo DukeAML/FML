@@ -1,18 +1,49 @@
 import math
 import numpy as np
+import pandas as pd
+import datetime
 
-from algDev.models.indicators import Indicators, calc_pivot_points, get_r, calc_std
+from models.indicators import Indicators
 
-
-class Equity(Indicators):
+class Equity:
 
     def __init__(self, data_file):
-        super().__init__(data_file)
+        self.parse_data(data_file)
 
-        self.opens = self.data['Open'].values
-        self.highs = self.data['High'].values
-        self.lows = self.data['Low'].values
-        self.volumes = self.data['Volume'].values
+    def parse_data(self, data_file):
+        self.data = pd.read_csv(data_file)
+        
+        if 'Close' in self.data.columns:
+            self.data['Close'].astype(dtype=float)
+            self.closes = self.data['Close'].ffill().values  # fills values if not NaN
+        
+        if 'Open' in self.data.columns:
+            self.data['Open'].astype(dtype=float)
+            self.opens = self.data['Open'].ffill().values  # fills values if not NaN
+        
+        if 'High' in self.data.columns:
+            self.data['High'].astype(dtype=float)
+            self.highs = self.data['High'].ffill().values  # fills values if not NaN
+        
+        if 'Low' in self.data.columns:
+            self.data['Low'].astype(dtype=float)
+            self.lows = self.data['Low'].ffill().values  # fills values if not NaN
+            
+        if 'Volume' in self.data.columns:
+            self.data['Volume'].astype(dtype=int)
+            self.volumes = self.data['Volume'].ffill().values
+
+        if 'Date' in self.data.columns:
+            self.data['Date'].astype(dtype=str)
+            self.dates = self.data['Date'].values
+
+        for i in range(len(self.closes)):
+            ### Case for missing values
+            if(self.closes[i]==0):
+                # This line could end up fucking up, might not be worth fixing
+                arr = [c if c > 0 else 0 for c in self.closes[i-3:i+3]]
+                li = np.array(list(filter((0).__ne__, arr)))
+                self.closes[i] = np.sum(li)/len(li)
 
     def ohlc(self):
         return (self.opens + self.highs + self.lows + self.closes) / 4
@@ -25,8 +56,8 @@ class Equity(Indicators):
 
     def bollinger_bands(self, period=20, stds=2):
         tp = self.typical_prices()
-        ma = self.sma(prices=tp, period=period)
-        std = calc_std(prices=tp, period=period)
+        ma = Indicators.sma(prices=tp, period=period)
+        std = Indicators.calc_std(prices=tp, period=period)
 
         bolu = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
         bold = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
@@ -52,7 +83,7 @@ class Equity(Indicators):
 
             num = (prev_close - curr_close + (0.5 * (prev_close - prev_open)) + (0.25 * (curr_close - curr_open)))
 
-            r = get_r(curr_high, curr_low, curr_close, prev_close, prev_open)
+            r = Indicators.get_r(curr_high, curr_low, prev_close, prev_open)
 
             body = num / r
 
@@ -84,7 +115,7 @@ class Equity(Indicators):
         s2s = np.zeros((len(closes),))
 
         for i in range(len(closes)):
-            pivot, r1, r2, s1, s2 = calc_pivot_points(highs[i], lows[i], closes[i])
+            pivot, r1, r2, s1, s2 = Indicators.calc_pivot_points(highs[i], lows[i], closes[i])
             pivots[i] = pivot
             r1s[i] = r1
             r2s[i] = r2

@@ -4,7 +4,7 @@ from build_features import gen_features
 
 
 def gen_data(eq, days=500, look_back=19, label_range=5, verbose=False):
-    eq_path = r'./data/equities/%s.csv' % eq
+    eq_path = r'./algDev/data/equities/%s.csv' % eq
 
     train_size = int(0.8 * days)
     test_size = days - train_size
