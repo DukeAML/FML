@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0, '../../')
 print( '\n'.join(sys.path))
-# from algDev.models.equity import equity 
+# from algDev.models.equity import equity
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
