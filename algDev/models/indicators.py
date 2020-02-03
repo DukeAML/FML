@@ -9,8 +9,7 @@ class Indicators:
     def __init__(self, data_file):
         self.data = pd.read_csv(data_file)
         self.data['Close'].astype(dtype=float)
-        # self.data['Close'].replace({'.': np.nan, '#N/A': np.nan}, inplace=True)
-        self.closes = self.data['Close'].ffill().values  # fills close with last price if given '.'
+        self.closes = self.data['Close'].ffill().values  # fills values if not NaN
         self.dates = self.data['Date'].values
         self.length = len(self.data)
         self.shape = (self.length,)

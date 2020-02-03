@@ -4,7 +4,6 @@ from keras import models, layers
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM, Conv1D, LeakyReLU, BatchNormalization
 
-
 print(tf.__version__)
 
 # pull features, get train/test split

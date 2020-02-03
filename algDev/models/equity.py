@@ -1,4 +1,7 @@
-from algDev.models.indicators import Indicators
+import math
+import numpy as np
+
+from algDev.models.indicators import Indicators, calc_pivot_points, get_r, calc_std
 
 
 class Equity(Indicators):
