@@ -5,7 +5,7 @@
 
 h1{
     float: left;
-    padding-left: 5%;
+    padding-left: 1%;
 
 }
 
@@ -40,7 +40,7 @@ a :hover{
 }
 
 span{
-    padding-left: 5%;
+    padding-left: 1%;
 }
 
 .example-icon {
@@ -51,6 +51,10 @@ span{
   }
 
 mat-toolbar {
-    padding-top: 2%;
-    padding-bottom: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
   }
+
+img{
+    margin-left: -5%;
+}
