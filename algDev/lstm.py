@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
 from gensim.models import KeyedVectors
-from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout, Flatten, Input, Concatenate
+from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout, Flatten, Input, concatenate
 from keras.utils import plot_model
 from gen_lstm_data import gen_data, gen_labels, get_data_labelled
 import numpy as np
@@ -96,7 +96,7 @@ wvmodel = KeyedVectors.load_word2vec_format('/Users/phoebeloveklett/Downloads/Go
 Drop = Dropout(.2)(wvmodel)
 
 # concatenate numerical, text inputs
-Concat = Concatenate([Drop, Batch_Norm], axis=0)
+Concat = concatenate([Drop, Batch_Norm], axis=0)
 
 Dense1 = Dense(64)(Concat)
 LR = LeakyReLU()(Dense1)
