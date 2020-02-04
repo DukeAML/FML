@@ -11,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AboutComponent } from './components/about/about.component';
 import { MatToolbarModule, MatIconModule, MatDialogModule } from '@angular/material';
-import { AssetModalComponent } from './components/asset-modal/asset-modal.component'
+import { AssetModalComponent } from './components/asset-modal/asset-modal.component';
+import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component'
 
 
 
@@ -22,7 +23,8 @@ import { AssetModalComponent } from './components/asset-modal/asset-modal.compon
     BotComponent,
     ToolbarComponent,
     AboutComponent,
-    AssetModalComponent
+    AssetModalComponent,
+    PerformancePaneComponent
   ],
   imports: [
     AppRoutingModule,

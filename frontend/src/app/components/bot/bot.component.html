@@ -5,7 +5,7 @@
         <h2>Allocation Over Time</h2>
         <ngx-charts-line-chart
         [view]="view"
-        [scheme]="colorScheme"
+        [scheme]="lineColorScheme"
         [legend]="lineLegend"
         [showXAxisLabel]="lineShowXAxisLabel"
         [showYAxisLabel]="lineShowYAxisLabel"
@@ -27,7 +27,7 @@
         <h2>Current Allocation</h2>
         <ngx-charts-pie-chart
         [view]="view"
-        [scheme]="colorScheme"
+        [scheme]="pieColorScheme"
         [results]="single"
         [gradient]="pieGradient"
         [legend]="pieShowLegend"

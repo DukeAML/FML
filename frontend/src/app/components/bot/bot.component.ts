@@ -20,9 +20,11 @@ export class BotComponent implements OnInit {
   multi: any[]
   view: any[] = [600, 400];
 
-  colorScheme = {
+  lineColorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
+
+  pieColorScheme:any;
 
   // options
   pieGradient: boolean = true;
@@ -52,6 +54,7 @@ export class BotComponent implements OnInit {
     this.dataService.getAssetAllocationOverTime().subscribe( result => {
       this.multi = result['data'];
       this.single = result['mostRecent'];
+      this.pieColorScheme = this.lineColorScheme;
     })
   }
 
@@ -59,7 +62,12 @@ export class BotComponent implements OnInit {
 
   pieOnSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    this.openDialog(data['name'], 'recent');
+    if(this.pieColorScheme['domain'] == this.lineColorScheme['domain']){
+      this.getAssetInformation(data['name'], 'recent');
+    }
+    else{
+      this.getData();
+    }
   }
 
   pieOnActivate(data): void {
@@ -72,7 +80,7 @@ export class BotComponent implements OnInit {
 
   lineOnSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    this.openDialog(data['series'], data['name']);
+    this.getAssetInformation(data['series'], data['name']);
   }
 
   lineOnActivate(data): void {
@@ -83,28 +91,20 @@ export class BotComponent implements OnInit {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
-  openDialog(assetName:string, day:string): void {
+  getAssetInformation(assetName:string, day:string): void {
     // call service and get data for that stock
     this.dataService.getAssetDescription(assetName.toLowerCase(), day).subscribe(result => {
-
       // If it fails for some reason and data is null
       if(!result['data']){
         console.log('found an error, result looks like this', result);
-        // const dialogRef = this.dialog.open(AssetModalComponent, {
-        //   width: '250px',
-        //   data: {'type': 'ERROR', 'data': []}
-        // });
-        // dialogRef.afterClosed().subscribe(closeResult => {
-        //   console.log('The dialog was closed');
-        // });
       }
 
       else{
         // get position of asset in color scheme array, use that for pie chart
         let colorIndex = 0;
-        for(let i=0; i<this.single.length; i++){
+        for(let i=0; i<this.multi.length; i++){
 
-          if(this.single[i]['name'] == assetName){
+          if(this.multi[i]['name'] == assetName){
             colorIndex = i;
             break;
           }
@@ -112,19 +112,10 @@ export class BotComponent implements OnInit {
         }
 
         let numberOfSlices = result['data'].length;
-        let colors = this.makeColorScheme(this.colorScheme['domain'][colorIndex], numberOfSlices);
+        let colors = this.makeColorScheme(this.lineColorScheme['domain'][colorIndex], numberOfSlices);
 
         this.single = result['data'];
-        this.colorScheme = {domain: colors};
-
-        // let constructorArg = {'type': assetName, 'data': result['data']}
-        // const dialogRef = this.dialog.open(AssetModalComponent, {
-        //   width: '250px',
-        //   data: constructorArg
-        // });
-        // dialogRef.afterClosed().subscribe(closeResult => {
-        //   console.log('The dialog was closed');
-        // });
+        this.pieColorScheme = {domain: colors};
 
       }
 
@@ -141,21 +132,24 @@ export class BotComponent implements OnInit {
     };
 
     let maxColor = Math.max(rgb['r'], rgb['g'], rgb['b']);
+    let minColor = Math.min(rgb['r'], rgb['g'], rgb['b']);
     let totalRange = (255 - maxColor) * 2;
     let increment = totalRange/numberOfAssets;
-    let baseValues = {r: rgb['r'] - totalRange/2, g: rgb['g'] - totalRange/2, b: rgb['b'] - totalRange/2}
-    console.log('baseValues', baseValues);
+    let baseValues = {r: rgb['r'] - minColor, g: rgb['g'] - minColor, b: rgb['b'] - minColor}
 
     let colors:any[] = [];
 
     let i = 0;
     for(i=0; i<numberOfAssets; i++){
-      let tempObj = {r: baseValues['r'] + increment*i, g: baseValues['r'] + increment*i, b: baseValues['r'] + increment*i};
-      colors.push(tempObj);
-    }
+      let rVal = Math.round(baseValues['r'] + (increment*i))
+      let gVal = Math.round(baseValues['g'] + (increment*i))
+      let bVal = Math.round(baseValues['b'] + (increment*i))
 
-    colors.map(x => this.rgbToHex(x));
-    console.log('colors', colors)
+      let tempObj = {r: rVal, g: gVal, b: bVal};
+      let hex = this.rgbToHex(tempObj)
+      colors.push(hex);
+    }
+    console.log('colors', colors);
     return colors;
 
   }
