@@ -21,16 +21,9 @@ export class DataService {
     return this.http.get(this.serverURL + '/allocation')
   }
 
-  getAssetDescription(assetType:string){
-    let mockData = [
-      {'name': 'GS', 'value': 10},
-      {'name': 'AAPL', 'value': 20},
-      {'name': 'PZZA', 'value': 69},
-      {'name': 'FUN', 'value': 1}
-    ]
-    let mock = {'data': mockData}
-    // return of(mock);
-    return this.http.get(this.serverURL + '/asset-description/' + assetType);
+  getAssetDescription(assetType:string, day:string){
+
+    return this.http.get(this.serverURL + '/asset-description/' + assetType + '/' + day);
   }
 
 }

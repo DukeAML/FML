@@ -57,46 +57,9 @@ export class BotComponent implements OnInit {
 
   // INTERACTIVE FUNCTIONS
 
-  // NOTE - THIS FUNCTION ONLY RETURNS "CURRENT" DESRIPTION OF AN ASSET - 
-  // eventually, gonna want to have a function that can get the allocation of an asset at different timesteps. To do that, 
-  // just need to feed in the day as an argument (which the line graph gives us when we click on it and which for the pie chart 
-  // we can just set to the max value of the data coming from the line graph), send that argument as part of the route we call, 
-  // and include that in whatever query we use to get the data in the first place.
-  openDialog(data): void {
-    // call service and get data for that stock
-    let assetName:string = data;
-    this.dataService.getAssetDescription(assetName.toLowerCase()).subscribe(result => {
-
-      // If it fails for some reason and data is null
-      if(!result['data']){
-        console.log('found an error, result looks like this', result);
-        const dialogRef = this.dialog.open(AssetModalComponent, {
-          width: '250px',
-          data: {'type': 'ERROR', 'data': []}
-        });
-        dialogRef.afterClosed().subscribe(closeResult => {
-          console.log('The dialog was closed');
-        });
-      }
-
-      else{
-        let constructorArg = {'type': assetName, 'data': result['data']}
-        const dialogRef = this.dialog.open(AssetModalComponent, {
-          width: '250px',
-          data: constructorArg
-        });
-        dialogRef.afterClosed().subscribe(closeResult => {
-          console.log('The dialog was closed');
-        });
-      }
-
-    })
-    
-  }
-
   pieOnSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    this.openDialog(data['name']);
+    this.openDialog(data['name'], 'recent');
   }
 
   pieOnActivate(data): void {
@@ -109,7 +72,7 @@ export class BotComponent implements OnInit {
 
   lineOnSelect(data): void {
     console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    this.openDialog(data['series']);
+    this.openDialog(data['series'], data['name']);
   }
 
   lineOnActivate(data): void {
@@ -120,5 +83,90 @@ export class BotComponent implements OnInit {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
+  openDialog(assetName:string, day:string): void {
+    // call service and get data for that stock
+    this.dataService.getAssetDescription(assetName.toLowerCase(), day).subscribe(result => {
+
+      // If it fails for some reason and data is null
+      if(!result['data']){
+        console.log('found an error, result looks like this', result);
+        // const dialogRef = this.dialog.open(AssetModalComponent, {
+        //   width: '250px',
+        //   data: {'type': 'ERROR', 'data': []}
+        // });
+        // dialogRef.afterClosed().subscribe(closeResult => {
+        //   console.log('The dialog was closed');
+        // });
+      }
+
+      else{
+        // get position of asset in color scheme array, use that for pie chart
+        let colorIndex = 0;
+        for(let i=0; i<this.single.length; i++){
+
+          if(this.single[i]['name'] == assetName){
+            colorIndex = i;
+            break;
+          }
+
+        }
+
+        let numberOfSlices = result['data'].length;
+        let colors = this.makeColorScheme(this.colorScheme['domain'][colorIndex], numberOfSlices);
+
+        this.single = result['data'];
+        this.colorScheme = {domain: colors};
+
+        // let constructorArg = {'type': assetName, 'data': result['data']}
+        // const dialogRef = this.dialog.open(AssetModalComponent, {
+        //   width: '250px',
+        //   data: constructorArg
+        // });
+        // dialogRef.afterClosed().subscribe(closeResult => {
+        //   console.log('The dialog was closed');
+        // });
+
+      }
+
+    })
+    
+  }
+
+  makeColorScheme(hex:string, numberOfAssets:number) {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    let rgb = {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    };
+
+    let maxColor = Math.max(rgb['r'], rgb['g'], rgb['b']);
+    let totalRange = (255 - maxColor) * 2;
+    let increment = totalRange/numberOfAssets;
+    let baseValues = {r: rgb['r'] - totalRange/2, g: rgb['g'] - totalRange/2, b: rgb['b'] - totalRange/2}
+    console.log('baseValues', baseValues);
+
+    let colors:any[] = [];
+
+    let i = 0;
+    for(i=0; i<numberOfAssets; i++){
+      let tempObj = {r: baseValues['r'] + increment*i, g: baseValues['r'] + increment*i, b: baseValues['r'] + increment*i};
+      colors.push(tempObj);
+    }
+
+    colors.map(x => this.rgbToHex(x));
+    console.log('colors', colors)
+    return colors;
+
+  }
+
+  componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  rgbToHex(obj:any) {
+    return "#" + this.componentToHex(obj['r']) + this.componentToHex(obj['g']) + this.componentToHex(obj['b']);
+  }
 
 }
