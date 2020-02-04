@@ -22,8 +22,15 @@ export class DataService {
   }
 
   getAssetDescription(assetType:string, day:string){
-
     return this.http.get(this.serverURL + '/asset-description/' + assetType + '/' + day);
+  }
+
+  getMostRecentDay(){
+    return this.http.get(this.serverURL + '/most-recent-day');
+  }
+
+  getPerformanceStats(day:number) {
+    return this.http.get(this.serverURL + '/performance-stats/' + day);
   }
 
 }

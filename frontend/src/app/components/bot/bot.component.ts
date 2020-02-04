@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { AssetModalComponent } from '../asset-modal/asset-modal.component'
+import { PerformancePaneComponent } from '../performance-pane/performance-pane.component';
+
 
 
 @Component({
@@ -12,7 +12,7 @@ import { AssetModalComponent } from '../asset-modal/asset-modal.component'
 })
 export class BotComponent implements OnInit {
 
-  constructor(private dataService:DataService, public dialog:MatDialog) {
+  constructor(private dataService:DataService) {
     this.getData();
    }
 
@@ -24,7 +24,7 @@ export class BotComponent implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  pieColorScheme:any;
+  pieColorScheme:any = this.lineColorScheme;
 
   // options
   pieGradient: boolean = true;
