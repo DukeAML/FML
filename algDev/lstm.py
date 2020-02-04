@@ -1,9 +1,11 @@
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import Sequential
-from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout, Flatten
+from gensim.models import KeyedVectors
+from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout, Flatten, Input, Concatenate
 from keras.utils import plot_model
 from gen_lstm_data import gen_data, gen_labels, get_data_labelled
+import numpy as np
 
 # input should be [batch_size, time_steps, features] = [30, 19, 25]
 # labels = 10 classes
@@ -74,12 +76,12 @@ print(score)
 # input should be [batch_size, time_steps, features]
 # labels = ??
 
-model_inputNum = layers.Input(shape=(19, 125))  # assuming we have 125 numerical features per time-step
-model_inputText = layers.Input(shape=(19, 200))  # assuming we have 200 words per time-step
+model_inputNum = Input(shape=(19, 125))  # assuming we have 125 numerical features per time-step
+model_inputText = Input(shape=(19, 200))  # assuming we have 200 words per time-step
 
 # for numerics
-LSTM = layers.LSTM(125, dropout=.2)(model_inputNum)
-Batch_Norm = layers.BatchNormalization()(LSTM)
+LSTM = LSTM(125, dropout=.2)(model_inputNum)
+Batch_Norm = BatchNormalization()(LSTM)
 
 # for text
 
@@ -91,16 +93,16 @@ wvmodel = KeyedVectors.load_word2vec_format('/Users/phoebeloveklett/Downloads/Go
 # model = KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 # model = KeyedVectors.load_word2vec_format('./model/GoogleNews-vectors-negative300.bin', binary=True)(model_inputText)
 # Embed = api.load("word2vec-google-news-300")
-Drop = layers.Dropout(.2)(wvmodel)
+Drop = Dropout(.2)(wvmodel)
 
 # concatenate numerical, text inputs
-Concat = layers.concat([Drop, Batch_Norm], axis=0)
+Concat = Concatenate([Drop, Batch_Norm], axis=0)
 
-Dense1 = layers.Dense(64)(Concat)
-LR = layers.LeakyRelu()(Dense1)
-Drop = layers.Dropout(.2)(Dense1)
-Dense2 = layers.Dense(28, activation='relu')(Drop)
-model_output = layers.Dense(1, activation="sigmoid")(Dense2)  # use softmax if not binary, sigmoid otherwise
+Dense1 = Dense(64)(Concat)
+LR = LeakyReLU()(Dense1)
+Drop = Dropout(.2)(Dense1)
+Dense2 = Dense(28, activation='relu')(Drop)
+model_output = Dense(1, activation="sigmoid")(Dense2)  # use softmax if not binary, sigmoid otherwise
 
 model = tf.keras.Model([model_inputNum, model_inputText], model_output)
 model.summary()
