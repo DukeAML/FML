@@ -1,5 +1,20 @@
+# Typescript specific
 *environment.ts
-__pycache__/
+
+# Mac specific
+.DS_Store
+
+# Virtual environment
+venv/
+
+# Editor specific
+.idea/
 .vscode/
+
+# Python specific
+__pycache__/
+*.pyc
 *.ipynb_checkpoints
-venv
+build/
+dist/
+*.egg-info

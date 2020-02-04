@@ -10,7 +10,7 @@ Through this project, we hope get a better understanding for how different techn
 We are seeking to evaluate the predictive power of indicators, correlated assets, mathematical metrics, and public sentiment analysis to build a portfolio with a better Sharpe Ratio than the S&P500.
 
 ### Product
-Our goal is to develop a web application that allows us to build, manage, and maintain a portfolio using our models in a way that can be reproduced for us by people outside our firm.
+Our goal is to develop a web application that allows us to build, manage, and maintain a portfolio using our models in a way that can be reproduced for use by people outside our firm.
 
 ### Grade
 We want to get As.
@@ -72,9 +72,6 @@ For the sake of standard development, given that the project is still relatively
 
 Generally speaking, members should not alter/modify code that was written by another member unless they are explicitly asked to or have explicitly been given permission to do so. 
 
-Upon completion, code should be appropriately commented for the clarity of other members in the group unless its functionality is already inherently clear (eg, one-line functions generally shouldn't need to be described, but a convolluted data transformation probably should be).
+Upon completion, code should be appropriately commented for the clarity of other members in the group unless its functionality is already inherently clear (eg, one-line functions generally shouldn't need to be described, but a convoluted data transformation probably should be).
 
 Perhaps most importantly, your code is your responsibility! If you wrote something that breaks in the future, it is your responsibility to figure out why and make that fix to allow for further advancement of the proejct.
-
-
-
