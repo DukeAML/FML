@@ -2,7 +2,7 @@
 import tensorflow as tf
 from tensorflow import keras 
 from keras.models import Sequential
-from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout
+from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout, Flatten
 from keras.utils import plot_model
 from gen_lstm_data import gen_data, gen_labels, get_data_labelled
 
@@ -11,8 +11,8 @@ from gen_lstm_data import gen_data, gen_labels, get_data_labelled
 #labels = 10 classes
 
 (X_train, y_train, X_test, y_test) = gen_data(eq = "VSLR", verbose= True)
-print(y_train[0])
-print(X_train[0])
+print(y_train[0].shape)
+print(X_train[0].shape)
 
 #first model (w/o text pipeline)
 def create_model1a():
@@ -25,7 +25,7 @@ def create_model1a():
     model.add(Dense(28))
     model.add(LeakyReLU())
     model.add(BatchNormalization())
-    model.add(Dense(10, activation = "softmax"))
+    model.add(Dense(10, activation = "softmax")) 
     return model
 
 model1a = create_model1a()
@@ -46,11 +46,11 @@ def create_model1b():
 model1b = create_model1b()
 
 # plot_model(model1b, to_file='model1b.png')
-
-model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
-model1a.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
-score = model1a.evaluate(X_test, y_test, batch_size=30, verbose=2)
-print(score)
+model1b.summary()
+model1b.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
+model1b.fit(X_train, y_train, batch_size=30, epochs=500, verbose= 2, validation_split= .2)
+# score = model1a.evaluate(X_test, y_test, batch_size=30, verbose=2)
+# print(score)
 
 
 # model1b.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
