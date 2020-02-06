@@ -9,7 +9,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 data_directory = os.path.join(here, 'data')
 
 
-def gen_features(equity_file, num_days, save=False):
+def gen_features(equity_file, num_days, save=False, normalize=True):
     """
     Generates Set of Features for LSTM with Columns as follows for num_days timepoints
 
@@ -177,8 +177,25 @@ def gen_features(equity_file, num_days, save=False):
     features[:, 23] = reit_closes
     features[:, 24] = snp_closes
 
+    if normalize is True:
+        for i in range(features.shape[1]):
+            features[:,i] = norm(features[:,i])
+
     if save is True:
         name = input("What do you want to save these features as? (Blank to not save) ")
         np.savetxt('features_%s.csv' % name, features, delimiter=',')
 
     return features
+
+
+def norm(f):
+
+    std = np.std(f)
+
+    mean = np.mean(f)
+
+    f = (f - mean) / std
+
+    return f
+
+    
