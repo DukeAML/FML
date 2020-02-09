@@ -23,7 +23,7 @@ def get_pixels(a):
 
     return a
 
-def gen_data(eq)
+def gen_data(eq):
     eq_path = r'./algDev/data/equities/%s.csv' % eq
 
     features = np.array(gen_features(eq_path, 500))
@@ -32,4 +32,10 @@ def gen_data(eq)
 
     pics = gen_pics(features)
 
-    plt.imsave('first_25_days.png', np.array(pics[0]), cmap=cm.gray)
+    i = 0
+
+    for pic in pics:
+        plt.imsave('images/%d.png' % i, np.array(pics[i]), cmap=cm.gray)
+        i = i+1
+
+gen_data('VSLR')
