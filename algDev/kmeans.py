@@ -9,6 +9,7 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import scale
 
 from gen_lstm_data import gen_data, gen_labels, get_data_labelled
+import pandas as pd
 
 np.random.seed(42)
 
@@ -83,6 +84,7 @@ reduced_data = PCA(n_components=2).fit_transform(data)
 kmeans = KMeans(init='k-means++', n_clusters=n_strata, n_init=10)
 kmeans.fit(reduced_data)
 
+
 # Step size of the mesh. Decrease to increase the quality of the VQ.
 h = .02     # point in the mesh [x_min, x_max]x[y_min, y_max].
 
@@ -103,7 +105,42 @@ plt.imshow(Z, interpolation='nearest',
            cmap=plt.cm.Paired,
            aspect='auto', origin='lower')
 
-plt.plot(reduced_data[:, 0], reduced_data[:, 1], 'k.', markersize=2)
+colors = []
+for ii in range(len(reduced_data)):
+    label = labels[ii]
+    if label == -1:
+        colors.append('y')
+    elif label == 0:
+        colors.append('y')
+    elif label == 1:
+        colors.append('y')
+    elif label == 2:
+        colors.append('y')
+    elif label == 3:
+        colors.append('w')
+    elif label == 4:
+        colors.append('w')
+    elif label == 5:
+       colors.append('w')
+    elif label == 6:
+        colors.append('k')
+    elif label == 7:
+        colors.append('k')
+    elif label == 8:
+        colors.append('k')
+    elif label == 9:
+        colors.append('k')
+    elif label == 10:
+        colors.append('k')
+
+x= reduced_data[:, 0]
+y = reduced_data[:, 1]
+df = pd.DataFrame(dict(x=x , y = y, colors=colors))
+
+plt.plot(df['x'], df['y'], 'k.', c = df['colors'], markersize=2)
+
+# plt.plot(reduced_data[:, 0], reduced_data[:, 1], 'k.', markersize=2)
+
 # Plot the centroids as a white X
 centroids = kmeans.cluster_centers_
 plt.scatter(centroids[:, 0], centroids[:, 1],
