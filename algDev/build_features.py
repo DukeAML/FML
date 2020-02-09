@@ -3,10 +3,8 @@ from models.indicators import *
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 
-here = os.path.abspath(os.path.dirname(__file__))
-data_directory = os.path.join(here, 'data')
+from algDev.utils import datapath
 
 
 def gen_features(equity_file, num_days, save=False):
@@ -132,19 +130,19 @@ def gen_features(equity_file, num_days, save=False):
     rainbow_vec_9 = np.array(rainbow_vecs[4][(-1 * num_days):])
     rainbow_vec_9 = rainbow_vec_9.T
 
-    wti_file = os.path.join(data_directory, 'commodities', 'OIL.csv')
+    wti_file = datapath('commodities', 'OIL.csv')
     wti = Equity(wti_file)
 
     wti_closes = np.array(wti.closes[(-1 * num_days):])
     wti_closes = wti_closes.T
 
-    reit_file = os.path.join(data_directory, 'indexes', 'RE.xls')
+    reit_file = datapath('indexes', 'RE.xls')
     reit_eq = Equity(reit_file)
 
     reit_closes = np.array(reit_eq.closes[(-1 * num_days):])
     reit_closes = reit_closes.T
 
-    snp_file = os.path.join(data_directory, 'indexes', 'SNP.xls')
+    snp_file = datapath('indexes', 'SNP.xls')
     snp_eq = Equity(snp_file)
 
     snp_closes = np.array(snp_eq.closes[(-1 * num_days):])

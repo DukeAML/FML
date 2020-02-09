@@ -2,9 +2,11 @@ import numpy as np
 from math import *
 from build_features import gen_features
 
+from algDev.utils import datapath
+
 
 def gen_data(eq, days=500, look_back=19, label_range=5, verbose=False):
-    eq_path = r'./algDev/data/equities/%s.csv' % eq
+    eq_path = datapath('equities', '{eq}.csv'.format(eq=eq))
 
     train_size = int(0.8 * days)
     test_size = days - train_size
@@ -23,7 +25,7 @@ def gen_data(eq, days=500, look_back=19, label_range=5, verbose=False):
         print(test.shape)
 
     X_train, y_train = get_data_labelled(train, look_back, label_range)
-    #y_train = y_train.reshape(((train_size - look_back - 1), 1, 10)) #use for addition of middle dimension
+    # y_train = y_train.reshape(((train_size - look_back - 1), 1, 10)) #use for addition of middle dimension
 
     X_test, y_test = get_data_labelled(test, look_back, label_range)
     # y_test = y_test.reshape(((test_size - look_back - 1), 1, 10)) #use for addition of middle dimension

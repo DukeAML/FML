@@ -5,30 +5,28 @@ import datetime
 
 from models.indicators import Indicators
 
+
 class Equity:
 
     def __init__(self, data_file):
-        self.parse_data(data_file)
-
-    def parse_data(self, data_file):
         self.data = pd.read_csv(data_file)
-        
+
         if 'Close' in self.data.columns:
             self.data['Close'].astype(dtype=float)
             self.closes = self.data['Close'].ffill().values  # fills values if not NaN
-        
+
         if 'Open' in self.data.columns:
             self.data['Open'].astype(dtype=float)
             self.opens = self.data['Open'].ffill().values  # fills values if not NaN
-        
+
         if 'High' in self.data.columns:
             self.data['High'].astype(dtype=float)
             self.highs = self.data['High'].ffill().values  # fills values if not NaN
-        
+
         if 'Low' in self.data.columns:
             self.data['Low'].astype(dtype=float)
             self.lows = self.data['Low'].ffill().values  # fills values if not NaN
-            
+
         if 'Volume' in self.data.columns:
             self.data['Volume'].astype(dtype=int)
             self.volumes = self.data['Volume'].ffill().values
@@ -38,12 +36,12 @@ class Equity:
             self.dates = self.data['Date'].values
 
         for i in range(len(self.closes)):
-            ### Case for missing values
-            if(self.closes[i]==0):
+            # Case for missing values
+            if self.closes[i] == 0:
                 # This line could end up fucking up, might not be worth fixing
-                arr = [c if c > 0 else 0 for c in self.closes[i-3:i+3]]
+                arr = [c if c > 0 else 0 for c in self.closes[i - 3:i + 3]]
                 li = np.array(list(filter((0).__ne__, arr)))
-                self.closes[i] = np.sum(li)/len(li)
+                self.closes[i] = np.sum(li) / len(li)
 
     def ohlc(self):
         return (self.opens + self.highs + self.lows + self.closes) / 4

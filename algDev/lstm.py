@@ -11,7 +11,9 @@ import numpy as np
 # labels = 10 classes
 
 
-(X_train, y_train, X_test, y_test) = gen_data(eq = "VSLR", verbose= True)
+(X_train, y_train, X_test, y_test) = gen_data(eq="VSLR", verbose=True)
+
+
 # print(y_train[0])
 # print(X_train[0])
 
@@ -27,11 +29,13 @@ def create_model1a():
     model.add(Dense(28))
     model.add(LeakyReLU())
     model.add(BatchNormalization())
-    model.add(Dense(10, activation = "softmax")) 
+    model.add(Dense(10, activation="softmax"))
     return model
 
 
 model1a = create_model1a()
+
+
 # keras.utils.plot_model(model1a, 'my_first_model.png')
 
 
@@ -57,6 +61,3 @@ model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['cat
 model1a.fit(X_train, y_train, batch_size=32, epochs=500, verbose=2, validation_split=.2)
 score = model1a.evaluate(X_test, y_test, batch_size=32, verbose=2)
 print(score)
-
-
-
