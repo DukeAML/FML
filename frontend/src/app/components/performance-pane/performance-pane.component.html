@@ -1,19 +1,22 @@
-<h1> Performance </h1>
+<div class="line">
+    <br>
+</div>
+    <h1> Performance </h1>
 
-<ul>
-    <li>
-        <mat-slider
-        thumbLabel
-        [displayWith]="formatLabel"
-        min="1"
-        max="{{this.mostRecentDay}}"
-        value="{{this.mostRecentDay}}"
-        (change)="getPerformanceStats($event)"
-        >
-        </mat-slider>
-    </li>
-    <li *ngFor='let stat of stats'> 
-        <h3>{{stat['name']}}</h3> 
-        <h4>{{stat['value']}}</h4> 
-    </li>
-</ul>
+    <ul>
+        <li>
+            <mat-slider
+            thumbLabel
+            [displayWith]="formatLabel"
+            min="1"
+            max="{{this.mostRecentDay}}"
+            value="{{this.mostRecentDay}}"
+            (change)="getPerformanceStats($event)"
+            >
+            </mat-slider>
+        </li>
+        <li *ngFor='let stat of stats'> 
+            <h3>{{stat['name']}}</h3> 
+            <h4>{{stat['value']}}</h4> 
+        </li>
+    </ul>

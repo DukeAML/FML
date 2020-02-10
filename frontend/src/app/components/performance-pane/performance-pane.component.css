@@ -1,5 +1,12 @@
+.line{
+    margin-top: 5%;
+    width: 80%;
+    margin-left: 10%;
+    border-top: 1px solid #DDDDDD;
+
+}
+
 h1{
-    padding-top: 5%;
     text-align: center;
 }
 
