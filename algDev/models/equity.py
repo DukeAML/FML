@@ -1,205 +1,134 @@
-import pandas as pd
-import matplotlib.pyplot as plt
+import math
 import numpy as np
-import os
+import pandas as pd
+import datetime
 
-class equity:
-    
-    def initialize(self, data_file):
+from models.indicators import Indicators
+
+class Equity:
+
+    def __init__(self, data_file):
+        self.parse_data(data_file)
+
+    def parse_data(self, data_file):
+        self.data = pd.read_csv(data_file)
         
-        data = pd.read_csv(data_file)
-
-        self.opens = []
-        self.closes = []
-        self.highs = []
-        self.lows = []
-        self.dates = []
-        self.volumes = []
+        if 'Close' in self.data.columns:
+            self.data['Close'].astype(dtype=float)
+            self.closes = self.data['Close'].ffill().values  # fills values if not NaN
         
-        for index, row in data.iterrows():
-            self.closes.append(float(row["Close"]))
-            self.opens.append(float(row["Open"]))
-            self.lows.append(float(row["Low"]))
-            self.highs.append(float(row["High"]))
-            self.dates.append(row["Date"])
-            self.volumes.append(int(row["Volume"]))
-
-        self.length = len(self.closes)
-        self.shape = (self.length,)
-
-    def __init__(self,data_file):
-        self.initialize(data_file)
-    
-    def sma(self, period, prices):
-        '''
-        Function to calculate the Simple Moving Average for the equity at a given period
-        @param: period = length of closing prices to look at for each equity
-        @return: simple_ma = array of SMA values for each day, 0 until 'period'
-        '''
-        simple_ma = np.zeros((len(prices), ))
-        for i, p in enumerate(prices):
-            sum = 0
-            if(i+period >= len(prices)):
-                    break
-            for j in range(period):
-                sum = prices[i+j] + sum
-            ma = sum/period
-            simple_ma[i+period] = ma
+        if 'Open' in self.data.columns:
+            self.data['Open'].astype(dtype=float)
+            self.opens = self.data['Open'].ffill().values  # fills values if not NaN
         
-        return simple_ma
-    
-    def ema(self, period):
-        '''
-        Function to calculate the Exponential Moving Average for the equity at a given period
-        @param: period = length of closing prices to look at for each equity
-        @return: exponential_ma = array of EMA values for each day, 0 until 'period'
-        '''
-       
-        exponential_ma = np.zeros((len(prices), ))
-
-        simple_ma = self.sma(period, prices)
-
-        base_sma = simple_ma[period]
-        print("Base SMA: ")
-        print(base_sma)
-        exponential_ma[period] = self.calc_ema(base_sma, prices[period],period)
+        if 'High' in self.data.columns:
+            self.data['High'].astype(dtype=float)
+            self.highs = self.data['High'].ffill().values  # fills values if not NaN
         
-        if(type=='wilder'):
-            multiplier = 1/period
-        else:
-            multiplier = 2/(period+1)
+        if 'Low' in self.data.columns:
+            self.data['Low'].astype(dtype=float)
+            self.lows = self.data['Low'].ffill().values  # fills values if not NaN
+            
+        if 'Volume' in self.data.columns:
+            self.data['Volume'].astype(dtype=int)
+            self.volumes = self.data['Volume'].ffill().values
 
-        for i,close in enumerate(prices):
-            if(i+period+1 >= len(prices)):
-                break
+        if 'Date' in self.data.columns:
+            self.data['Date'].astype(dtype=str)
+            self.dates = self.data['Date'].values
 
-            exponential_ma[i+period+1] = self.calc_ema(exponential_ma[i+period], self.closes[i+period+1], multiplier)
-        
-        for em in exponential_ma:
-            if(em < 0):
-                print(em)
-        
-        return exponential_ma
-
-    def calc_ema(self, prev_ema, close, multiplier):
-        '''
-        Implements the Exponential Moving Average formula\n
-        @param: prev_ema = EMA for the previous day.\n
-        @param: close = current day's close\n
-        @param: multiplier = weight for current data\n
-        @return: ema = the value of the EMA for the given day\n
-        '''
-        ema = (close - prev_ema) * multiplier + prev_ema
-        return ema
-
-    def macd(self, slow_period, fast_period):
-
-        '''
-        Calculate the Moving Average Compounding Difference\n
-        @param: slow_period = number of days for longer period\n
-        @param: fast_period = number of days for shorter period\n
-        @requirement: slow_period > fast_period\n
-        @return: macd = an array of the MACD to the same indexes close for the given period.\n
-            For example, if 'fast_period' is 10 and 'slow_period' is 20, the ith 
-            index will correspond to the difference between the ith EMA(20) and ith EMA(10). 
-            indexes 0-19 will be 0
-        '''
-        assert(slow_period > fast_period)
-
-        slow_ema = self.ema(slow_period)
-        fast_ema = self.ema(fast_period)
-
-        macd = slow_ema - fast_ema
-        return macd
-
-    
-    def calc_moves(self, prices, period=1):
-        '''
-        Calculate the movement between two periods\n
-        @param: period = number of days between closes\n
-        @return: moves = an array of the move relative to the same indexes close for the given period.\n
-            For example, if  'period' is 10, the ith index will correspond 
-            to the difference between the ith close and i - 10th close. 
-            indexes 0-9 will be 0
-        '''
-        moves = np.zeros((len(prices),))
-        for i,close in enumerate(prices):
-            index = i+period
-            if(index >= len(prices)):
-                break
-            moves[index] = prices[index] - prices[index-period]
-        
-        return moves
-
-    def rsi(self, prices, period=20, type='sma'):
-        
-        up, down = self.calc_up_down(prices = prices)
-       
-        if(type=='sma'):
-            up_avg = self.sma(period, up)
-            down_avg = self.sma(period, down)
-        elif(type=='ema'):
-            up_avg = self.ema(period, up, '')
-            down_avg = self.ema(period, down, '')
-        else:
-            up_avg = self.ema(period, up, 'wilder')
-            down_avg = self.ema(period, down, 'wilder')
-
-        rsi = np.zeros((len(up_avg), ))
-        for i, num in enumerate(up_avg):
-            if(down_avg[i]==0):
-                relative_strength = float('inf')
-            else:
-                relative_strength = up_avg[i]/down_avg[i]
-            rsi[i] = 100 - (100/(1+relative_strength))
-        
-        return rsi
-
-
-    def calc_up_down(self, prices, period=1):
-        '''
-        Calculates the up-down of the equity for a given period\n
-        @param: period = number of days between closes\n
-        @return: up: an array of the move relative to the same indexes close for the given period. With a floor at 0.\n
-        @return: down: an array of the move relative to the same indexes close for the given period. With a cieling at 0.\n
-            For example, if 'period' is 1, the ith index of 'up' will correspond 
-            to the difference between the ith close and i - 1 th close but negative 
-            entries will be 0. 'down' will be all negative entries with the positives as 0.
-            index 0 will be 0
-        '''
-
-        moves = self.calc_moves(prices, period)
-
-        up = np.zeros(self.shape)
-        down = np.zeros(self.shape)
-
-        for i, move in enumerate(moves):
-            if move > 0:
-                up[i] = move
-            else:
-                down[i] = -1 * move
-
-        return up, down
+        for i in range(len(self.closes)):
+            ### Case for missing values
+            if(self.closes[i]==0):
+                # This line could end up fucking up, might not be worth fixing
+                arr = [c if c > 0 else 0 for c in self.closes[i-3:i+3]]
+                li = np.array(list(filter((0).__ne__, arr)))
+                self.closes[i] = np.sum(li)/len(li)
 
     def ohlc(self):
-        ohlc_vals = np.zeros(self.shape)
-        for i in range(self.length):
-            open = self.opens[i]
-            high = self.highs[i]
-            low = self.lows[i]
-            close = self.closes[i]
-
-            ohlc_vals[i] = (open + high + low + close) / 4
-
-        return ohlc_vals
+        return (self.opens + self.highs + self.lows + self.closes) / 4
 
     def typical_prices(self):
-        tp = np.zeros(self.shape)
-        for i in range(self.length):
-            high = self.highs[i]
-            low = self.lows[i]
-            close = self.closes[i]
+        return (self.highs + self.lows + self.closes) / 3
 
-            tp[i] = (high + low + close) / 3
+    def balance_of_power(self):
+        return (self.closes - self.opens) / (self.highs - self.lows)
 
-        return tp
+    def bollinger_bands(self, period=20, stds=2):
+        tp = self.typical_prices()
+        ma = Indicators.sma(prices=tp, period=period)
+        std = Indicators.calc_std(prices=tp, period=period)
+
+        bolu = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
+        bold = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
+
+        return bolu, bold
+
+    def accumulative_swing_index(self):
+        asi = np.zeros((len(self.closes),))
+        for i in range(len(self.closes)):
+            if i is 0:
+                continue
+            curr_close = self.closes[i]
+            prev_close = self.closes[i - 1]
+            curr_open = self.opens[i]
+            prev_open = self.opens[i - 1]
+            curr_high = self.highs[i]
+            prev_high = self.highs[i - 1]
+            curr_low = self.lows[i]
+            prev_low = self.lows[i - 1]
+            k = np.max([(prev_high - curr_close), (prev_low - curr_close)])
+            t = curr_high - curr_low
+            kt = k / t
+
+            num = (prev_close - curr_close + (0.5 * (prev_close - prev_open)) + (0.25 * (curr_close - curr_open)))
+
+            r = Indicators.get_r(curr_high, curr_low, prev_close, prev_open)
+
+            body = num / r
+
+            asi[i] = 50 * body * kt
+        return asi
+
+    def gop_range_index(self, period=10):
+        gop = np.zeros((len(self.closes),))
+
+        for i in range(len(self.closes)):
+            if i < period:
+                continue
+            highest = np.max(self.highs[i - period:i])
+            lowest = np.min(self.lows[i - period:i])
+            price_range = highest - lowest
+            gop[i] = math.log(price_range) / math.log(period)
+
+        return gop
+
+    def pivot_points(self):
+        closes = self.closes
+        highs = self.highs
+        lows = self.lows
+
+        pivots = np.zeros((len(closes),))
+        r1s = np.zeros((len(closes),))
+        r2s = np.zeros((len(closes),))
+        s1s = np.zeros((len(closes),))
+        s2s = np.zeros((len(closes),))
+
+        for i in range(len(closes)):
+            pivot, r1, r2, s1, s2 = Indicators.calc_pivot_points(highs[i], lows[i], closes[i])
+            pivots[i] = pivot
+            r1s[i] = r1
+            r2s[i] = r2
+            s1s[i] = s1
+            s2s[i] = s2
+
+        return pivots, r1s, r2s, s1s, s2s
+
+    def pivot_indicator(self):
+        pivots, *_ = self.pivot_points()
+
+        ind = np.zeros((len(pivots),))
+        for i in range(len(pivots)):
+            ind[i] = self.closes[i] - pivots[i]
+
+        return ind
