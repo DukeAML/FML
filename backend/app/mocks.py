@@ -1,5 +1,5 @@
 # gonna have to rewrite this once DB structure in place
-def getDescriptionAtDate(asset, date):
+def getCategoryDescriptionAtDate(asset, date):
     
     assetData = []
     
@@ -235,7 +235,184 @@ stocksData = [
         }
 ]
 
+usGovtBondsData = [
+          {
+            "name": 10,
+            "value": 40
+          },
+          {
+            "name": 20,
+            "value": 30
+          },
+          {
+            "name": 30,
+            "value": 30
+          },
+          {
+              "name": 40,
+              "value": 40
+            },
+            {
+              "name": 50,
+              "value": 50
+            },
+            {
+              "name": 60,
+              "value": 60
+            }
+        ]
 
+idkOtherBondsData = [
+          {
+            "name": 10,
+            "value": 60
+          },
+          {
+            "name": 20,
+            "value": 70
+          },
+          {
+            "name": 30,
+            "value": 70
+          },
+          {
+              "name": 40,
+              "value": 60
+            },
+            {
+              "name": 50,
+              "value": 10
+            },
+            {
+              "name": 60,
+              "value": 40
+            }
+        ]
+
+gsData = [{
+            "name": 10,
+            "value": 10
+          },
+          {
+            "name": 20,
+            "value": 20
+          },
+          {
+            "name": 30,
+            "value": 30
+          },
+          {
+              "name": 40,
+              "value": 40
+            },
+            {
+              "name": 50,
+              "value": 50
+            },
+            {
+              "name": 60,
+              "value": 40
+            }]
+
+applData = [
+          {
+            "name": 10,
+            "value": 60
+          },
+          {
+            "name": 20,
+            "value": 40
+          },
+          {
+            "name": 30,
+            "value": 20
+          },
+          {
+              "name": 40,
+              "value": 5
+            },
+            {
+              "name": 50,
+              "value": 10
+            },
+            {
+              "name": 60,
+              "value": 15
+            }
+        ]
+pzzaData = [
+              {
+                "name": 10,
+                "value": 10
+              },
+              {
+                "name": 20,
+                "value": 30
+              },
+              {
+                "name": 30,
+                "value": 10
+              },
+              {
+                  "name": 40,
+                  "value": 28
+                },
+                {
+                  "name": 50,
+                  "value": 15
+                },
+                {
+                  "name": 60,
+                  "value": 20
+                }
+            ]
+funData = [
+          {
+            "name": 10,
+            "value": 20
+          },
+          {
+            "name": 20,
+            "value": 10
+          },
+          {
+            "name": 30,
+            "value": 40
+          },
+          {
+              "name": 40,
+              "value": 27
+            },
+            {
+              "name": 50,
+              "value": 25
+            },
+            {
+              "name": 60,
+              "value": 25
+            }
+        ]
+
+
+def getAssetValueOverTime(name):
+  if name == 'GS':
+    return gsData
+  elif name == 'APPL':
+    return applData
+  elif name == 'PZZA':
+    return pzzaData
+  elif name == 'FUN':
+    return funData
+  elif name == 'US Government Bonds':
+    return usGovtBondsData
+  else:
+    return idkOtherBondsData
+
+def getAllAssetNames():
+  return ['GS', 'APPL', 'PZZA', 'FUN', 'US Government Bonds', 'Idk other bonds']
+
+def getAllModels():
+  return ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5']
 
 multiseriesData = [
       {

@@ -4,10 +4,23 @@ from flask import jsonify
 from app.mocks import *
 
 
-@app.route('/asset-description/<string:type>/<string:day>', methods=['GET'])
+@app.route('/dashboard-dropdown', methods=['GET'])
+def getModelsAndAssets():
+  mockModels = getAllModels()
+  mockAssets = getAllAssetNames()
+  return jsonify({'models': mockModels, 'assets': mockAssets})
+
+
+@app.route('/asset-value-over-time/<string:name>', methods=['GET'])
+def get_description_over_time(name):
+  mock = getgetAssetValueOverTime(name)
+  return jsonify({'data':mock})
+
+
+@app.route('/asset-category-description/<string:type>/<string:day>', methods=['GET'])
 def get_asset_description(type, day):
 
-  mock = getDescriptionAtDate(type, day)
+  mock = getCategoryDescriptionAtDate(type, day)
   
   return jsonify({'data': mock})
 
@@ -41,9 +54,7 @@ def get_alloc_info():
 
     return jsonify({'data':multiseriesData, 'mostRecent':mostRecentAllocation})
 
-    #  now, want to add to mock a separate "single" form that the current allocation chart can access
   
-
 @app.route('/most-recent-day', methods=['GET'])
 def get_most_recent_day():
   return jsonify({'day':60})

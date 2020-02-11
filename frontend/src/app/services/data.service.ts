@@ -21,16 +21,26 @@ export class DataService {
     return this.http.get(this.serverURL + '/allocation')
   }
 
-  getAssetDescription(assetType:string, day:string){
-    return this.http.get(this.serverURL + '/asset-description/' + assetType + '/' + day);
+  getAssetCategoryDescription(assetType:string, day:string){
+    return this.http.get(this.serverURL + '/asset-category-description/' + assetType + '/' + day);
   }
 
   getMostRecentDay(){
     return this.http.get(this.serverURL + '/most-recent-day');
   }
 
+  getDropdownInfo(){
+    return this.http.get(this.serverURL + '/dashboard-dropdown')
+  }
+
+  getAssetDescriptionOverTime(assetName:string){
+    return this.http.get(this.serverURL + '/asset-description-over-time/' + assetName);
+
+  }
+
   getPerformanceStats(day:number) {
     return this.http.get(this.serverURL + '/performance-stats/' + day);
   }
+
 
 }

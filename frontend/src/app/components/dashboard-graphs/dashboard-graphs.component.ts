@@ -3,13 +3,12 @@ import { MatFormField, MatOption, MatSelect } from '@angular/material'
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DataService } from '../../services/data.service';
 
-
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-dashboard-graphs',
+  templateUrl: './dashboard-graphs.component.html',
+  styleUrls: ['./dashboard-graphs.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardGraphsComponent implements OnInit {
 
   constructor(private dataService:DataService) { }
 
@@ -25,6 +24,13 @@ export class DashboardComponent implements OnInit {
       this.models = result['models'];
       this.assets = result['assets'];
     })
+  }
+
+  getData($event){
+    console.log('event', $event);
+    // this.dataService.getAssetDescriptionOverTime(assetName).subscribe(result => {
+    //   // do stuff here
+    // })
   }
 
 }

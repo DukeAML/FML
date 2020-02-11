@@ -71,29 +71,29 @@ export class BotComponent implements OnInit {
   }
 
   pieOnActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   pieOnDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
   lineOnSelect(data): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
     this.getAssetInformation(data['series'], data['name']);
   }
 
   lineOnActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
   }
 
   lineOnDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
   getAssetInformation(assetName:string, day:string): void {
     // call service and get data for that stock
-    this.dataService.getAssetDescription(assetName.toLowerCase(), day).subscribe(result => {
+    this.dataService.getAssetCategoryDescription(assetName.toLowerCase(), day).subscribe(result => {
       // If it fails for some reason and data is null
       if(!result['data']){
         console.log('found an error, result looks like this', result);
@@ -149,7 +149,6 @@ export class BotComponent implements OnInit {
       let hex = this.rgbToHex(tempObj)
       colors.push(hex);
     }
-    console.log('colors', colors);
     return colors;
 
   }

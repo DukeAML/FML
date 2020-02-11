@@ -10,9 +10,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AboutComponent } from './components/about/about.component';
-import { MatToolbarModule, MatIconModule, MatDialogModule, MatSliderModule } from '@angular/material';
+import { MatToolbarModule, MatIconModule, MatDialogModule, MatSliderModule, MatFormFieldModule, MatOptionModule, MatSelectModule } from '@angular/material';
 import { AssetModalComponent } from './components/asset-modal/asset-modal.component';
-import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component'
+import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component';
+import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboard-graphs.component'
 
 
 
@@ -24,7 +25,8 @@ import { PerformancePaneComponent } from './components/performance-pane/performa
     ToolbarComponent,
     AboutComponent,
     AssetModalComponent,
-    PerformancePaneComponent
+    PerformancePaneComponent,
+    DashboardGraphsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -34,6 +36,9 @@ import { PerformancePaneComponent } from './components/performance-pane/performa
     MatIconModule,
     MatToolbarModule, 
     MatDialogModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
     MatSliderModule, 
     NgxChartsModule
   ],

@@ -1,0 +1,18 @@
+<mat-form-field>
+    <mat-label>Asset</mat-label>
+    <mat-select (selectionChange)="getData($event)">
+      <mat-option *ngFor="let asset of assets" [value]="asset">
+        {{asset}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+    <mat-label>Model</mat-label>
+    <mat-select (selectionChange)="getData($event)">
+      <mat-option *ngFor="let model of models" [value]="model">
+        {{model}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
+

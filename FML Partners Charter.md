@@ -68,7 +68,7 @@ This team is organized as follows.
 FML Partners believes hard work beats talent when talent doesn't work hard. But if you have both... you're set.
 
 #### Coding Practices:
-For the sake of standard development, given that the project is still relatively small and will be for the foreseeable future, we will be primarily working on and pushing directly to the master branch of our repo. Once the project gets bigger and we start writing code across directories/sections of the project (like calling algorithmic functions in the backend, for instance), we can create individual branches for whatever each person is working on. Only once the code has been demonstrated to operate exactly as the developer intended in a way that does not interfere with the functionality of the rest of the project, they can merge into master.
+When working on the implementation of additional features, we will create individual branches for whatever each person is working on. Only once the code has been demonstrated to operate exactly as the developer intended in a way that does not interfere with the functionality of the rest of the project can they merge into master.
 
 Generally speaking, members should not alter/modify code that was written by another member unless they are explicitly asked to or have explicitly been given permission to do so. 
 

@@ -3,8 +3,6 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 
-
-
 html, body { /* make theme take up whole page */
     height: 100%;
     overflow-y: auto;
@@ -14,3 +12,10 @@ html, body { /* make theme take up whole page */
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* overriding material */
+.mat-select-value{
+    color: #DDDDDD;
+}
+
+.mat-toolbar.mat-primary{background:#222222;color:#dddddd}
