@@ -1,0 +1,57 @@
+
+
+h1{
+    float: left;
+    padding-left: 1%;
+
+}
+
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: end;
+    margin-right: -400%;  
+}
+
+.links{
+    align-self: flex-end;
+}
+
+li{
+    padding: 2%;
+    display: inline-block;
+}
+
+
+
+a {
+    color: #ffffff;
+    display: block
+}
+
+a :hover{
+    background-color: #444444;
+}
+
+span{
+    padding-left: 1%;
+}
+
+.example-icon {
+    padding: 0 14px;
+}
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+mat-toolbar {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    box-shadow: 0px 10px 5px #111111;
+  }
+
+img{
+    margin-left: -5%;
+}

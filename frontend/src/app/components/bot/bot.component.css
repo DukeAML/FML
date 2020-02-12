@@ -1,0 +1,37 @@
+ngx-charts-pie-chart {
+align-self: center;
+}
+
+.container{
+    display: inline-block;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.graphs {
+    padding-top: 5%;
+    display: -webkit-box;   
+	display: -moz-box; 
+	display: -ms-flexbox;  
+	display: -webkit-flex;
+	display: flex;  
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+	justify-content: center;
+	-webkit-align-items: center;
+    -moz-align-items: center;
+	align-items: center;
+	-webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+}
+
+::ng-deep .ngx-charts text { 
+    fill: #dddddd !important; 
+}
+::ng-deep span .chart-legend .legend-label .legend-label-text .active :hover{ 
+    fill: #ffffff !important; 
+    background-color: #ffffff;
+}
