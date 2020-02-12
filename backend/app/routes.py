@@ -13,9 +13,13 @@ def getModelsAndAssets():
 
 @app.route('/asset-value-over-time/<string:name>', methods=['GET'])
 def get_description_over_time(name):
-  mock = getgetAssetValueOverTime(name)
+  mock = getAssetValueOverTime(name)
   return jsonify({'data':mock})
 
+@app.route('/model-performance-over-time/<string:modelName>', methods=['GET'])
+def get_model_performance_over_time(modelName):
+  mock = getModelPerformanceOverTime(modelName)
+  return jsonify({'data':mock})
 
 @app.route('/asset-category-description/<string:type>/<string:day>', methods=['GET'])
 def get_asset_description(type, day):

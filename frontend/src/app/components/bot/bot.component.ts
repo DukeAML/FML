@@ -17,7 +17,7 @@ export class BotComponent implements OnInit {
    }
 
   single: any[];
-  multi: any[]
+  multi: any[];
   view: any[] = [600, 400];
 
   lineColorScheme = {
@@ -123,6 +123,7 @@ export class BotComponent implements OnInit {
     
   }
 
+  // this alg can be improved - just work directly with hex values? They're literally just RGB....
   makeColorScheme(hex:string, numberOfAssets:number) {
     let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     let rgb = {

@@ -33,8 +33,13 @@ export class DataService {
     return this.http.get(this.serverURL + '/dashboard-dropdown')
   }
 
-  getAssetDescriptionOverTime(assetName:string){
-    return this.http.get(this.serverURL + '/asset-description-over-time/' + assetName);
+  getAssetValueOverTime(assetName:string){
+    return this.http.get(this.serverURL + '/asset-value-over-time/' + assetName);
+
+  }
+
+  getModelPerformanceOverTime(assetName:string){
+    return this.http.get(this.serverURL + '/model-performance-over-time/' + assetName);
 
   }
 
