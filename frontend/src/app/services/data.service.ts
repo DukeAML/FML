@@ -21,16 +21,31 @@ export class DataService {
     return this.http.get(this.serverURL + '/allocation')
   }
 
-  getAssetDescription(assetType:string){
-    let mockData = [
-      {'name': 'GS', 'value': 10},
-      {'name': 'AAPL', 'value': 20},
-      {'name': 'PZZA', 'value': 69},
-      {'name': 'FUN', 'value': 1}
-    ]
-    let mock = {'data': mockData}
-    // return of(mock);
-    return this.http.get(this.serverURL + '/asset-description/' + assetType);
+  getAssetCategoryDescription(assetType:string, day:string){
+    return this.http.get(this.serverURL + '/asset-category-description/' + assetType + '/' + day);
   }
+
+  getMostRecentDay(){
+    return this.http.get(this.serverURL + '/most-recent-day');
+  }
+
+  getDropdownInfo(){
+    return this.http.get(this.serverURL + '/dashboard-dropdown')
+  }
+
+  getAssetValueOverTime(assetName:string){
+    return this.http.get(this.serverURL + '/asset-value-over-time/' + assetName);
+
+  }
+
+  getModelPerformanceOverTime(assetName:string){
+    return this.http.get(this.serverURL + '/model-performance-over-time/' + assetName);
+
+  }
+
+  getPerformanceStats(day:number) {
+    return this.http.get(this.serverURL + '/performance-stats/' + day);
+  }
+
 
 }
