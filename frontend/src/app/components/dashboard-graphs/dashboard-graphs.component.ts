@@ -135,7 +135,7 @@ export class DashboardGraphsComponent implements OnInit {
     lineShowYAxisLabel: boolean = true;
     lineShowXAxisLabel: boolean = true;
     lineXaxisLabel: string = 'Days Since Inception';
-    lineYaxisLabel: string = '% Allocation';
+    lineYaxisLabel: string = 'Asset Value (USD)';
     lineTimeline: boolean = true;
   
     view: any[] = [600, 400];
