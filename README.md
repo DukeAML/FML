@@ -3,9 +3,11 @@ FML - Arizona Zervas (10/10 would recommend)
 
 ## Running Instructions
 Two terminals are required to run this program.
-To run the frontend, first, in frontend/src/environments, rename the file `environment.prod.ts` to `environment.ts`. Next, cd into the "frontend" directory and run `ng serve`
+To run the frontend, first, in frontend/src/environments, create a duplicate of the file `environment.prod.ts` in the same directory, but rename the duplicate to `environment.ts`. Next, cd into the "frontend" directory and run `ng serve`
 To run the backend, cd into the backend and run the script `./flask-restart-on-file-change.sh` after installing the necessary dependencies
 through `pip`. 
+
+Once both the frontend and backend are running, navigate to localhost:4200 on your browser (preferably Chrome) to access the app.
 
 ## ML
 
