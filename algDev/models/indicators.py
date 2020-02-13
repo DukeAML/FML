@@ -4,7 +4,12 @@ import numpy as np
 
 
 class Indicators:
-    """Contains commonly used technical indicators for various asset classes."""
+    
+    """
+    
+    Contains commonly used technical indicators for various asset classes.
+    
+    """
 
     def __init__(self):
         
@@ -13,10 +18,17 @@ class Indicators:
 
     @staticmethod
     def sma(prices, period):
-        """
-        Function to calculate the Simple Moving Average for the equity at a given period
-        @param: period = length of closing prices to look at for each equity
-        @return: simple_ma = array of SMA values for each day, 0 until 'period'
+        """[
+            Function to calculate the Simple Moving Average 
+        for the equity at a given period
+        ]
+        
+        Arguments:
+            prices {[float[]]} -- [description]
+            period {[int]} -- [length of closing prices to look at for each equity]
+        
+        Returns:
+            [float[]] -- [array of SMA values for each day, 0 until 'period']
         """
         simple_ma = np.zeros((len(prices),))
         for i, p in enumerate(prices):
@@ -29,9 +41,20 @@ class Indicators:
     @staticmethod
     def ema(prices, period, type=''):
         """
-        Function to calculate the Exponential Moving Average for the equity at a given period
-        @param: period = length of closing prices to look at for each equity
-        @return: exponential_ma = array of EMA values for each day, 0 until 'period'
+        [
+            Function to calculate the Exponential Moving 
+        Average for the equity at a given period
+        ]
+        
+        Arguments:
+            prices {[float[]]} -- [Prices to look at]
+            period {[int]} -- [length of closing prices to look at for each equity]
+        
+        Keyword Arguments:
+            type {str} -- [either reg or ema] (default: {''})
+        
+        Returns:
+            [float[]] -- [the ema of the prices inputted as a vector]
         """
 
         exponential_ma = np.zeros((len(prices),))
@@ -59,12 +82,20 @@ class Indicators:
 
     @staticmethod
     def calc_ema(prev_ema, close, multiplier):
-        """
-        Implements the Exponential Moving Average formula\n
-        @param: prev_ema = EMA for the previous day.\n
-        @param: close = current day's close\n
-        @param: multiplier = weight for current data\n
-        @return: ema = the value of the EMA for the given day\n
+        """[
+            Implements the Exponential Moving Average formula
+        ]
+        @param: prev_ema = .\n
+        @param: close = \n
+        @param: multiplier = \n
+        @return: ema = \n
+        Arguments:
+            prev_ema {[float]} -- [EMA for the previous day]
+            close {[float]} -- [current day's close]
+            multiplier {[float]} -- [weight for current data]
+        
+        Returns:
+            [float[]] -- [the value of the EMA for the given day]
         """
         return (close - prev_ema) * multiplier + prev_ema
 

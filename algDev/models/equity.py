@@ -5,12 +5,34 @@ import datetime
 
 from models.indicators import Indicators
 
-class Equity:
-
+class Equity: 
+    """[Class that represents an asset by parsing the inputted data file.
+        This class contains a few methods for extracting more information
+        about prices and movement.]
+    
+    Fields:
+        closes {float[]} - Closing prices of the equity
+        opens {float[]}
+        highs {float[]}
+        lows {float[]}
+        volumes {int[]}
+        dates {String[]}
+        
+    Returns:
+        {Equity}
+    """
     def __init__(self, data_file):
         self.parse_data(data_file)
 
     def parse_data(self, data_file):
+        """[Parses the incoming data into the appropriate fields. 
+        There have been reported issues with the parsing on certain
+        file types.]
+        
+        Arguments:
+            data_file {String} -- [Path to the data file that contains 
+            the equity information]
+        """
         self.data = pd.read_csv(data_file)
         
         if 'Close' in self.data.columns:
@@ -46,15 +68,53 @@ class Equity:
                 self.closes[i] = np.sum(li)/len(li)
 
     def ohlc(self):
-        return (self.opens + self.highs + self.lows + self.closes) / 4
+        """The average of the open low high close
+        
+        Returns:
+            [float[]] -- [A vector of the averages]
+        """
+        
+        avg = (self.opens + self.highs + self.lows + self.closes) / 4
+
+        return avg
 
     def typical_prices(self):
-        return (self.highs + self.lows + self.closes) / 3
+        """The 'Typical Prices' of the equity, or the average of the high,low, and close
+        
+        Returns:
+            [float[]] -- [Vector of the averages]
+        """
+        tps = (self.highs + self.lows + self.closes) / 3
+
+        return tps
 
     def balance_of_power(self):
-        return (self.closes - self.opens) / (self.highs - self.lows)
+        """The balance of the power is a metric for
+         determining the variability in the opens/closes versus
+         highs/lows
+        
+        Returns:
+            [float[]] -- [Vector of the index]
+        """
+
+        bop = (self.closes - self.opens) / (self.highs - self.lows)
+
+        return bop
 
     def bollinger_bands(self, period=20, stds=2):
+        """[The Bolinger Bands is essentially a confidence interval of 
+        stds Deviations where the price should be based on the last 
+        period periods of prices]
+        
+        Keyword Arguments:
+            period {int} -- [The period over which to look over the 
+            prices] (default: {20})
+            stds {int} -- [The number of standard deviations the bands 
+            should take up] (default: {2})
+        
+        Returns:
+            [float[], float[]] -- [Upper Bolinger Band, Lower Bolinger Band vectors respectively]
+        """
         tp = self.typical_prices()
         ma = Indicators.sma(prices=tp, period=period)
         std = Indicators.calc_std(prices=tp, period=period)
@@ -65,6 +125,13 @@ class Equity:
         return bolu, bold
 
     def accumulative_swing_index(self):
+        """[ASI is a way of looking at the prices of the equity
+        in order to get information regarding momentum and market
+        conditions]
+        
+        Returns:
+            [float[]] -- [ASI values in a vector]
+        """
         asi = np.zeros((len(self.closes),))
         for i in range(len(self.closes)):
             if i is 0:
@@ -91,6 +158,16 @@ class Equity:
         return asi
 
     def gop_range_index(self, period=10):
+        """The GOP looks at the largest swing in prices over the
+        last period periods.
+        
+        Keyword Arguments:
+            period {int} -- [Period over which to calculate GOP] 
+            (default: {10})
+        
+        Returns:
+            [float[]] -- [A vector of the GOP values]
+        """
         gop = np.zeros((len(self.closes),))
 
         for i in range(len(self.closes)):
@@ -104,6 +181,13 @@ class Equity:
         return gop
 
     def pivot_points(self):
+        """[Pivot poits are the centers of recent price movement]
+        
+        Returns:
+            [float[],float[],float[],float[],float[]] -- [The pivot
+            points, restiance one band, resistance 2 band, support 1
+            band and support 2 band respectively as vectors.]
+        """
         closes = self.closes
         highs = self.highs
         lows = self.lows
@@ -125,6 +209,12 @@ class Equity:
         return pivots, r1s, r2s, s1s, s2s
 
     def pivot_indicator(self):
+        """[Gets the spread between closing prices and the pivot points
+        for a given day]
+        
+        Returns:
+            [float[]] -- [Vector of the differences]
+        """
         pivots, *_ = self.pivot_points()
 
         ind = np.zeros((len(pivots),))
