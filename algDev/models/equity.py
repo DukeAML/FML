@@ -47,8 +47,6 @@ class Equity:
         
         volumeCol = ticker + ' US Equity - Volume'
         
-
-        # /AAPL.csv
         
         if 'Last Price' in self.data.columns:
             self.data['Last Price'].astype(dtype=float)

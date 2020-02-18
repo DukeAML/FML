@@ -186,11 +186,57 @@ class Indicators:
     def macd_indicator(prices, slow_period, fast_period):
         macd_vals = Indicators.macd(prices, slow_period, fast_period)
         
-        macd_smas = Indicators.sma(macd_vals, 9)
-        macd_ind = np.array([(macd_val - macd_sma) for (macd_val, macd_sma) in zip(macd_vals, macd_smas)])
+        macd_emas = Indicators.ema(macd_vals, 9)
+
+        macd_ind = np.zeros((len(macd_vals),))
+        for i,macd_val in enumerate(macd_vals):
+            macd_ind[i] = Indicators.gen_macd_ind_lbl(macd_val, macd_vals[i+1], macd_emas[i], macd_emas[i+1])
+
+        macd_ind = np.array([(macd_val - macd_ema) for (macd_val, macd_ema) in zip(macd_vals, macd_emas)])
 
         return macd_ind
 
+
+    @staticmethod
+    def gen_macd_ind_lbl(macd_val_0, macd_val_1, macd_ema_0, macd_ema_1):
+        cross = Indicators.check_intersection(macd_val_0, macd_val_1, macd_ema_0, macd_ema_1)
+        
+        if cross is True:
+            m = Indicators.get_slope(0,1,macd_val_0,macd_val_1)
+            if m >=0:
+                return 1
+
+        ## For now just generating ones on buy and zeros else... eventually three classes might be good
+        return 0
+
+    @staticmethod
+    def check_intersection(y_11, y_12, y_21, y_22):
+        x11, x12, x21, x22 = 0, 1, 0, 1
+        
+        m1 = Indicators.get_slope(0,1,y_11,y_12)
+        m2 = Indicators.get_slope(0,1,y_21,y_22)
+
+        b1 = y_11
+        b2 = y_21
+
+        A = np.array([[m1, -1],[m2, -1]]).reshape((2,2))
+        b = np.array([b1, b2]).reshape((2,1))
+
+        X = np.linalg.solve(A, b)
+
+        x = X[0]
+        y = X[1]
+        cross = False
+        if(x >= 0 and x <= 1):
+            cross = True
+        
+        return cross
+
+    @staticmethod
+    def get_slope(x_0, x_1, y_0, y_1):
+        m = (y_1 - y_0)/(x_1 - x_0)
+
+        return m
     @staticmethod
     def average_true_range(asset, period=10):
         true_ranges = np.zeros((len(asset.closes),))
