@@ -3,9 +3,11 @@ FML - Arizona Zervas (10/10 would recommend)
 
 ## Running Instructions
 Two terminals are required to run this program.
-To run the frontend, first, in frontend/src/environments, rename the file `environment.prod.ts` to `environment.ts`. Next, cd into the "frontend" directory and run `ng serve`
+To run the frontend, first, in frontend/src/environments, create a duplicate of the file `environment.prod.ts` in the same directory, but rename the duplicate to `environment.ts`. Next, cd into the "frontend" directory and run `ng serve`
 To run the backend, cd into the backend and run the script `./flask-restart-on-file-change.sh` after installing the necessary dependencies
 through `pip`. 
+
+Once both the frontend and backend are running, navigate to localhost:4200 on your browser (preferably Chrome) to access the app.
 
 ## ML
 
@@ -86,6 +88,7 @@ X_train, y_train, X_test, y_test = gen_data(eq, train_split, days, look_back, la
 |   9% <= (p_1 - p_0)/p_0 < 100% |
 
 Where p_1 is the price at the predicted day and p_0 is the price at ```predicted day - label_range```
+<<<<<<< HEAD
 
 ### Signal Distributions
 
@@ -93,3 +96,5 @@ Where p_1 is the price at the predicted day and p_0 is the price at ```predicted
 This algorithm takes in a series of buy/sell signals from a variety of market indicators, determines how to combine these signals into an overall buy/sell signal and then compares the strength of these signals across equities.
 
 #### 
+=======
+>>>>>>> 0a631c71e22db20f5ac79ef590424781987318d8

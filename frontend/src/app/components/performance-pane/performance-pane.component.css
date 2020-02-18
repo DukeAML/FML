@@ -1,0 +1,46 @@
+.line{
+    margin-top: 5%;
+    width: 80%;
+    margin-left: 10%;
+    border-top: 1px solid #DDDDDD;
+
+}
+
+h1{
+    text-align: center;
+}
+
+h3{
+    text-decoration: underline;
+    text-decoration-style: solid;
+}
+
+li{
+    float: left;
+    list-style: none;
+    text-align: center;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+ul{
+    display: -webkit-box;   
+	display: -moz-box; 
+	display: -ms-flexbox;  
+	display: -webkit-flex;
+	display: flex;  
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+	justify-content: center;
+	-webkit-align-items: center;
+    -moz-align-items: center;
+	align-items: center;
+	-webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+
+mat-slider{
+    box-shadow: 0 0 10px #000000;
+}
