@@ -4,7 +4,7 @@ from build_features import gen_features
 
 
 def gen_data(eq, days=500, look_back=19, label_range=5, verbose=False):
-    eq_path = r'./algDev/data/equities/%s.csv' % eq
+    eq_path = r'./algDev/data/equities/%s.xlsx' % eq
 
     train_size = int(0.8 * days)
     test_size = days - train_size
@@ -34,7 +34,7 @@ def gen_labels(p_0, p_1):
     dp = p_1 - p_0
 
     c = dp / p_0
-
+    print(c)
     bounds = [[-.1, -.07], [-.07, -.05], [-.05, -.03], [-.03, -.01], [-.01, .01], [.01, .03], [.03, .05], [.05, .07],
               [.07, .09], [.09, 1]]
 
@@ -44,6 +44,7 @@ def gen_labels(p_0, p_1):
 
 
 def get_data_labelled(data, look_back, label_range):
+    print(data)
     X, y = [], []
     for i in range(len(data) - look_back - 1):
         a = data[i:(i + look_back), :]
@@ -55,5 +56,3 @@ def get_data_labelled(data, look_back, label_range):
 
     return X, y
 
-
-gen_data('VSLR')
