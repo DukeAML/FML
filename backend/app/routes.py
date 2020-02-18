@@ -21,14 +21,16 @@ def get_model_performance_over_time(modelName):
   mock = getModelPerformanceOverTime(modelName)
   return jsonify({'data':mock})
 
-@app.route('/asset-category-description/<string:type>/<string:day>', methods=['GET'])
-def get_asset_description(type, day):
+@app.route('/asset-category-description/<string:assetType>/<string:day>', methods=['GET'])
+def get_asset_description(assetType, day):
 
-  mock = getCategoryDescriptionAtDate(type, day)
+  mock = getCategoryDescriptionAtDate(assetType, day)
   
   return jsonify({'data': mock})
 
 
+# THIS MOCK IS MADE POORLY ESPECIALLY CAUSE I ENDED UP MOCKING THIS EXACT DATA LATER ON...
+# GONNA LEAVE IT THOUGH BECAUSE EVENTUALLY IT'S JUST GONNA GET REPLACED BY DB STUFF
 @app.route('/allocation', methods=['GET'])
 def get_alloc_info():
     print('got here')
