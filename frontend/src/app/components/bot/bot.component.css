@@ -2,16 +2,11 @@ ngx-charts-pie-chart {
 align-self: center;
 }
 
-text{
-    font-family: "Varela Round";
-}
-
 .container{
     display: inline-block;
     align-items: center;
     vertical-align: middle;
     text-align: center;
-
 }
 
 .graphs {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { AssetModalComponent } from '../asset-modal/asset-modal.component'
+import { PerformancePaneComponent } from '../performance-pane/performance-pane.component';
+
 
 
 @Component({
@@ -12,17 +12,19 @@ import { AssetModalComponent } from '../asset-modal/asset-modal.component'
 })
 export class BotComponent implements OnInit {
 
-  constructor(private dataService:DataService, public dialog:MatDialog) {
+  constructor(private dataService:DataService) {
     this.getData();
    }
 
   single: any[];
-  multi: any[]
+  multi: any[];
   view: any[] = [600, 400];
 
-  colorScheme = {
+  lineColorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
+
+  pieColorScheme:any = this.lineColorScheme;
 
   // options
   pieGradient: boolean = true;
@@ -52,73 +54,113 @@ export class BotComponent implements OnInit {
     this.dataService.getAssetAllocationOverTime().subscribe( result => {
       this.multi = result['data'];
       this.single = result['mostRecent'];
+      this.pieColorScheme = this.lineColorScheme;
     })
   }
 
   // INTERACTIVE FUNCTIONS
 
-  // NOTE - THIS FUNCTION ONLY RETURNS "CURRENT" DESRIPTION OF AN ASSET - 
-  // eventually, gonna want to have a function that can get the allocation of an asset at different timesteps. To do that, 
-  // just need to feed in the day as an argument (which the line graph gives us when we click on it and which for the pie chart 
-  // we can just set to the max value of the data coming from the line graph), send that argument as part of the route we call, 
-  // and include that in whatever query we use to get the data in the first place.
-  openDialog(data): void {
-    // call service and get data for that stock
-    let assetName:string = data;
-    this.dataService.getAssetDescription(assetName.toLowerCase()).subscribe(result => {
+  pieOnSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    if(this.pieColorScheme['domain'] == this.lineColorScheme['domain']){
+      this.getAssetInformation(data['name'], 'recent');
+    }
+    else{
+      this.getData();
+    }
+  }
 
+  pieOnActivate(data): void {
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  pieOnDeactivate(data): void {
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  lineOnSelect(data): void {
+    // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    this.getAssetInformation(data['series'], data['name']);
+  }
+
+  lineOnActivate(data): void {
+    // console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  lineOnDeactivate(data): void {
+    // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+  getAssetInformation(assetName:string, day:string): void {
+    // call service and get data for that stock
+    this.dataService.getAssetCategoryDescription(assetName.toLowerCase(), day).subscribe(result => {
       // If it fails for some reason and data is null
       if(!result['data']){
         console.log('found an error, result looks like this', result);
-        const dialogRef = this.dialog.open(AssetModalComponent, {
-          width: '250px',
-          data: {'type': 'ERROR', 'data': []}
-        });
-        dialogRef.afterClosed().subscribe(closeResult => {
-          console.log('The dialog was closed');
-        });
       }
 
       else{
-        let constructorArg = {'type': assetName, 'data': result['data']}
-        const dialogRef = this.dialog.open(AssetModalComponent, {
-          width: '250px',
-          data: constructorArg
-        });
-        dialogRef.afterClosed().subscribe(closeResult => {
-          console.log('The dialog was closed');
-        });
+        // get position of asset in color scheme array, use that for pie chart
+        let colorIndex = 0;
+        for(let i=0; i<this.multi.length; i++){
+
+          if(this.multi[i]['name'] == assetName){
+            colorIndex = i;
+            break;
+          }
+
+        }
+
+        let numberOfSlices = result['data'].length;
+        let colors = this.makeColorScheme(this.lineColorScheme['domain'][colorIndex], numberOfSlices);
+
+        this.single = result['data'];
+        this.pieColorScheme = {domain: colors};
+
       }
 
     })
     
   }
 
-  pieOnSelect(data): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    this.openDialog(data['name']);
+  // this alg can be improved - just work directly with hex values? They're literally just RGB....
+  makeColorScheme(hex:string, numberOfAssets:number) {
+    let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    let rgb = {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    };
+
+    let maxColor = Math.max(rgb['r'], rgb['g'], rgb['b']);
+    let minColor = Math.min(rgb['r'], rgb['g'], rgb['b']);
+    let totalRange = (255 - maxColor) * 2;
+    let increment = totalRange/numberOfAssets;
+    let baseValues = {r: rgb['r'] - minColor, g: rgb['g'] - minColor, b: rgb['b'] - minColor}
+
+    let colors:any[] = [];
+
+    let i = 0;
+    for(i=0; i<numberOfAssets; i++){
+      let rVal = Math.round(baseValues['r'] + (increment*i))
+      let gVal = Math.round(baseValues['g'] + (increment*i))
+      let bVal = Math.round(baseValues['b'] + (increment*i))
+
+      let tempObj = {r: rVal, g: gVal, b: bVal};
+      let hex = this.rgbToHex(tempObj)
+      colors.push(hex);
+    }
+    return colors;
+
   }
 
-  pieOnActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
   }
-
-  pieOnDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  
+  rgbToHex(obj:any) {
+    return "#" + this.componentToHex(obj['r']) + this.componentToHex(obj['g']) + this.componentToHex(obj['b']);
   }
-
-  lineOnSelect(data): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-    this.openDialog(data['series']);
-  }
-
-  lineOnActivate(data): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
-
-  lineOnDeactivate(data): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  }
-
 
 }

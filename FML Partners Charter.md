@@ -10,7 +10,7 @@ Through this project, we hope get a better understanding for how different techn
 We are seeking to evaluate the predictive power of indicators, correlated assets, mathematical metrics, and public sentiment analysis to build a portfolio with a better Sharpe Ratio than the S&P500.
 
 ### Product
-Our goal is to develop a web application that allows us to build, manage, and maintain a portfolio using our models in a way that can be reproduced for use by people outside our firm.
+Our goal is to develop a web application that allows us to build, manage, and maintain a portfolio using our models in a way that can be reproduced for us by people outside our firm.
 
 ### Grade
 We want to get As.
@@ -68,10 +68,13 @@ This team is organized as follows.
 FML Partners believes hard work beats talent when talent doesn't work hard. But if you have both... you're set.
 
 #### Coding Practices:
-For the sake of standard development, given that the project is still relatively small and will be for the foreseeable future, we will be primarily working on and pushing directly to the master branch of our repo. Once the project gets bigger and we start writing code across directories/sections of the project (like calling algorithmic functions in the backend, for instance), we can create individual branches for whatever each person is working on. Only once the code has been demonstrated to operate exactly as the developer intended in a way that does not interfere with the functionality of the rest of the project, they can merge into master.
+When working on the implementation of additional features, we will create individual branches for whatever each person is working on. Only once the code has been demonstrated to operate exactly as the developer intended in a way that does not interfere with the functionality of the rest of the project can they merge into master.
 
 Generally speaking, members should not alter/modify code that was written by another member unless they are explicitly asked to or have explicitly been given permission to do so. 
 
-Upon completion, code should be appropriately commented for the clarity of other members in the group unless its functionality is already inherently clear (eg, one-line functions generally shouldn't need to be described, but a convoluted data transformation probably should be).
+Upon completion, code should be appropriately commented for the clarity of other members in the group unless its functionality is already inherently clear (eg, one-line functions generally shouldn't need to be described, but a convolluted data transformation probably should be).
 
 Perhaps most importantly, your code is your responsibility! If you wrote something that breaks in the future, it is your responsibility to figure out why and make that fix to allow for further advancement of the proejct.
+
+
+
