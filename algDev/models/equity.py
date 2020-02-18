@@ -33,31 +33,58 @@ class Equity:
             data_file {String} -- [Path to the data file that contains 
             the equity information]
         """
-        self.data = pd.read_csv(data_file)
+        self.data = pd.read_excel(data_file)
         
-        if 'Close' in self.data.columns:
-            self.data['Close'].astype(dtype=float)
-            self.closes = self.data['Close'].ffill().values  # fills values if not NaN
-        
-        if 'Open' in self.data.columns:
-            self.data['Open'].astype(dtype=float)
-            self.opens = self.data['Open'].ffill().values  # fills values if not NaN
-        
-        if 'High' in self.data.columns:
-            self.data['High'].astype(dtype=float)
-            self.highs = self.data['High'].ffill().values  # fills values if not NaN
-        
-        if 'Low' in self.data.columns:
-            self.data['Low'].astype(dtype=float)
-            self.lows = self.data['Low'].ffill().values  # fills values if not NaN
+        dataFile_len = len(data_file)
+        i = dataFile_len - 5
+        while True:
+            # if i < len(data_file
             
-        if 'Volume' in self.data.columns:
-            self.data['Volume'].astype(dtype=int)
-            self.volumes = self.data['Volume'].ffill().values
+            if data_file[i] == r'/' or  data_file[i] == '\\':
+                break
+            i=i-1
+        ticker = data_file[i+1:dataFile_len-5]
+        
+        volumeCol = ticker + ' US Equity - Volume'
+        
+
+        # /AAPL.csv
+        
+        if 'Last Price' in self.data.columns:
+            self.data['Last Price'].astype(dtype=float)
+            self.closes = self.data['Last Price'].ffill().values  # fills values if not NaN
+            if ticker not in 'RE OIL SNP':
+                self.closes = np.flip(self.closes)
+        
+        if 'Open Price' in self.data.columns:
+            self.data['Open Price'].astype(dtype=float)
+            self.opens = self.data['Open Price'].ffill().values  # fills values if not NaN
+            if ticker not in 'RE OIL SNP':
+                self.opens = np.flip(self.opens)
+
+        if 'High Price' in self.data.columns:
+            self.data['High Price'].astype(dtype=float)
+            self.highs = self.data['High Price'].ffill().values  # fills values if not NaN
+            if ticker not in 'RE OIL SNP':
+                self.highs = np.flip(self.highs)
+
+        if 'Low Price' in self.data.columns:
+            self.data['Low Price'].astype(dtype=float)
+            self.lows = self.data['Low Price'].ffill().values  # fills values if not NaN
+            if ticker not in 'RE OIL SNP':
+                self.lows = np.flip(self.lows)
+
+        if volumeCol in self.data.columns:
+            self.data[volumeCol].astype(dtype=float) #Error if casted as an int
+            self.volumes = self.data[volumeCol].ffill().values 
+            if ticker not in 'RE OIL SNP':
+                self.volums = np.flip(self.volumes)
 
         if 'Date' in self.data.columns:
             self.data['Date'].astype(dtype=str)
             self.dates = self.data['Date'].values
+            if ticker not in 'RE OIL SNP':
+                self.dates = np.flip(self.dates)
 
         for i in range(len(self.closes)):
             ### Case for missing values
@@ -66,7 +93,7 @@ class Equity:
                 arr = [c if c > 0 else 0 for c in self.closes[i-3:i+3]]
                 li = np.array(list(filter((0).__ne__, arr)))
                 self.closes[i] = np.sum(li)/len(li)
-
+        
     def ohlc(self):
         """The average of the open low high close
         

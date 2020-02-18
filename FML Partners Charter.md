@@ -77,4 +77,3 @@ Upon completion, code should be appropriately commented for the clarity of other
 Perhaps most importantly, your code is your responsibility! If you wrote something that breaks in the future, it is your responsibility to figure out why and make that fix to allow for further advancement of the proejct.
 
 
-
