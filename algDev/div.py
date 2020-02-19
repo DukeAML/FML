@@ -15,8 +15,10 @@ for tckr in tickers:
 
 div = div.fillna(0)
 
-for div in div["aapl"]:
-    if div != 0.0:
-        print(div)
+paid=[]
+for ii in range(len(div["aapl"])):
+    if div["aapl"][ii] != 0: 
+        paid.append(ii)
 
-#create col with time since last div 
+
+
