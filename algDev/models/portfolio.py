@@ -1,56 +1,43 @@
 import numpy as np
+import random
+## Dummy function for testing purposes
+
+
+def model_output(position):
+
+    ## Game changing algorithm.
+    signal = 1 if random.random() > .5 else 0
+    alloc = random.random() / 10
+
+    return signal, alloc
 
 class Portfolio:
 
-    def __init__(self, value):
+    def __init__(self, value, eqs):
         self.positions = []
         self.value = value
+        
 
-    def realloc(self, date)
-
-        predictions = np.zeros((len(self.positions), 10))
-
+    def realloc(self, date):
+        
+        predictions, allocations = np.zeros((len(self.positions),)), np.zeros((len(self.positions),))
+    
         for i,position in enumerate(positions):
             ### RUN MODEL FOR PARTICULAR EQUITY
-            predictions[i, :] = ## MODEL WOULD GO HERE
+            predictions[i], allocations[i] = model_output(position)## MODEL WOULD GO HERE
 
-        recommended_allocation = selectAssets(predictions)
+        ## After that loop, predictions will be 1/0 corresponding to buy/do nothing
+        ## allocations will be a decimal indicating how much of our portfolio we should give to that
+        
+        ## for first try, we will just ignore allocation
 
         for i, position in enumerate(positions):
-
+        
             curr_alloc = position.value / self.value
-
-            diff = recommended_allocation[i] - curr_alloc
 
             amt = diff * self.value
 
             position.trade_value(amt, date)
-                
-    def selectAssets(o, short=False):
+            
 
-        evs = []
-
-        for pred in o:
-            evs.append(expected_value(pred))
-
-        total = 0
-        for i in range(len(evs)):
-            if evs[i] < 0:
-                evs[i] = 0
-            total = total + evs[i]
-
-        evs = evs/total
-
-        return evs
-
-    def expected_value(x):
-
-        ev = 0
-        bounds = [-0.9, -0.4, -0.085, -.045, -0.01, 0.01, 0.035, 0.065,
-                  0.095, 0.13]
-
-        for i in range(len(bounds)):
-            ev = ev + (bounds[i] * x[i])
-
-        return ev
 
