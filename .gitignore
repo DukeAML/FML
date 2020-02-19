@@ -19,4 +19,4 @@ build/
 dist/
 *.egg-info
 
-/node_modules
+*/node_modules
