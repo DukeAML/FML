@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import datetime
 
-from models.indicators import Indicators
+from algDev.models.indicators import Indicators
 
 class Equity: 
     """[Class that represents an asset by parsing the inputted data file.
@@ -83,15 +83,16 @@ class Equity:
             self.dates = self.data['Date'].values
             if ticker not in 'RE OIL SNP':
                 self.dates = np.flip(self.dates)
-
-        for i in range(len(self.closes)):
-            ### Case for missing values
-            if(self.closes[i]==0):
-                # This line could end up fucking up, might not be worth fixing
-                arr = [c if c > 0 else 0 for c in self.closes[i-3:i+3]]
-                li = np.array(list(filter((0).__ne__, arr)))
-                self.closes[i] = np.sum(li)/len(li)
         
+    def getIndexFromDate(self, date):
+
+        if date == 'max':
+            return len(self.closes)
+
+        for i, d in enumerate(self.dates):
+            if d in date:
+               return i
+
     def ohlc(self):
         """The average of the open low high close
         
