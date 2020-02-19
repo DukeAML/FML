@@ -3,7 +3,7 @@ from sklearn import manifold
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-(X_train, y_train, X_test, y_test) = gen_data(eq = "VSLR", verbose= True)
+(X_train, y_train, X_test, y_test) = gen_data(eq = "AAPL", verbose= True)
 
 X_train = X_train.reshape((len(X_train), 19*25))
 
