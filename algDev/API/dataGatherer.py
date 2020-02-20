@@ -27,7 +27,8 @@ def getTickers():
         ftp.cwd('SymbolDirectory')
         # ftp.retrlines('LIST')
         test = ftp.retrlines('RETR nasdaqlisted.txt', processTicker)
-        print(tickers)
+    
+    return tickers
 
 if __name__ == "__main__":
     getTickers()

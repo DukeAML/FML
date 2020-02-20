@@ -1,4 +1,6 @@
 # gonna have to rewrite this once DB structure in place
+import algDev.API.dataGatherer as dataGatherer
+
 def getCategoryDescriptionAtDate(asset, date):
     
     assetData = []
@@ -417,7 +419,7 @@ def getAssetValueOverTime(name):
 
 def getAllAssetNames():
   # THIS IS GONNA NEED TO BE SORTED
-  return ['APPL', 'FUN', 'GS', 'Idk other bonds', 'PZZA', 'US Government Bonds']
+  return dataGatherer.getTickers()
 
 def getAllModels():
   # THIS IS GONNA NEED TO BE SORTED
