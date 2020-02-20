@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MatFormField, MatOption, MatSelect } from '@angular/material'
+import { MatChip, MatChipInputEvent, MatChipList, MatError, MatFormField, MatOption, MatPlaceholder, MatSelect } from '@angular/material';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DataService } from '../../services/data.service';
+
 
 @Component({
   selector: 'app-dashboard-graphs',
@@ -18,37 +20,11 @@ export class DashboardGraphsComponent implements OnInit {
   modelData:any[] = [];
   activeAssets:any[] = [];
   activeModels:any[] = [];
+  invalidAssetField:boolean = false;
+
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
 
-  testObj:any = {
-    "name": "GS",
-    "series": [
-      {
-        "name": 10,
-        "value": 237.75
-      },
-      {
-        "name": 20,
-        "value": 239.01
-      },
-      {
-        "name": 30,
-        "value": 241.94
-      },
-      {
-          "name": 40,
-          "value": 244.30
-        },
-        {
-          "name": 50,
-          "value": 241.82
-        },
-        {
-          "name": 60,
-          "value": 238
-        }
-    ]
-  }
 
   ngOnInit() {
     this.populateDropdown();
@@ -57,62 +33,58 @@ export class DashboardGraphsComponent implements OnInit {
   populateDropdown(){
     this.dataService.getDropdownInfo().subscribe(result => {
       this.models = result['models'];
-      this.assets = result['assets'];
     })
   }
 
-  getAssetData($event){
+
+  getAssetData($event: MatChipInputEvent){
+    console.log('event just took place')
     let newValues = $event['value'];
+    let input = $event.input;
+    let value = $event.value.toUpperCase();
 
-    // handling removal
-    if(newValues.length < this.assetData.length){
-      console.log('remove detected');
-      console.log('new values are', newValues)
+    console.log('input', input);
+    console.log('value', value);
 
-      let activeAssetsCopy = [...this.activeAssets];
-      this.activeAssets = []
-      let assetDataReplacement = [];
-      let i;
-
-      for(i=0; i<activeAssetsCopy.length; i++){
-        if(newValues.includes(activeAssetsCopy[i])){
-          assetDataReplacement.push(this.assetData[i]);
-          this.activeAssets.push(activeAssetsCopy[i]);
-        }
-      }
-
-      this.assetData = assetDataReplacement;
-      console.log('asset data is now', this.assetData);
-    }
-
-    else{
-      console.log('new value added, newValues are', newValues);
-      let assetName:string;
-      let i:number;
+    // now add them to the array, if no match, then pop up model asking for valid ticker
+    this.dataService.getAssetValueOverTime(value).subscribe(result => {
       
-      for(i=0; i<newValues.length; i++){
-        if(!this.activeAssets.includes(newValues[i])){
-          assetName = newValues[i];
-          this.activeAssets.push(assetName);
-          console.log('new value detected is', assetName);
-          break;
-        }
+      if(result['data']){
+        this.invalidAssetField = false;
+        if(input){ input.value = ''; }
+
+        let data = result['data']
+        let tempObj = {'name': value, 'series': data}
+        console.log('tempObj', tempObj)
+        let assetDataCopy = [...this.assetData];
+        assetDataCopy.push(tempObj);
+        this.assetData = assetDataCopy;
       }
+      else{
+        this.invalidAssetField = true;
+        // handle invalid asset
+      }
+    })
+  }
 
-      this.dataService.getAssetValueOverTime(assetName).subscribe(result => {
-        let tempJSON = {}
-        tempJSON['name'] = assetName;
-        tempJSON['series'] = result['data']
-  
-        let assetDataReplacement = []
-        if(this.assetData){
-          assetDataReplacement = [...this.assetData];
-        }
-        assetDataReplacement.push(tempJSON);
-        this.assetData = [...assetDataReplacement];
-      })
+  remove(ticker){
+    this.invalidAssetField = false;
+
+    console.log('ticker to remove', ticker)
+    console.log('assetData', this.assetData);
+    let i=0;
+    let tickerIndex;
+    let assetDataCopy = [...this.assetData];
+
+    for(i=0; i<assetDataCopy.length; i++){
+      if(assetDataCopy[i]['name'] == ticker){
+        tickerIndex = i;
+        break;
+      }
     }
-
+    // MAKE SURE SPLICE CORRECTLY MODIFIES THE ARRAY
+    assetDataCopy.splice(tickerIndex, 1);
+    this.assetData = assetDataCopy;
   }
 
   getModelData($event){
@@ -125,6 +97,12 @@ export class DashboardGraphsComponent implements OnInit {
     // })
   }
 
+    // ----------- FORMFIELD OPTIONS ---------------
+    visible: boolean = true;
+    selectable: boolean = true;
+    removable: boolean = true;
+    addOnBlur: boolean = true;
+
     // ----------- GRAPH OPTIONS --------------------
     lineLegend: boolean = true;
     lineShowLabels: boolean = true;
@@ -134,7 +112,7 @@ export class DashboardGraphsComponent implements OnInit {
     lineYaxis: boolean = true;
     lineShowYAxisLabel: boolean = true;
     lineShowXAxisLabel: boolean = true;
-    lineXaxisLabel: string = 'Days Since Inception';
+    lineXaxisLabel: string = 'Days Since Last Month';
     lineYaxisLabel: string = 'Asset Value (USD)';
     lineTimeline: boolean = true;
   

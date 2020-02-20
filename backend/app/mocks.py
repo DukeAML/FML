@@ -1,3 +1,7 @@
+import sys
+# gives backend app access to modules in algDev by adding directory to pythonpath
+sys.path.insert(1, '../')
+
 # gonna have to rewrite this once DB structure in place
 import algDev.API.dataGatherer as dataGatherer
 
@@ -404,16 +408,8 @@ def getModelPerformanceOverTime(modelName):
   return data
 
 def getAssetValueOverTime(name):
-  if name == 'GS':
-    return gsData
-  elif name == 'APPL':
-    return applData
-  elif name == 'PZZA':
-    return pzzaData
-  elif name == 'FUN':
-    return funData
-  elif name == 'US Government Bonds':
-    return usGovtBondsData
+  if(len(name) < 5):
+    return dataGatherer.getPrices(name)
   else:
     return idkOtherBondsData
 

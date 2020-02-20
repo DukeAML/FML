@@ -14,7 +14,10 @@ def getModelsAndAssets():
 @app.route('/asset-value-over-time/<string:name>', methods=['GET'])
 def get_description_over_time(name):
   mock = getAssetValueOverTime(name)
-  return jsonify({'data':mock})
+  if(len(mock) > 0):
+    return jsonify({'data':mock})
+  else:
+    return jsonify({'ERROR': 'Invalid ticker used'})
 
 @app.route('/model-performance-over-time/<string:modelName>', methods=['GET'])
 def get_model_performance_over_time(modelName):

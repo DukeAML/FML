@@ -2,15 +2,21 @@ import yfinance as yf
 import requests
 from ftplib import FTP
 
-msft = yf.Ticker("MSFT")
+def getPrices(ticker):
+    tickerObj = yf.Ticker(ticker.upper())
+    history = tickerObj.history(period="1mo")
+    days = list(history['Close'])
+    jsonList = []
 
-# get stock info
-msft.info
+    for i in range(len(days)):
+        tempObj = {}
+        tempObj["name"] = i
+        tempObj["value"] = days[i]
+        jsonList.append(tempObj)
+    
+    return jsonList
 
-# get historical market data
-hist = msft.history(period="max")
 
-# print(hist)
 
 def getTickers():
     tickers = []
@@ -31,4 +37,12 @@ def getTickers():
     return tickers
 
 if __name__ == "__main__":
-    getTickers()
+    msft = yf.Ticker("MSFT")
+
+    # get stock info
+    msft.info
+
+    # get historical market data
+    hist = msft.history(period="1mo")
+
+    print(list(hist['Close']))
