@@ -19,3 +19,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .mat-toolbar.mat-primary{background:#222222;color:#dddddd}
+
+
+
+.mat-form-field-underline {
+ /*change color of underline*/
+  background-color: #DDDDDD !important;
+} 
+
+.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: blue !important;;
+} 
+
+.mat-form-field-label {
+    color: #DDDDDD !important;
+} 
+

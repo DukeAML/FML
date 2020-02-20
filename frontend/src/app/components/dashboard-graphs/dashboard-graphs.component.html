@@ -1,11 +1,23 @@
 <div class="main">
-  <mat-form-field>
-      <mat-label>Asset</mat-label>
-      <mat-select (selectionChange)="getAssetData($event)" multiple>
-        <mat-option *ngFor="let asset of assets" [value]="asset">
-          {{asset}}
-        </mat-option>
-      </mat-select>
+
+  <mat-form-field class="example-chip-list" floatPlaceholder="always">
+    <mat-chip-list #chipList aria-label="Selected">
+      <mat-chip *ngFor="let asset of assetData" [selectable]="selectable"
+               [removable]="removable" (removed)="remove(asset.name)">
+        {{asset.name}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Add stocks..."
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="getAssetData($event)">
+
+      <mat-error *ngIf="invalidAssetField">
+        Please use a valid ticker
+      </mat-error>
+
+    </mat-chip-list>
   </mat-form-field>
 
   <mat-form-field>
