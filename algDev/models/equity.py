@@ -43,48 +43,62 @@ class Equity:
             if data_file[i] == r'/' or  data_file[i] == '\\':
                 break
             i=i-1
-        ticker = data_file[i+1:dataFile_len-5]
+        self.ticker = data_file[i+1:dataFile_len-5]
         
-        volumeCol = ticker + ' US Equity - Volume'
+        volumeCol = self.ticker + ' US Equity - Volume'
         
         
         if 'Last Price' in self.data.columns:
             self.data['Last Price'].astype(dtype=float)
             self.closes = self.data['Last Price'].ffill().values  # fills values if not NaN
-            if ticker not in 'RE OIL SNP':
+            if self.ticker not in 'RE OIL SNP':
                 self.closes = np.flip(self.closes)
         
         if 'Open Price' in self.data.columns:
             self.data['Open Price'].astype(dtype=float)
             self.opens = self.data['Open Price'].ffill().values  # fills values if not NaN
-            if ticker not in 'RE OIL SNP':
+            if self.ticker not in 'RE OIL SNP':
                 self.opens = np.flip(self.opens)
 
         if 'High Price' in self.data.columns:
             self.data['High Price'].astype(dtype=float)
             self.highs = self.data['High Price'].ffill().values  # fills values if not NaN
-            if ticker not in 'RE OIL SNP':
+            if self.ticker not in 'RE OIL SNP':
                 self.highs = np.flip(self.highs)
 
         if 'Low Price' in self.data.columns:
             self.data['Low Price'].astype(dtype=float)
             self.lows = self.data['Low Price'].ffill().values  # fills values if not NaN
-            if ticker not in 'RE OIL SNP':
+            if self.ticker not in 'RE OIL SNP':
                 self.lows = np.flip(self.lows)
 
         if volumeCol in self.data.columns:
             self.data[volumeCol].astype(dtype=float) #Error if casted as an int
             self.volumes = self.data[volumeCol].ffill().values 
-            if ticker not in 'RE OIL SNP':
+            if self.ticker not in 'RE OIL SNP':
                 self.volums = np.flip(self.volumes)
 
         if 'Date' in self.data.columns:
             self.data['Date'].astype(dtype=str)
             self.dates = self.data['Date'].values
-            if ticker not in 'RE OIL SNP':
+            if self.ticker not in 'RE OIL SNP':
                 self.dates = np.flip(self.dates)
-        
-    def getIndexFromDate(self, date):
+    
+    def get_price(self, date, type='c'):
+        i = self.get_index_from_date(date)
+
+        if type=='o':
+            return self.closes[i]
+
+        elif type=='h':
+            return self.highs[i]
+
+        elif type == 'l':
+            return self.lows[i]
+
+        else:
+            return self.closes[i]
+    def get_index_from_date(self, date):
 
         if date == 'max':
             return len(self.closes)
