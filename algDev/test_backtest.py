@@ -3,9 +3,18 @@ import datetime
 
 def run_test():
 
-    b = Backtest("AAPL", datetime.datetime(2016, 1, 1), 1000000)
+    pf_value = 1000000
+    start_date = datetime.datetime(2020, 1, 13)
+    end_date = datetime.datetime(2020, 2, 5)
 
-    b.simulate({'lookback_period': 14, 'strategy_threshold': .015})
+    b = Backtest(["AAPL", "AMZN", "BRK.B"], start_date, end_date, pf_value, False)
 
+    after_value, positions = b.simulate({'lookback_period': 14, 'strategy_threshold': .025}, False)
+
+    rtn = ((after_value - pf_value) / pf_value) * 100
+
+    print(str(rtn) + "%")
+
+    b.plot_value(pf_value, start_date, end_date)
 
 run_test()

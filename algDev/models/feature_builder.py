@@ -2,10 +2,9 @@ import math
 import numpy as np
 import pandas as pd
 import datetime
-import sys
-print(sys.path)
-from models.equity import Equity
-from models.indicators import Indicators
+
+from equity import Equity
+from indicators import Indicators
 
 def parse_type(type):
     if(type==''):
