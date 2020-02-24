@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from models.equity import Equity
 from models.portfolio import Portfolio
 import datetime
+import os
 ### Simulate the success of a model or trading strategy
 class Backtest():
 
@@ -48,17 +49,36 @@ class Backtest():
         vals = []
         initial_val = []
         dates = []
-        
+        snp = []
+        here = os.path.abspath(os.path.dirname(__file__))
+        data_directory = os.path.join(here, '..\\data')
+        snp_directory = os.path.join(data_directory, 'indexes\\SNP.xlsx')
+        sp = Equity(snp_directory)
         for i in range(day_diff):
             i_day = datetime.timedelta(days=i)
             dates.append(start_date + i_day)
             vals.append(self.portfolio.getValue(start_date + i_day))
             initial_val.append(initial_value)
+            snp.append(sp.get_price(start_date + i_day))
 
-        plt.plot(dates, vals, 'r-')
+        import numpy as np
 
-        plt.plot(dates, initial_val, 'b-')
+        fig, ax1 = plt.subplots()
 
+        color = 'tab:red'
+        ax1.set_xlabel('Day')
+        ax1.set_ylabel('Portfolio', color=color)
+        ax1.plot(dates, vals, color=color)
+        ax1.tick_params(axis='y', labelcolor=color)
+        ax1.plot(dates, initial_val, 'b-')
+        ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+
+        color = 'tab:blue'
+        ax2.set_ylabel('SNP', color=color)  # we already handled the x-label with ax1
+        ax2.plot(dates, snp, color=color)
+        ax2.tick_params(axis='y', labelcolor=color)
+
+        fig.tight_layout()  # otherwise the right y-label is slightly clipped
         plt.show()
 
         return
