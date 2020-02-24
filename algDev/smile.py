@@ -43,5 +43,5 @@ plt.title('smile of aapl')
 
 # plt.show() 
 
-poly = np.polyfit(strike, iv, 1) 
+poly = np.polyfit(strike, iv, 2) 
 print(poly)
