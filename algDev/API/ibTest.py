@@ -2,6 +2,8 @@ from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
 from ibapi.contract import Contract
 from ibapi.ticktype import TickTypeEnum
+from ibapi.order import Order
+
 
 import datetime
 import queue
@@ -9,38 +11,15 @@ import queue
 class TestApp(EWrapper, EClient):
     def __init__(self):
         EClient.__init__(self, self)
-        error_queue=queue.Queue()
-        self._my_errors = error_queue
 
-    def error(self, id, errorCode, errorString):
+    def error(self, reqId, errorCode, errorString):
         ## Overriden method
-        errormsg = "IB error id %d errorcode %d string %s" % (id, errorCode, errorString)
-        self._my_errors.put(errormsg)
-    
-    def tickPrice(self, reqId, tickType, price, attrib):
-        print("Tick price. Ticker ID:", reqId, "tickType:", TickTypeEnum.to_str(tickType), "Price:", price, end = ' ')
+        print("Error.", reqId, errorCode, errorString)
 
-    def tickSize(self, reqId, tickType, size):
-        print("Tick size. Ticker ID:", reqId, "tickType:", TickTypeEnum.to_str(tickType), "Size:", size)
-
-    def historicalTicks(self, reqId: int, ticks, done: bool):
-        for tick in ticks:
-            print("HistoricalTick. ReqId:", reqId, tick)
-    
-    def historicalTicksBidAsk(self, reqId: int, ticks, done: bool):
-        for tick in ticks:
-            print("HistoricalTickBidAsk. ReqId:", reqId, tick)
-    
-    def historicalTicksLast(self, reqId: int, ticks, done: bool):
-        for tick in ticks:
-            print("HistoricalTickLast. ReqId:", reqId, tick)
-
-    # ! [historicaldata]
-    def historicalData(self, reqId:int, bar):
-        print("HistoricalData. ReqId:", reqId, "BarData.", bar)
-    # ! [historicaldata]
+    def historicalData(self, reqId, bar):
+        print("HistoricalData. ReqId:", reqId, "date", bar.date, "open", bar.open, "high", bar.high, "low", bar.low, "close", bar.close)
    
-    
+
 
 def main():
     app = TestApp()
@@ -54,12 +33,19 @@ def main():
     contract.currency = "USD"
     contract.primaryExchange = "NASDAQ"
 
+    app.reqHistoricalData(5, contract, "", "1 D", "1 min", "MIDPOINT", 0, 1, False, [])
+
+
     # historic_data = app.get_IB_historical_data(contract)    
     # print(historic_data)
 
-    queryTime = (datetime.datetime.today() - datetime.timedelta(days=180)).strftime("%Y%m%d %H:%M:%S")
-    app.reqHistoricalData(0, contract, queryTime,
-                               "1 M", "1 day", "MIDPOINT", 1, 1, False, [])
+    # otherContract = Contract()
+    # otherContract.symbol = "EUR"
+    # otherContract.secType = "CASH"
+    # otherContract.exchange = "IDEALPRO"
+    # otherContract.currency = "USD"
+
+    # app.reqHistoricalData(1, otherContract, "", "1 D", "1 min", "MIDPOINT", 0, 1, False, [])
 
     app.run()
 
@@ -68,3 +54,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# OK SO - still just hanging, not really getting any new data - at this point, not sure what to do - re try to implement
+# thing from the two videos to see if any of this is still working - start with the one that's open, move to the one after...
+# In theory, they both should work, might lead you to something you're missing

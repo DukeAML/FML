@@ -947,7 +947,7 @@ class TestApp(TestWrapper, TestClient):
         # ! [reqHeadTimeStamp]
 
         # ! [reqhistoricaldata]
-        queryTime = (datetime.datetime.today() - datetime.timedelta(days=180)).strftime("%Y%m%d %H:%M:%S")
+        queryTime = (datetime.datetime.today() - datetime.timedelta(days=180)).strtime("%Y%m%d %H:%M:%S")
         self.reqHistoricalData(4102, ContractSamples.EurGbpFx(), queryTime,
                                "1 M", "1 day", "MIDPOINT", 1, 1, False, [])
         print('got here')
