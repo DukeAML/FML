@@ -43,19 +43,5 @@ plt.title('smile of aapl')
 
 # plt.show() 
 
-coord = []
-for jj in range(len(strike)):
-    (x,y) = (strike[jj], iv[jj])
-    coord.append((x,y))
-
-slopes = []
-d = (len(coord)//5) -1
-c =0
-for ii in range(d):
-    x1 = coord[c]
-    x2 = coord[c+5]
-    m = (x2[1] - x1[1])/ (x2[0] - x1[0])
-    slopes.append(m)
-    c+=5
-
-# print(slopes)
+poly = np.polyfit(strike, iv, 2) 
+print(poly)
