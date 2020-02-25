@@ -77,7 +77,7 @@ class Backtest():
         ax2.set_ylabel('SNP', color=color)  # we already handled the x-label with ax1
         ax2.plot(dates, snp, color=color)
         ax2.tick_params(axis='y', labelcolor=color)
-
+        
         fig.tight_layout()  # otherwise the right y-label is slightly clipped
         plt.show()
 
