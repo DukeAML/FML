@@ -1,3 +1,17 @@
+# USE BLOOMBERG INSTEAD ==> YAHOO IS A MESS 
+# seeking alpha - go through their news site
+# dividend table in DB ==> ISIN as link/relation
+# change to every stock on the S&P 500 instead of everything
+
+
+# download, install interactive brokers and pyAPI, get that historical data for the ISIN's
+# new data can also be gotten from there
+# "problem" is that it goes back two years, but that's not an issue
+# use Bloomberg for older historical data ==> pull that data ONCE rather than using a subscription -- historical data,
+# so we only need to get it once
+
+# DO THIS BY TUESDAY
+
 import yfinance as yf
 import requests
 from ftplib import FTP

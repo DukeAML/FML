@@ -9,7 +9,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 data_directory = os.path.join(here, 'data')
 
 
-def gen_features(equity_file, num_days, save=False, normalize=True):
+def gen_features(equity_file, num_days, save=False, normalize=False):
     """
     Generates Set of Features for LSTM with Columns as follows for num_days timepoints
 
@@ -40,6 +40,7 @@ def gen_features(equity_file, num_days, save=False, normalize=True):
     |Vector 24  |SNP                                                    |
     """
     e = Equity(equity_file)
+    
     volumes = e.volumes
     closes = e.closes
     opens = e.opens
@@ -132,19 +133,19 @@ def gen_features(equity_file, num_days, save=False, normalize=True):
     rainbow_vec_9 = np.array(rainbow_vecs[4][(-1 * num_days):])
     rainbow_vec_9 = rainbow_vec_9.T
 
-    wti_file = os.path.join(data_directory, 'commodities', 'OIL.csv')
+    wti_file = os.path.join(data_directory, 'commodities', 'OIL.xlsx')
     wti = Equity(wti_file)
 
     wti_closes = np.array(wti.closes[(-1 * num_days):])
     wti_closes = wti_closes.T
 
-    reit_file = os.path.join(data_directory, 'indexes', 'RE.xls')
+    reit_file = os.path.join(data_directory, 'indexes', 'RE.xlsx')
     reit_eq = Equity(reit_file)
 
     reit_closes = np.array(reit_eq.closes[(-1 * num_days):])
     reit_closes = reit_closes.T
 
-    snp_file = os.path.join(data_directory, 'indexes', 'SNP.xls')
+    snp_file = os.path.join(data_directory, 'indexes', 'SNP.xlsx')
     snp_eq = Equity(snp_file)
 
     snp_closes = np.array(snp_eq.closes[(-1 * num_days):])

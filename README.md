@@ -11,7 +11,12 @@ Once both the frontend and backend are running, navigate to localhost:4200 on yo
 
 ## ML
 
-### Creating Data for LSTM
+### LSTM
+
+#### Overview
+Using Long-Short Term Memory, we are training a model to see a large set of data of both massaged prices and other indicies.
+
+#### Creating Data for LSTM
 ```
 from gen_lstm_data import gen_data
 
@@ -38,7 +43,7 @@ X_train, y_train, X_test, y_test = gen_data(eq, train_split, days, look_back, la
 ## y_test.shape = (days * (1 - train_split) - (look_back + 1), 10)
 ```
 
-### Features
+#### Features
 
 |Vector|Description|
 |------|-----------|
@@ -68,6 +73,7 @@ X_train, y_train, X_test, y_test = gen_data(eq, train_split, days, look_back, la
 |Vector 23|Wilshire US Real Estate|
 |Vector 24|SNP                    |
 
+#### Labels
 |Label|
 |-----|
 | -10% <= (p_1 - p_0)/p_0 < - 7% |
@@ -82,3 +88,10 @@ X_train, y_train, X_test, y_test = gen_data(eq, train_split, days, look_back, la
 |   9% <= (p_1 - p_0)/p_0 < 100% |
 
 Where p_1 is the price at the predicted day and p_0 is the price at ```predicted day - label_range```
+
+### Signal Distributions
+
+#### Overview
+This algorithm takes in a series of buy/sell signals from a variety of market indicators, determines how to combine these signals into an overall buy/sell signal and then compares the strength of these signals across equities.
+
+#### 
