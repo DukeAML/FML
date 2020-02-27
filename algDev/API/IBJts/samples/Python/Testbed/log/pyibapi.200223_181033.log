@@ -1,0 +1,56 @@
+(MainThread) 200223_18:10:34.363 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:usfarm.nj
+(MainThread) 200223_18:10:34.364 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:eufarm
+(MainThread) 200223_18:10:34.364 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:usfarm
+(MainThread) 200223_18:10:34.364 ERROR wrapper.py:56 ERROR -1 2106 HMDS data farm connection is OK:euhmds
+(MainThread) 200223_18:10:34.365 ERROR wrapper.py:56 ERROR -1 2106 HMDS data farm connection is OK:cashhmds
+(MainThread) 200223_18:10:34.365 ERROR wrapper.py:56 ERROR -1 2106 HMDS data farm connection is OK:ushmds
+(MainThread) 200223_18:10:35.040 ERROR wrapper.py:56 ERROR 63 321 Error validating request:-'bD' : cause - The size value cannot be zero:
+(MainThread) 200223_18:10:35.041 ERROR wrapper.py:56 ERROR 62 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.041 ERROR wrapper.py:56 ERROR 85 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.180 ERROR wrapper.py:56 ERROR 72 399 Order Message:
+SELL 1 IBKR NASDAQ.NMS
+Warning: Your order was repriced so as not to cross a related resting order
+(MainThread) 200223_18:10:35.198 ERROR wrapper.py:56 ERROR 65 399 Order Message:
+BUY 200 IBKR NASDAQ.NMS
+Warning: Your order was repriced so as not to cross a related resting order
+(MainThread) 200223_18:10:35.304 ERROR wrapper.py:56 ERROR 67 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.304 ERROR wrapper.py:56 ERROR 66 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.305 ERROR wrapper.py:56 ERROR 73 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.305 ERROR wrapper.py:56 ERROR 89 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.314 ERROR wrapper.py:56 ERROR 81 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.345 ERROR wrapper.py:56 ERROR 70 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.350 ERROR wrapper.py:56 ERROR 68 10154 This contract cannot be part of the combo. conid:323072528
+(MainThread) 200223_18:10:35.372 ERROR wrapper.py:56 ERROR 101 321 Error validating request:-'bD' : cause - Invalid order type was entered
+(MainThread) 200223_18:10:35.392 ERROR wrapper.py:56 ERROR 113 442 Specified algorithm is not allowed for this order.
+(MainThread) 200223_18:10:35.393 ERROR wrapper.py:56 ERROR 114 442 Specified algorithm is not allowed for this order.
+(MainThread) 200223_18:10:35.393 ERROR wrapper.py:56 ERROR 115 442 Specified algorithm is not allowed for this order.
+(MainThread) 200223_18:10:35.400 ERROR wrapper.py:56 ERROR 105 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.401 ERROR wrapper.py:56 ERROR 106 200 No security definition has been found for the request
+(MainThread) 200223_18:10:35.424 ERROR wrapper.py:56 ERROR 108 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:10:35.429 ERROR wrapper.py:56 ERROR 109 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:10:35.429 ERROR wrapper.py:56 ERROR 110 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:10:35.439 ERROR wrapper.py:56 ERROR 111 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:10:35.440 ERROR wrapper.py:56 ERROR 112 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:10:35.503 ERROR wrapper.py:56 ERROR 117 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.514 ERROR wrapper.py:56 ERROR 118 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.529 ERROR wrapper.py:56 ERROR 100 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.538 ERROR wrapper.py:56 ERROR 103 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.545 ERROR wrapper.py:56 ERROR 104 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.549 ERROR wrapper.py:56 ERROR 107 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.565 ERROR wrapper.py:56 ERROR 108 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.581 ERROR wrapper.py:56 ERROR 109 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.599 ERROR wrapper.py:56 ERROR 110 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.625 ERROR wrapper.py:56 ERROR 111 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:35.628 ERROR wrapper.py:56 ERROR 112 201 Order rejected - reason:Your account has a minimum of 15 orders working on either the buy or sell side for this particular contract. An additional order on the same side for this contract will not be allowed until an existing order has been cancelled or has executed. Please call the Trade Desk for further details.
+(MainThread) 200223_18:10:36.418 ERROR wrapper.py:56 ERROR 61 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:10:36.458 ERROR wrapper.py:56 ERROR 79 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:10:36.557 ERROR wrapper.py:56 ERROR 1 399 Order Message:
+SELL 1 IBKR NASDAQ.NMS
+Warning: Your order was repriced so as not to cross a related resting order
+(MainThread) 200223_18:10:36.575 ERROR wrapper.py:56 ERROR 60 399 Order Message:
+SELL 1 IBKR NASDAQ.NMS
+Warning: Your order was repriced so as not to cross a related resting order
+(MainThread) 200223_18:10:36.614 ERROR wrapper.py:56 ERROR 80 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:10:36.655 ERROR wrapper.py:56 ERROR 82 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:10:49.998 ERROR wrapper.py:56 ERROR 2002 503 The TWS is out of date and must be upgraded. It does not support SMART depth cancel.
+(MainThread) 200223_18:10:50.000 ERROR wrapper.py:56 ERROR 2001 310 Can't find the subscribed market depth with tickerId:2001
