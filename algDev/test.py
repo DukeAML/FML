@@ -1,8 +1,11 @@
-from models.equity import Equity
-from models.feature_builder import *
+from models.trade import Trade
+import datetime
 
-ticker = 'AAPL'
-eq_path = r'./algDev/data/equities/%s.xlsx' % ticker
-eq = Equity(eq_path)
+def test_trade():
+    trades = [Trade(datetime.datetime(2016,1,1), 10), Trade(datetime.datetime(2016,3,1), 15), Trade(datetime.datetime(2016,5,1), 5)]
 
-print(build_labels(eq))
+    trades[2] = trades[2].sell()
+
+    print(trades)
+
+test_trade()
