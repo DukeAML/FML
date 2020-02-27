@@ -2,7 +2,7 @@
 *environment.ts
 
 # Mac specific
-.DS_Store
+*.DS_Store
 
 # Virtual environment
 venv/
@@ -20,3 +20,6 @@ dist/
 *.egg-info
 
 */node_modules
+
+*credentials.py
+*cloud_sql_proxy
