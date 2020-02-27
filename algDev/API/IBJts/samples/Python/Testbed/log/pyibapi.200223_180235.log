@@ -1,0 +1,43 @@
+(MainThread) 200223_18:02:36.353 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:usfarm
+(MainThread) 200223_18:02:36.354 ERROR wrapper.py:56 ERROR -1 2106 HMDS data farm connection is OK:ushmds
+(MainThread) 200223_18:02:36.354 ERROR wrapper.py:56 ERROR 4 321 Error validating request:-'bD' : cause - The size value cannot be zero:
+(MainThread) 200223_18:02:36.354 ERROR wrapper.py:56 ERROR 3 200 No security definition has been found for the request
+(MainThread) 200223_18:02:36.355 ERROR wrapper.py:56 ERROR -1 2106 HMDS data farm connection is OK:cashhmds
+(MainThread) 200223_18:02:36.408 ERROR wrapper.py:56 ERROR 6 399 Order Message:
+BUY 200 IBKR NASDAQ.NMS
+Warning: Your order was repriced so as not to cross a related resting order
+(MainThread) 200223_18:02:36.416 ERROR wrapper.py:56 ERROR 8 200 No security definition has been found for the request
+(MainThread) 200223_18:02:36.417 ERROR wrapper.py:56 ERROR 7 200 No security definition has been found for the request
+(MainThread) 200223_18:02:36.443 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:cashfarm
+(MainThread) 200223_18:02:36.774 ERROR wrapper.py:56 ERROR 35 133 Submit new order failed
+(MainThread) 200223_18:02:36.775 ERROR wrapper.py:56 ERROR 36 133 Submit new order failed
+(MainThread) 200223_18:02:36.775 ERROR wrapper.py:56 ERROR 14 200 No security definition has been found for the request
+(MainThread) 200223_18:02:36.775 ERROR wrapper.py:56 ERROR 42 321 Error validating request:-'bD' : cause - Invalid order type was entered
+(MainThread) 200223_18:02:36.785 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:usfarm.nj
+(MainThread) 200223_18:02:36.852 ERROR wrapper.py:56 ERROR 26 200 No security definition has been found for the request
+(MainThread) 200223_18:02:36.853 ERROR wrapper.py:56 ERROR 22 200 No security definition has been found for the request
+(MainThread) 200223_18:02:36.861 ERROR wrapper.py:56 ERROR -1 2106 HMDS data farm connection is OK:euhmds
+(MainThread) 200223_18:02:36.974 ERROR wrapper.py:56 ERROR 4103 162 Historical Market Data Service error message:No market data permissions for BATEDE, CHIXDE, DXEDE, EBS, FWB, GETTEX, IBIS, SWB, TGATE, TRQXDE STK
+(MainThread) 200223_18:02:37.036 ERROR wrapper.py:56 ERROR 30 200 No security definition has been found for the request
+(MainThread) 200223_18:02:37.036 ERROR wrapper.py:56 ERROR 54 442 Specified algorithm is not allowed for this order.
+(MainThread) 200223_18:02:37.037 ERROR wrapper.py:56 ERROR 55 442 Specified algorithm is not allowed for this order.
+(MainThread) 200223_18:02:37.040 ERROR wrapper.py:56 ERROR 56 442 Specified algorithm is not allowed for this order.
+(MainThread) 200223_18:02:37.152 ERROR wrapper.py:56 ERROR 46 200 No security definition has been found for the request
+(MainThread) 200223_18:02:37.152 ERROR wrapper.py:56 ERROR 11 200 No security definition has been found for the request
+(MainThread) 200223_18:02:37.153 ERROR wrapper.py:56 ERROR 47 200 No security definition has been found for the request
+(MainThread) 200223_18:02:37.228 ERROR wrapper.py:56 ERROR 9 10154 This contract cannot be part of the combo. conid:323072528
+(MainThread) 200223_18:02:37.387 ERROR wrapper.py:56 ERROR -1 2104 Market data farm connection is OK:eufarm
+(MainThread) 200223_18:02:38.044 ERROR wrapper.py:56 ERROR 49 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:02:38.047 ERROR wrapper.py:56 ERROR 50 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:02:38.064 ERROR wrapper.py:56 ERROR 51 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:02:38.071 ERROR wrapper.py:56 ERROR 52 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:02:38.078 ERROR wrapper.py:56 ERROR 53 2111 <html>The Start and/or End Time for algo order BUY 1,000 IBM NYSE @ 1.00<br>were adjusted to use the next trading date.<br>To modify this setting, use the <i>Auto-adjust algo order date</i> item on the <b>Orders</b> configuration page</html>
+(MainThread) 200223_18:02:38.682 ERROR wrapper.py:56 ERROR 2 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:02:39.176 ERROR wrapper.py:56 ERROR 20 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:02:39.196 ERROR wrapper.py:56 ERROR 21 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:02:39.204 ERROR wrapper.py:56 ERROR 13 399 Order Message:
+SELL 1 IBKR NASDAQ.NMS
+Warning: Your order was repriced so as not to cross a related resting order
+(MainThread) 200223_18:02:39.239 ERROR wrapper.py:56 ERROR 23 202 Order Canceled - reason:Order reject: There is no market data on the primary exchange for this market order
+(MainThread) 200223_18:03:02.210 ERROR wrapper.py:56 ERROR 2002 503 The TWS is out of date and must be upgraded. It does not support SMART depth cancel.
+(MainThread) 200223_18:03:02.212 ERROR wrapper.py:56 ERROR 2001 310 Can't find the subscribed market depth with tickerId:2001
