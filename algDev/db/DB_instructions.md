@@ -13,7 +13,7 @@ You may also need to make the proxy's permissions accessible to all users, which
 Once you've downloaded the proxy, run the following command:
 `./cloud_sql_proxy -instances=fml-partners:us-east1:fmlv1=tcp:5432`
 This will begin a connection to the DB from your local machine/testing environment hosted on port 5432. The output should end with a message that looks something like:
-Listening on 127.0.0.1:5432 for myproject:us-central1:myinstance".
+`Listening on 127.0.0.1:5432 for fml-partners:us-east1:fmlv1`.
 Ready for new connections
 
 ### Connecting to the DB
