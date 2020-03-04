@@ -27,7 +27,7 @@ Once you've done that, you can import the credentials and connect to the db WHIL
 This line, taken from the primer script, imports the credentials from the credentials.py file and plugs them into the `psycopg2.connect()` function.
 
 ### Fetching Information From the DB
-To fetch data from the DB, you can use the `wrapper.py` script. Right now, the only implemented function is called `getData()` which takes in a ticker as an argument and returns a list of tuples of historical data for that ticker.
+To fetch data from the DB, you can use the `wrapper.py` script. Right now, the only implemented functions are `getData()`, which takes in a ticker as an argument and returns a list of tuples of historical data for that ticker, and `getTickers()` which returns a list of all the tickers in the DB.
 
 
 

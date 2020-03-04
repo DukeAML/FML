@@ -1,4 +1,5 @@
 # script to get open, high, low, close for stocks to update our historical db
+# eventually gonna wanna just dockerize this?
 
 import psycopg2
 import credentials

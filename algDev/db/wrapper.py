@@ -17,4 +17,15 @@ def getData(ticker):
     result = cursor.fetchall()
     return result
 
+def getTickers():
+    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password)
+    conn.autocommit = True
+    cursor = conn.cursor()
 
+    query = "SELECT DISTINCT ticker FROM Prices ORDER BY ticker"
+    cursor.execute(query)
+
+    result = cursor.fetchall()
+    result = [item[0] for item in result]
+
+    return result
