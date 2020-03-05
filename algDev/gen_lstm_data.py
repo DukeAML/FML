@@ -1,10 +1,12 @@
 import numpy as np
 from math import *
+import os
 from build_features import gen_features
 
 
 def gen_data(eq, days=500, look_back=19, label_range=5, verbose=False):
-    eq_path = r'./algDev/data/equities/%s.xlsx' % eq
+    here = os.path.abspath(os.path.dirname(__file__))
+    eq_path = os.path.join(here, 'data', 'equities', '%s.xlsx' % eq)
 
     train_size = int(0.8 * days)
     test_size = days - train_size

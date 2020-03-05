@@ -100,7 +100,7 @@ def gen_features(equity_file, num_days, save=False, normalize=False):
 
     macd_slow_period = 24
     macd_fast_period = 12
-    macd_vec = np.array(Indicators.macd_indicator(closes, macd_slow_period, macd_fast_period)[(-1 * num_days):])
+    macd_vec = np.array(Indicators.macd(closes, macd_slow_period, macd_fast_period)[(-1 * num_days):])
     macd_vec = macd_vec.T
 
     kst_trix_vec = np.array(Indicators.kst_trix_indicator(closes)[(-1 * num_days):])
