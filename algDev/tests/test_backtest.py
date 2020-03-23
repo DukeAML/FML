@@ -4,8 +4,8 @@ import datetime
 def run_test():
 
     pf_value = 1000000
-    start_date = datetime.datetime(2019, 11, 13)
-    end_date = datetime.datetime(2020, 1, 13)
+    start_date = datetime.datetime(2005, 1, 13)
+    end_date = datetime.datetime(2019, 1, 13)
 
     b = Backtest(["AAPL", "AMZN", "BRK.B"], start_date, end_date, pf_value, False)
 

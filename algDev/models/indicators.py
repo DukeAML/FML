@@ -2,6 +2,7 @@ import pandas as pd
 import math
 import numpy as np
 
+from models.indicator import Indicator
 
 class Indicators:
     
@@ -32,11 +33,13 @@ class Indicators:
         """
         simple_ma = np.zeros((len(prices),))
         for i, p in enumerate(prices):
-            if i + period >= len(prices):
+            if i + period - 1 >= len(prices):
                 break
-            ma = sum(prices[i + j] for j in range(period)) / period
-            simple_ma[i + period] = ma
-        return simple_ma
+            ma = 0
+            for j in range(period):
+                ma = prices[i + j] + ma
+            simple_ma[i] = ma/period
+        return simple_ma[:(-1*(period))]
 
     @staticmethod
     def ema(prices, period, type=''):
@@ -61,24 +64,24 @@ class Indicators:
 
         simple_ma = Indicators.sma(prices, period)
 
-        base_sma = simple_ma[period]
+        base_sma = simple_ma[-1 * (period - 1)]
         
-        exponential_ma[period] = Indicators.calc_ema(base_sma, prices[period], period)
-
         if type == 'wilder':
-            multiplier = 1 / period
+            multiplier = (1 / period)
         else:
-            multiplier = 2 / (period + 1)
+            multiplier = (2 / (period + 1))
 
-        for i, close in enumerate(prices):
-            if i + period + 1 >= len(prices):
+        exponential_ma[-1 * (period - 1)] = Indicators.calc_ema(base_sma, prices[-period], multiplier)
+        l = len(prices)
+        for i, p in enumerate(prices):
+            if l - i - period < 0:
                 break
-
-            exponential_ma[i + period + 1] = Indicators.calc_ema(exponential_ma[i + period],
-                                                                 prices[i + period + 1],
+            ma = 0
+            exponential_ma[l - i - period] = Indicators.calc_ema(exponential_ma[l - i - period + 1],
+                                                                 prices[l - i - period],
                                                                  multiplier)
 
-        return exponential_ma
+        return exponential_ma[:(-1*(period))]
 
     @staticmethod
     def calc_ema(prev_ema, close, multiplier):
@@ -95,8 +98,9 @@ class Indicators:
             multiplier {[float]} -- [weight for current data]
         
         Returns:
-            [float[]] -- [the value of the EMA for the given day]
+            [float -- [the value of the EMA for the given day]
         """
+
         return (close - prev_ema) * multiplier + prev_ema
 
     @staticmethod
@@ -113,7 +117,7 @@ class Indicators:
             indexes 0-19 will be 0
         """
         assert slow_period > fast_period
-        return Indicators.ema(prices, slow_period) - Indicators.ema(prices, fast_period)
+        return Indicators.ema(prices, slow_period) - Indicators.ema(prices, fast_period)[slow_period-fast_period:]
 
     @staticmethod
     def calc_moves(prices, period=1):
@@ -132,10 +136,10 @@ class Indicators:
                 break
             moves[index] = prices[index] - prices[index - period]
 
-        return moves
+        return moves[:(-1*period)]
 
     @staticmethod
-    def rsi(prices, period=20, type='sma'):  # TODO: Rename type (shadows built-in)
+    def rsi(prices, period=20, type='ema'):  # TODO: Rename type (shadows built-in)
 
         up, down = Indicators.calc_up_down(prices=prices)
 
@@ -190,6 +194,8 @@ class Indicators:
 
         macd_ind = np.zeros((len(macd_vals),))
         for i,macd_val in enumerate(macd_vals):
+            
+            # print(macd_val, macd_vals[i+1], macd_emas[i], macd_emas[i+1])
             macd_ind[i] = Indicators.gen_macd_ind_lbl(macd_val, macd_vals[i+1], macd_emas[i], macd_emas[i+1])
 
         macd_ind = np.array([(macd_val - macd_ema) for (macd_val, macd_ema) in zip(macd_vals, macd_emas)])
@@ -212,7 +218,7 @@ class Indicators:
     @staticmethod
     def check_intersection(y_11, y_12, y_21, y_22):
         x11, x12, x21, x22 = 0, 1, 0, 1
-        
+        # print(y_11, y_12, y_21, y_22)
         m1 = Indicators.get_slope(0,1,y_11,y_12)
         m2 = Indicators.get_slope(0,1,y_21,y_22)
 
@@ -221,7 +227,8 @@ class Indicators:
 
         A = np.array([[m1, -1],[m2, -1]]).reshape((2,2))
         b = np.array([b1, b2]).reshape((2,1))
-
+        # print(A)
+        # print(b)
         X = np.linalg.solve(A, b)
 
         x = X[0]
@@ -241,11 +248,11 @@ class Indicators:
     def average_true_range(asset, period=10):
         true_ranges = np.zeros((len(asset.closes),))
         for i, close in enumerate(asset.closes):
-            if i == 0:
-                continue
+            if i + 1 >= len(asset.closes):
+                break
             high = asset.highs[i]
             low = asset.lows[i]
-            cp = asset.closes[i - 1]
+            cp = asset.closes[i + 1]
             true_ranges[i] = np.max([high - low, np.abs(high - cp), np.abs(low - cp)])
         avg_tr = Indicators.calc_average_true_range(true_ranges, period)
         return avg_tr
@@ -253,21 +260,22 @@ class Indicators:
     @staticmethod
     def calc_average_true_range(true_ranges, period=10):
         atr = np.zeros((len(true_ranges),))
-        prevatr = true_ranges[0]
+        l = len(true_ranges)
+        prevatr = true_ranges[-1]
         for i, tr in enumerate(true_ranges):
-            atr[i] = (prevatr * (period - 1) + true_ranges[i]) / period
-            prevatr = atr[i]
-        return atr
+            atr[l - i - 1] = (prevatr * (period - 1) + true_ranges[l - i - 1]) / period
+            prevatr = atr[l - i - 1]
+        return atr[:-1]
     
     @staticmethod
     def roc(prices):
         roc_vals = np.zeros((len(prices),))
         for i, price in enumerate(prices):
-            if i is 0:
-                continue
-            roc_vals[i] = ((price / prices[i - 1]) - 1) * 100
+            if i >= len(prices) - 1:
+                break
+            roc_vals[i] = ((price / prices[i + 1]) - 1) * 100
     
-        return roc_vals
+        return roc_vals[:-1]
     
     @staticmethod
     def kst(prices):
@@ -276,18 +284,18 @@ class Indicators:
         twentyp_roc = np.zeros((len(prices),))
         thirtyp_roc = np.zeros((len(prices),))
         for i in range(len(prices)):
-            if i < 10:
+            if i + 10 >= len(prices):
                 continue
-            tenp_roc[i] = (prices[i] - prices[i-10])/prices[i-10]
-            if i < 15:
+            tenp_roc[i] = (prices[i] - prices[i+10])/prices[i+10]
+            if i + 15 >= len(prices):
                 continue
-            fifteenp_roc[i] = (prices[i] - prices[i-15])/prices[i-15]
-            if i < 20:
+            fifteenp_roc[i] = (prices[i] - prices[i+15])/prices[i+15]
+            if i + 20 >= len(prices):
                 continue
-            twentyp_roc[i] = (prices[i] - prices[i-20])/prices[i-20]
-            if i < 30:
+            twentyp_roc[i] = (prices[i] - prices[i+20])/prices[i+20]
+            if i + 30 >= len(prices):
                 continue
-            thirtyp_roc[i] = (prices[i] - prices[i-30])/prices[i-30]
+            thirtyp_roc[i] = (prices[i] - prices[i+30])/prices[i+30]
 
 
         rcma_1 = Indicators.sma(tenp_roc, 10)
@@ -295,34 +303,36 @@ class Indicators:
         rcma_3 = Indicators.sma(twentyp_roc, 10)
         rcma_4 = Indicators.sma(thirtyp_roc, 15)
     
-        kst_vals = np.zeros((len(prices),))
-        for i in range(len(prices)):
+        kst_vals = np.zeros((len(rcma_4),))
+        for i,p in enumerate(rcma_4):
             kst_vals[i] = rcma_1[i] + rcma_2[i] * 2 + rcma_3[i] * 3 + rcma_4[i] * 4
         return kst_vals
     
     @staticmethod
     def kst_trix_indicator(prices):
-        kst_vals = Indicators.kst(prices)
+        kst_vals = Indicators.kst(prices)[:-94]
         d_kst = Indicators.d_(kst_vals)
     
         trix_vals = Indicators.trix(prices)
         d_trix = Indicators.d_(trix_vals)
-    
+        
+        assert len(kst_vals)==len(trix_vals)
+        
         ind = np.zeros((len(d_kst),))
     
         for i in range(len(ind)):
-            ind[i] = d_kst[i] * d_trix[i]
+            ind[i] = np.sign(d_kst[i] * d_trix[i])
     
-        return ind
+        return ind[:-1]
     
     @staticmethod
     def d_(prices):
         d_p = np.zeros((len(prices),))
     
         for i in range(len(d_p)):
-            if i == 0:
+            if i + 1 >= len(d_p):
                 continue
-            d_p[i] = prices[i] - prices[i - 1]
+            d_p[i] = prices[i] - prices[i + 1]
     
         return d_p
     
@@ -357,15 +367,15 @@ class Indicators:
         stds = np.zeros((len(prices),))
     
         for i in range(len(prices)):
-            if i < period:
+            if i + period >= len(prices):
                 continue
-            stds[i] = np.std(prices[i - period:i])
+            stds[i] = np.std(prices[i:i+period])
     
-        return stds
+        return stds[:(-1*(period))]
     
     @staticmethod
     def rainbow_ma(prices, periods=(1, 3, 5, 7, 9)):
-        return [Indicators.sma(prices, period) for period in periods]
+        return [Indicator(Indicators.sma(prices, period).T) for period in periods]
     
     @staticmethod
     def trix(prices):
@@ -376,26 +386,26 @@ class Indicators:
         trix_vals = np.zeros((len(triple_smoothed_ema),))
     
         for i in range(len(trix_vals)):
-            if i is 0:
+            if i + 1 >= len(trix_vals):
                 continue
-            if triple_smoothed_ema[i - 1] == 0:
+            if triple_smoothed_ema[i + 1] == 0:
                 trix_vals[i] = 0
                 continue
             
-            trix_vals[i] = (triple_smoothed_ema[i] - triple_smoothed_ema[i - 1]) / triple_smoothed_ema[i - 1]
+            trix_vals[i] = (triple_smoothed_ema[i] - triple_smoothed_ema[i + 1]) / triple_smoothed_ema[i + 1]
     
-        return trix_vals
+        return trix_vals[:-55]
     
     @staticmethod
     def trix_indicator(prices):
-        trix_vals = Indicators.trix(prices)
+        trix_vals = Indicators.trix(prices)[:-9]
         t_ma = Indicators.ema(trix_vals, 9)
-    
+        assert len(trix_vals)==len(t_ma)
         return np.array([trix_vals[i] - t_ma[i] for i in range(len(trix_vals))])
     
     @staticmethod
     def prings_know_sure_thing(prices):
-        kst_vec = Indicators.kst(prices)
+        kst_vec = Indicators.kst(prices)[:-9]
         kst_sma = Indicators.sma(kst_vec, 9)
-    
+        assert len(kst_vec)==len(kst_sma)
         return np.array([kst_vec[i] - kst_sma[i] for i in range(len(kst_sma))])
