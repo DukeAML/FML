@@ -79,4 +79,33 @@ def get_performance_stats(day):
     {'name': 'Sharpe Ratio', 'value': '1.69'}, {'name': 'Beta', 'value': '3'}, {'name': 'Alpha', 'value': '9'}]
 
   return jsonify({'data':mock})
-                
+
+@app.route('/indicators/<string:name>', methods=['GET'])
+def get_indicators_for_asset(name):
+  mock = {'name': 'idk', 'series': [
+      {
+        "name": 10,
+        "value": 40
+      },
+      {
+        "name": 20,
+        "value": 30
+      },
+      {
+        "name": 30,
+        "value": 30
+      },
+      {
+          "name": 40,
+          "value": 40
+        },
+        {
+          "name": 50,
+          "value": 50
+        },
+        {
+          "name": 60,
+          "value": 60
+        }
+    ]}
+  return jsonify({'data':[mock]})

@@ -21,6 +21,7 @@ export class DashboardGraphsComponent implements OnInit {
   activeAssets:any[] = [];
   activeModels:any[] = [];
   invalidAssetField:boolean = false;
+  mostRecentEquity:string;
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -43,22 +44,27 @@ export class DashboardGraphsComponent implements OnInit {
     let input = $event.input;
     let value = $event.value.toUpperCase();
 
-    console.log('input', input);
-    console.log('value', value);
-
     // now add them to the array, if no match, then pop up model asking for valid ticker
+    console.log('get asset value over time called with value: ', value);
+    if(!value){
+      return
+    }
     this.dataService.getAssetValueOverTime(value).subscribe(result => {
       
       if(result['data']){
         this.invalidAssetField = false;
         if(input){ input.value = ''; }
-
+        this.mostRecentEquity = value;
         let data = result['data']
         let tempObj = {'name': value, 'series': data}
+
         console.log('tempObj', tempObj)
         let assetDataCopy = [...this.assetData];
         assetDataCopy.push(tempObj);
         this.assetData = assetDataCopy;
+        
+        // handle updating equity for indicators performance
+
       }
       else{
         this.invalidAssetField = true;

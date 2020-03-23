@@ -47,5 +47,13 @@ export class DataService {
     return this.http.get(this.serverURL + '/performance-stats/' + day);
   }
 
+  getIndicatorValue(name:string){
+    this.http.get(this.serverURL + '/indicators/' + name).subscribe(result => {
+      console.log('indicator result', result);
+    })
+    
+    return this.http.get(this.serverURL + '/indicators/' + name);
+  }
+
 
 }
