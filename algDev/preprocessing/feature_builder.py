@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import datetime
 
-from equity import Equity
-from indicators import Indicators
+from models.equity import Equity
+from models.indicators import Indicators
 
 def parse_type(type):
     if(type==''):
@@ -13,7 +13,11 @@ def parse_type(type):
     else:
         return 1
 
-def build_labels(eq, period=1, threshold=.01, type=''):
+def build_labels_string(ticker, period=10, threshold=.015, type=''):
+    eq = Equity(ticker)
+
+    return build_labels(eq, period, threshold, type)
+def build_labels(eq, period=10, threshold=.015, type=''):
     
     closes = eq.closes
     highs = eq.highs

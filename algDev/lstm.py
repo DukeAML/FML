@@ -6,12 +6,14 @@ from keras.layers import BatchNormalization, LeakyReLU, LSTM, Dense, Dropout, Fl
 from keras.utils import plot_model
 from gen_lstm_data import gen_data, gen_labels, get_data_labelled
 import numpy as np
+from keras import backend
+from tensorflow.keras import backend
 
 # input should be [batch_size, time_steps, features] = [30, 19, 25]
 # labels = 10 classes
 
 
-(X_train, y_train, X_test, y_test) = gen_data(eq = "VSLR", verbose= True)
+(X_train, y_train, X_test, y_test) = gen_data(eq = "AAPL", verbose= True)
 # print(y_train[0])
 # print(X_train[0])
 
