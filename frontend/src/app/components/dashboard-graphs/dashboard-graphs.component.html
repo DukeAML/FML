@@ -29,28 +29,33 @@
       </mat-select>
   </mat-form-field>
 
-  <div *ngIf="assetData.length > 0">
-    <h2>Allocation Over Time</h2>
-    <ngx-charts-line-chart
-    [view]="view"
-    [scheme]="lineColorScheme"
-    [legend]="lineLegend"
-    [showXAxisLabel]="lineShowXAxisLabel"
-    [showYAxisLabel]="lineShowYAxisLabel"
-    [legendPosition]="lineLegendPosition"
-    [xAxis]="lineXaxis"
-    [yAxis]="lineYaxis"
-    [xAxisLabel]="lineXaxisLabel"
-    [yAxisLabel]="lineYaxisLabel"
-    [timeline]="lineTimeline"
-    [results]="assetData"
-    (select)="lineOnSelect($event)"
-    (activate)="lineOnActivate($event)"
-    (deactivate)="lineOnDeactivate($event)"
-    >
-    </ngx-charts-line-chart>
+  <div class="equitySpecific" *ngIf="assetData.length > 0">
+    <div class="graph">
+      <h2>Allocation Over Time</h2>
+      <ngx-charts-line-chart
+      [view]="view"
+      [scheme]="lineColorScheme"
+      [legend]="lineLegend"
+      [showXAxisLabel]="lineShowXAxisLabel"
+      [showYAxisLabel]="lineShowYAxisLabel"
+      [legendPosition]="lineLegendPosition"
+      [xAxis]="lineXaxis"
+      [yAxis]="lineYaxis"
+      [xAxisLabel]="lineXaxisLabel"
+      [yAxisLabel]="lineYaxisLabel"
+      [timeline]="lineTimeline"
+      [results]="assetData"
+      (select)="lineOnSelect($event)"
+      (activate)="lineOnActivate($event)"
+      (deactivate)="lineOnDeactivate($event)"
+      >
+      </ngx-charts-line-chart>
+    </div>
+    <app-indicators [equity]="mostRecentEquity" ></app-indicators>
   </div>
 
 </div>
+
+
 
 

@@ -13,7 +13,9 @@ import { AboutComponent } from './components/about/about.component';
 import { MatChipsModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatOptionModule, MatSelectModule, MatSliderModule, MatToolbarModule } from '@angular/material';
 import { AssetModalComponent } from './components/asset-modal/asset-modal.component';
 import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component';
-import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboard-graphs.component'
+import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboard-graphs.component';
+import { IndicatorsComponent } from './components/indicators/indicators.component';
+import { IndicatorComponent } from './components/indicator/indicator.component'
 
 
 
@@ -26,7 +28,9 @@ import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboar
     AboutComponent,
     AssetModalComponent,
     PerformancePaneComponent,
-    DashboardGraphsComponent
+    DashboardGraphsComponent,
+    IndicatorsComponent,
+    IndicatorComponent
   ],
   imports: [
     AppRoutingModule,

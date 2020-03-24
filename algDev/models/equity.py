@@ -21,10 +21,10 @@ class Equity:
     Returns:
         {Equity}
     """
-    def __init__(self, data_file, verbose=False):
-        self.parse_data(data_file, verbose)
+    def __init__(self, ticker, verbose=False):
+        self.parse_data(ticker, verbose)
 
-    def parse_data(self, data_file, verbose=False):
+    def parse_data(self, ticker, verbose=False):
         """[Parses the incoming data into the appropriate fields. 
         There have been reported issues with the parsing on certain
         file types.]
@@ -33,20 +33,21 @@ class Equity:
             data_file {String} -- [Path to the data file that contains 
             the equity information]
         """
-        self.data = pd.read_excel(data_file)
+
+        eq_path = r'./algDev/data/equities/%s.xlsx' % ticker
+        self.data = pd.read_excel(eq_path)
         
-        dataFile_len = len(data_file)
+        dataFile_len = len(eq_path)
         i = dataFile_len - 5
         while True:
-            # if i < len(data_file
             
-            if data_file[i] == r'/' or  data_file[i] == '\\':
+            if eq_path[i] == r'/' or  eq_path[i] == '\\':
                 break
             i=i-1
-        self.ticker = data_file[i+1:dataFile_len-5]
+
+        self.ticker = eq_path[i+1:dataFile_len-5]
         
         volumeCol = self.ticker + ' US Equity - Volume'
-        
         
         if 'Last Price' in self.data.columns:
             self.data['Last Price'].astype(dtype=float)
@@ -193,16 +194,16 @@ class Equity:
         """
         asi = np.zeros((len(self.closes),))
         for i in range(len(self.closes)):
-            if i is 0:
-                continue
+            if i + 1>= len(self.closes):
+                break
             curr_close = self.closes[i]
-            prev_close = self.closes[i - 1]
+            prev_close = self.closes[i + 1]
             curr_open = self.opens[i]
-            prev_open = self.opens[i - 1]
+            prev_open = self.opens[i + 1]
             curr_high = self.highs[i]
-            prev_high = self.highs[i - 1]
+            prev_high = self.highs[i + 1]
             curr_low = self.lows[i]
-            prev_low = self.lows[i - 1]
+            prev_low = self.lows[i + 1]
             k = np.max([(prev_high - curr_close), (prev_low - curr_close)])
             t = curr_high - curr_low
             kt = k / t
@@ -214,7 +215,7 @@ class Equity:
             body = num / r
 
             asi[i] = 50 * body * kt
-        return asi
+        return asi[:-1]
 
     def gop_range_index(self, period=10, verbose=False):
         """The GOP looks at the largest swing in prices over the
@@ -230,10 +231,10 @@ class Equity:
         gop = np.zeros((len(self.closes),))
 
         for i in range(len(self.closes)):
-            if i < period:
+            if i + period >= len(self.closes):
                 continue
-            highest = np.max(self.highs[i - period:i])
-            lowest = np.min(self.lows[i - period:i])
+            highest = np.max(self.highs[i:i+period])
+            lowest = np.min(self.lows[i:i + period])
             price_range = highest - lowest
             gop[i] = math.log(price_range) / math.log(period)
 
