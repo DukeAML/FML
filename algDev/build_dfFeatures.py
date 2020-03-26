@@ -9,7 +9,6 @@ from sklearn import preprocessing
 here = os.path.abspath(os.path.dirname(__file__))
 data_directory = os.path.join(here, 'data')
 
-
 def gen_features(equity_file, num_days, save=False, normalize = False):
     """
     Generates Data Frame of Features for models with Rows as follows for num_days = num_cols timepoints
@@ -47,6 +46,8 @@ def gen_features(equity_file, num_days, save=False, normalize = False):
 
     '''
     
+    
+
     e = Equity(equity_file)
     
     volumes = e.volumes

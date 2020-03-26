@@ -8,7 +8,7 @@ from gen_indicators import gen_data
 #binary category is either: postive, negative, or window
 
 
-def function(eq, features, days, look_back, binary_category, threshold):
+def svm_collection(eq, features, days, look_back, binary_category, threshold, verbose= False):
     '''
     inputs:
         eq: (string) ticker for equity of interest 
@@ -34,19 +34,27 @@ def function(eq, features, days, look_back, binary_category, threshold):
     models ={}
     index =0
     for data_set in model_data:
-        X_train = data_set[0]
+        X_train = data_set[0].reshape(-1,1)
         y_train = data_set[1]
-        X_test = data_set[2]
+        X_test = data_set[2].reshape(-1,1)
         y_test = data_set[3]
         clf = svm.SVC(gamma = "auto")
         clf.fit(X_train, y_train)
         acc = clf.score(X_test, y_test)
         models[index] = (clf, acc)
 
+        if verbose is True:
+            print("index: %d" %index)
+            print(X_train.shape)
+            print(y_train.shape)
+            print(X_test.shape)
+            print(y_test.shape)
+
         index+=1 
-    
+
     return models
 
+print(svm_collection("AAPL", [["SMA"],["EMA"]], 500, 10, "positive", .02))
 
     
 
