@@ -166,6 +166,21 @@ def plot_features(eq, features, ax, range=-1):
     return ax
 
 def plot_labels(eq, period, threshold, ax, type='', range=-1):
+    """plot labels for given parameters
+    
+    Arguments:
+        eq {[type]} -- equity to get labels from
+        period {int} -- see documentation for label period
+        threshold {float} -- see documentation for label threshold
+        ax {matplotlib.pyplot.axis} -- axis to plot on
+    
+    Keyword Arguments:
+        type {str} -- the type of label (means nothing right now) (default: {''})
+        range {int} -- number of days we want to use (default: {-1})
+    
+    Returns:
+        [matplotlib.pyplot.axis] -- axis with plot
+    """
     labels = build_labels(eq.ticker, period, threshold, type)[:range]
     i = np.arange(len(labels))
     p = labels[:] == 1
@@ -176,6 +191,14 @@ def plot_labels(eq, period, threshold, ax, type='', range=-1):
     return ax
 
 def concat_indicators(feature_set):
+    """Combines indicators into rectangular array
+    
+    Arguments:
+        feature_set {list of Indicators} -- Indicators
+    
+    Returns:
+        [list of Indicators] -- list of resized Indicators
+    """
     num_features = len(feature_set)
     print(feature_set)
     lens = np.array([f.len for f in feature_set])
@@ -189,6 +212,14 @@ def concat_indicators(feature_set):
     return feature_set
 
 def concat_features(feature_set):
+    """Creates feature set from strings
+    
+    Arguments:
+        feature_set {string array} -- list of feature titles with parameters, see README
+    
+    Returns:
+        ndarray -- 2d array of features over time
+    """
     num_features = len(feature_set)
 
     lens = np.array([f.len for f in feature_set])
@@ -205,7 +236,19 @@ def concat_features(feature_set):
     return features
 
 def create_features(eq, features, normalize = True, save = False):
+    """creates features from an equity
     
+    Arguments:
+        eq {Equity} -- equity to build around
+        features {string array} -- different features to include
+    
+    Keyword Arguments:
+        normalize {bool} -- normalize each vector (default: {True})
+        save {bool} -- save data to CSV (default: {False})
+    
+    Returns:
+        ndarray -- 2d array of features over time
+    """
     feature_set = get_feature_set(eq, features)
     fs = concat_features(feature_set)
     
@@ -221,6 +264,15 @@ def create_features(eq, features, normalize = True, save = False):
     return fs
 
 def get_feature_set(eq, features):
+    """Get features from their strings
+    
+    Arguments:
+        eq {Equity} -- equity to build around
+        features {string array} -- features and params to use
+    
+    Returns:
+        list -- list of ndarray of floats
+    """
     feature_set = []
     for feature in features:
         f = get_feature(eq, feature)
@@ -230,6 +282,15 @@ def get_feature_set(eq, features):
     return feature_set
 
 def get_feature(eq, feature_arg):
+    """parser for a string to get the feature array
+    
+    Arguments:
+        eq {Equity} -- equity to use
+        feature_arg {string} -- feature and its params
+    
+    Returns:
+        ndarray -- array of feature values
+    """
     args = feature_arg.split('_')
     feature = args[0]
 
@@ -293,7 +354,19 @@ def get_feature(eq, feature_arg):
     return ''
 
 def build_labels(ticker, period=10, threshold=.015, type=''):
+    """build the labels for a ticker
     
+    Arguments:
+        ticker {string} -- equity ticker
+    
+    Keyword Arguments:
+        period {int} -- see documentation for label period (default: {10})
+        threshold {float} -- see documentation for label threshold (default: {.015})
+        type {str} -- see documentation for label type (default: {''})
+    
+    Returns:
+        list -- list of labels
+    """
     eq = Equity(ticker)
     closes = eq.closes
     highs = eq.highs

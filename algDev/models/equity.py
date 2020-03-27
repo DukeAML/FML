@@ -44,7 +44,7 @@ class Equity:
             if eq_path[i] == r'/' or  eq_path[i] == '\\':
                 break
             i=i-1
-
+        
         self.ticker = eq_path[i+1:dataFile_len-5]
         
         volumeCol = self.ticker + ' US Equity - Volume'
