@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ɵɵNgOnChangesFeature } from '@angular/core';
 import { DataService } from '../../services/data.service';
 
 
@@ -14,7 +14,9 @@ export class IndicatorComponent implements OnInit {
   
   @Input() equity: string;
   @Input() indicatorName:string;
-  data:any;
+  @Input() data:any[];
+  @Input() modelName:string;
+
 
   // GRAPH FORMAT OPTIONS
   lineShowLabels: boolean = false;
@@ -48,14 +50,15 @@ export class IndicatorComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('indicator name in indicator is', this.indicatorName);
-    // add parameter for equity
-    this.dataService.getIndicatorValue(this.indicatorName).subscribe(result => {
-      console.log('result in component', result);
-      this.data = result['data']
-    })
-    // subscribe to data and set it here
-    // set lineColorScheme;
+    console.log('indicator graph rendered with equity', this.equity);
+    console.log('indicator component rendered with model', this.modelName);
+
+    // // subscribe to data and set it here
+    // // set lineColorScheme;
+  }
+
+  ngOnChanges(){
+      // do I even need this here?
   }
 
 }

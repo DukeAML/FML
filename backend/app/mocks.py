@@ -399,13 +399,6 @@ funData = [
             }
         ]
 
-def getModelPerformanceOverTime(modelName):
-  data = []
-  for i in range(1,7):
-    tempDict = {'name': i*10}
-    tempDict['value'] = int(modelName[:-1]) * 10
-    data.append(tempDict)
-  return data
 
 def getAssetValueOverTime(name):
   if(len(name) < 5):
@@ -572,3 +565,31 @@ indicatorValues = {
           "value": 60
         }
     ]}
+
+indicatorNames = ["Volumes",
+    "Prices",
+    "SMA",
+    "EMA",
+    "Wilder MA",
+    "Upper Bolinger Band",
+    "Lower Bolinger Band",
+    "Accumulative Swing Index",
+    "Average True Range",
+    "Balance of Power",
+    "Gopalakrishnan Range Index",
+    "Pivot Point",
+    "Pring's Know Sure Thing",
+    "MACD - SMA(MACD)",
+    "d KST * d TRIX",
+    "TRIX - MA(TRIX)",
+    "RSI",
+    "MA OHLC 4 1",
+    "MA OHLC 4 3",
+    "MA OHLC 4 5",
+    "MA OHLC 4 7",
+    "MA OHLC 4 9",
+    "West Texas",
+    "Wilshire US Real Estate",
+    "SNP"]
+
+modelData = [{'indicator': indicatorName, 'data':[indicatorValues]} for indicatorName in indicatorNames]

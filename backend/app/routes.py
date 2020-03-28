@@ -19,11 +19,6 @@ def get_description_over_time(name):
   else:
     return jsonify({'ERROR': 'Invalid ticker used'})
 
-@app.route('/model-performance-over-time/<string:modelName>', methods=['GET'])
-def get_model_performance_over_time(modelName):
-  mock = getModelPerformanceOverTime(modelName)
-  return jsonify({'data':mock})
-
 @app.route('/asset-category-description/<string:assetType>/<string:day>', methods=['GET'])
 def get_asset_description(assetType, day):
 
@@ -80,32 +75,7 @@ def get_performance_stats(day):
 
   return jsonify({'data':mock})
 
-@app.route('/indicators/<string:name>', methods=['GET'])
-def get_indicators_for_asset(name):
-  mock = {'name': 'idk', 'series': [
-      {
-        "name": 10,
-        "value": 40
-      },
-      {
-        "name": 20,
-        "value": 30
-      },
-      {
-        "name": 30,
-        "value": 30
-      },
-      {
-          "name": 40,
-          "value": 40
-        },
-        {
-          "name": 50,
-          "value": 50
-        },
-        {
-          "name": 60,
-          "value": 60
-        }
-    ]}
-  return jsonify({'data':[mock]})
+
+@app.route('/modelPerformance/<string:model>/<string:equity>', methods=['GET'])
+def get_indicators_for_asset(model, equity):
+  return jsonify({'data':modelData})

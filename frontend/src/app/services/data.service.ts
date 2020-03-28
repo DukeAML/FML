@@ -38,21 +38,13 @@ export class DataService {
 
   }
 
-  getModelPerformanceOverTime(assetName:string){
-    return this.http.get(this.serverURL + '/model-performance-over-time/' + assetName);
-
-  }
-
   getPerformanceStats(day:number) {
     return this.http.get(this.serverURL + '/performance-stats/' + day);
   }
 
-  getIndicatorValue(name:string){
-    this.http.get(this.serverURL + '/indicators/' + name).subscribe(result => {
-      console.log('indicator result', result);
-    })
-    
-    return this.http.get(this.serverURL + '/indicators/' + name);
+  getModelInformation(model:string, equity:string){
+    console.log('getting indicator information for model: ', model);
+    return this.http.get(this.serverURL + '/modelPerformance/' + model + '/' + equity);
   }
 
 

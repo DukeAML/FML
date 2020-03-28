@@ -20,18 +20,9 @@
     </mat-chip-list>
   </mat-form-field>
 
-  <mat-form-field>
-      <mat-label>Model</mat-label>
-      <mat-select (selectionChange)="getModelData($event)" multiple>
-        <mat-option *ngFor="let model of models" [value]="model">
-          {{model}}
-        </mat-option>
-      </mat-select>
-  </mat-form-field>
-
-  <div class="equitySpecific" *ngIf="assetData.length > 0">
+  <div class="equitySpecific" >
     <div class="graph">
-      <h2>Allocation Over Time</h2>
+      <h2>Prices Over Time</h2>
       <ngx-charts-line-chart
       [view]="view"
       [scheme]="lineColorScheme"
@@ -51,8 +42,25 @@
       >
       </ngx-charts-line-chart>
     </div>
-    <app-indicators [equity]="mostRecentEquity" ></app-indicators>
+
+
+
   </div>
+
+    <div class="headings">
+      <h2>Model Performance</h2>
+      
+        <mat-form-field>
+          <mat-label>Model</mat-label>
+          <mat-select (selectionChange)="getModelData($event)">
+            <mat-option *ngFor="let model of models" [value]="model">
+              {{model}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <app-indicators [equity]="mostRecentEquity" [model]="activeModel" *ngIf="activeModel.length > 0"></app-indicators>
+
 
 </div>
 

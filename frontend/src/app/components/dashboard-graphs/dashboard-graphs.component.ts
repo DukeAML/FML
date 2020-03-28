@@ -8,7 +8,7 @@ import { DataService } from '../../services/data.service';
 @Component({
   selector: 'app-dashboard-graphs',
   templateUrl: './dashboard-graphs.component.html',
-  styleUrls: ['./dashboard-graphs.component.css']
+  styleUrls: ['./dashboard-graphs.component.css'],
 })
 export class DashboardGraphsComponent implements OnInit {
 
@@ -19,7 +19,8 @@ export class DashboardGraphsComponent implements OnInit {
   assetData:any[] = [];
   modelData:any[] = [];
   activeAssets:any[] = [];
-  activeModels:any[] = [];
+  activeModel:string = '';
+
   invalidAssetField:boolean = false;
   mostRecentEquity:string;
 
@@ -29,6 +30,7 @@ export class DashboardGraphsComponent implements OnInit {
 
   ngOnInit() {
     this.populateDropdown();
+    this.getAssetData({'value': 'AAPL'})
   }
 
   populateDropdown(){
@@ -38,7 +40,7 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
 
-  getAssetData($event: MatChipInputEvent){
+  getAssetData($event: any){
     console.log('event just took place')
     let newValues = $event['value'];
     let input = $event.input;
@@ -94,13 +96,10 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   getModelData($event){
-    console.log('event', $event);
+    this.activeModel = '';
 
     let modelName = $event['value'];
-    
-    // this.dataService.getModelPerformanceOverTime(modelName).subscribe(result => {
-    //   // do stuff here
-    // })
+    this.activeModel = modelName;    
   }
 
     // ----------- FORMFIELD OPTIONS ---------------
