@@ -22,7 +22,6 @@ def gen_labels(data, binary_category, threshold):
     
     if binary_category == "positive":
         y = 0
-        print(data)
         t0 = data[0]
         
         for ii in range(len(data)-1):
@@ -89,7 +88,7 @@ def get_data_labelled(data, look_back, binary_category, threshold):
     return X, y
 
 
-def gen_data(eq, features, days, look_back, binary_category, threshold):
+def gen_data(eq, features, days, look_back, binary_category, threshold, save= False, normalize= False):
     '''
     this function returns X data for given number of days formatted using look_back, 
     Y data (labels) formatted using binary category and threshold, using above helper functions
@@ -98,10 +97,13 @@ def gen_data(eq, features, days, look_back, binary_category, threshold):
         eq: (string) ticker for equity of interest 
         features: (list of strings) all predictive features wanted for model 
         days: number of days to use
+            Note: you will need to use a minimum of days s.t. .2(# days) >= one look_back period
         look_back: period of interest for meeting return criterion (did eq return ever surpass 2% inc within look_back days)
         binary category: one of "postive", "negative", or "window". positive establishes upper threshold, 
                         negative establishes lower threshold, and window establishes upper and lower threshold 
         threshold: limit of interest. (does return on equity surpass, fall beneath, etc. threshold)
+        save: boolean, option to save generated features df 
+        normalize: boolean, option to normalize features 
     outputs: 4 arrays below
         X_train: lists of data of size look_back for training
         y_train: labels for training data
@@ -123,36 +125,50 @@ def gen_data(eq, features, days, look_back, binary_category, threshold):
     here = os.path.abspath(os.path.dirname(__file__))
     eq_path = os.path.join(here, 'data', 'equities', '%s.xlsx' % eq)
 
-    features = gen_features(eq_path, days, df= True)
+    indicators = gen_features(eq_path, days, save, normalize)
 
-    train_size = int(0.8 * days)
-    test_size = days - train_size
+    prices = indicators.iloc[row_dict["Prices"]]
 
-    prices = features.iloc[row_dict["Prices"]]
-    train = prices[0:train_size]
-    test = prices[train_size:]
 
-    X_train0, y_train = get_data_labelled(train, look_back, binary_category, threshold)
-    X_test0, y_test = get_data_labelled(test, look_back, binary_category, threshold)
+    X_train0, y_train0 = get_data_labelled(prices, look_back, binary_category, threshold)
 
-    X =[]
-    for indicator in features:
-        data = features.iloc[row_dict[indicator]]
+    train_size_P = int(0.8 * len(y_train0))
+    test_size_P = len(y_train0) - train_size_P
+
+    #note we split after for max amount of look_back samples 
+    # and for consistency with below generation of indicators 
+
+    y_train = y_train0[0:train_size_P]
+    y_test = y_train0[train_size_P:]
+    
+   
+    X_final =[]
+    for feature in features:
+        X= []
+        data = indicators.iloc[row_dict[feature]]
         c = 0 
-        d =0
+        d = 0
         while len(data) - d > look_back:
             temp = data[c:look_back+ d +1].tolist()
             X.append(temp[0])
             c+=1 
             d+=1
+        X_final.append(X)
     
-    print(features.iloc[row_dict["SMA"]])
-    print(len(X))
+    if len(X_final) > 1:
+        Temp= []
+        Final = []
+        for ii in range(len(X_final[0])):
+            for jj in range(X_final):
+                Temp.append(X_final[jj][ii])
+        Final.append(Temp)
+    else:
+        Final = X_final[0]
+    
+    train_size_I = int(0.8 * len(Final))
+    test_size_I = len(Final) - train_size_I
 
-    train_size_I = int(0.8 * len(X))
-    test_size_I = days - train_size_I
-
-    X_train = np.array(X[0:train_size_I])
-    X_test = np.array(X[train_size_I:])
+    X_train = np.array(Final[0:train_size_I])
+    X_test = np.array(Final[train_size_I:])
    
     return X_train, y_train, X_test, y_test

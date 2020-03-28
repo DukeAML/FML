@@ -1,34 +1,96 @@
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten
-from gen_picture_data import gen_data
+from keras.optimizers import SGD
+from sklearn.utils import compute_class_weight
+from keras.utils import to_categorical
+import numpy as np
+from preprocessing.data_generator import split_data
+class CNN:
+    """wrapper for a CNN model
+    
+    Returns:
+        CNN -- model
+    """
+    def __init__(self, X, y, title='default'):
+        """initialize CNN
+        
+        Arguments:
+            X {ndarray} -- input data
+            y {ndarray} -- labels
+        
+        Keyword Arguments:
+            title {str} -- name of the model (default: {'default'})
+        """
+        self.data = {'features':X, 'labels':y}
+        self.model = self.build_model(X.shape[1],X.shape[2])
+        self.metrics = {}
+        self.title = title
+        
+    def build_model(self):
+        """Construct the CNN, make this more dynamic later
+        
+        Returns:
+            Sequential -- fully compiled model
+        """
+        #create model
+        model = Sequential()
+        #add model layers
+        model.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(self.data['features'].shape[1],self.data['features'].shape[2],1)))
+        model.add(Conv2D(32, kernel_size=3, activation='relu'))
+        model.add(Flatten())
+        model.add(Dense(1, activation='sigmoid'))
+        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
-X, y = gen_data('AAPL')
+        model.compile( loss = "categorical_crossentropy",   
+               optimizer = sgd, 
+               metrics=['accuracy']
+             )
+        return model
 
-print(X.shape)
-print(y.shape)
+    def train(self, splits, X=None, y=None):
+        """train the CNN
+        
+        Arguments:
+            splits {int array} -- split of data between types
+        
+        Keyword Arguments:
+            X {ndarray} -- train input data (default: {None})
+            y {ndarray} -- train labels (default: {None})
+        """
+        if not X or not y:
+            X = self.data['features']
+            y = self.data['labels']
+        
+        X_train, y_train, X_val, y_val, X_test, y_test = split_data(X, y, splits)
 
-n = len(X)
-t_size = int(n * .8)
+        y_train = to_categorical(y_train)
+        y_val = to_categorical(y_val) 
+        y_test = to_categorical(y_test)
+        
+        self.model.fit(X_train, y_train, batch_size = 128, epochs = 200, verbose = 2, validation_data = (X_val, y_val))
+        
+        self.test(X_test, y_test)
 
-X_train = X[50:t_size,:]
-X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], X_train.shape[2], 1)
-print(X_train.shape)
-X_test = X[t_size:len(X),:]
-X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], X_test.shape[2], 1)
-print(X_test.shape)
-y_train = y[(-1 * (n-50)):(-1 * (n-t_size))]
-print(y_train.shape)
-y_test = y[(-1 * (n-t_size)):len(y)]
-print(y_test.shape)
-#create model
-model = Sequential()
-#add model layers
-model.add(Conv2D(64, kernel_size=3, activation='relu', input_shape=(25,25,1)))
-model.add(Conv2D(32, kernel_size=3, activation='relu'))
-model.add(Flatten())
-model.add(Dense(1, activation='softmax'))
-#compile model using accuracy to measure model performance
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    def test(self, X, y):
+        """run a test over data points
+        
+        Arguments:
+            X {ndarray} -- input data
+            y {ndarray} -- labels
+        """
+        results = self.model.evaluate(X, y)
+        
+        self.metrics['acc'] = results['accuracy']
 
-#train the model
-model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=500)
+    def predict(self, Xi):
+        """Make a prediction of a data point
+        
+        Arguments:
+            Xi {ndarray} -- data point to predict on
+        
+        Returns:
+            float -- prediction of the point
+        """
+        pred = self.model.predict(Xi)
+        
+        return pred
