@@ -1,26 +1,30 @@
 <div class="main">
 
   <mat-form-field class="example-chip-list" floatPlaceholder="always">
-    <mat-chip-list #chipList aria-label="Selected">
-      <mat-chip *ngFor="let asset of assetData" [selectable]="selectable"
-               [removable]="removable" (removed)="remove(asset.name)">
+    <mat-chip-list aria-label="Selected" #chipList>
+      <div *ngFor="let asset of assetData"> 
+        <mat-chip *ngIf="asset.type=='asset'" [selectable]="selectable"
+        [removable]="removable" (removed)="remove(asset.name)">
         {{asset.name}}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      </mat-chip>
-      <input placeholder="Add stocks..."
-             [matChipInputFor]="chipList"
+        </mat-chip>
+      </div>
+    </mat-chip-list>
+      <input  
+              placeholder="Add stocks..."
+              [matChipInputFor]="chipList"
              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
              [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="getAssetData($event)">
+             (matChipInputTokenEnd)="getAssetData($event, 'asset')">
 
       <mat-error *ngIf="invalidAssetField">
         Please use a valid ticker
       </mat-error>
 
-    </mat-chip-list>
+
   </mat-form-field>
 
-  <div class="equitySpecific" >
+  <div class="equitySpecific">
     <div class="graph">
       <h2>Prices Over Time</h2>
       <ngx-charts-line-chart
@@ -43,22 +47,52 @@
       </ngx-charts-line-chart>
     </div>
 
+    <div class="adder">
+      <mat-chip-list *ngFor="let asset of assetData">
+        <mat-chip *ngIf="asset.type=='indicator'">{{asset.name}}</mat-chip>
+      </mat-chip-list>
 
+      <mat-form-field>
+        <mat-label>Indicator</mat-label>
+        <mat-select (selectionChange)="loadParameterFields($event)">
+          <mat-option *ngFor="let indicator of indicators" [value]="indicator">
+            {{indicator}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
+      <div class="paramsField" *ngIf="indicatorSelected">
+        
+        <div *ngIf="limitless">
+          <input placeholder="Separate parameters with commas"
+                  [matChipInputFor]="chipList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="getAssetData($event, 'indicator')">
+        </div>
+        
+        <div *ngIf="!limitless">
+
+        </div>
+
+      </div>
+
+    </div>
+  
   </div>
 
-    <div class="headings">
-      <h2>Model Performance</h2>
-      
-        <mat-form-field>
-          <mat-label>Model</mat-label>
-          <mat-select (selectionChange)="getModelData($event)">
-            <mat-option *ngFor="let model of models" [value]="model">
-              {{model}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-    </div>
+
+  <div class="headings">
+    <h2>Model Performance</h2>
+      <mat-form-field>
+        <mat-label>Model</mat-label>
+        <mat-select (selectionChange)="getModelData($event)">
+          <mat-option *ngFor="let model of models" [value]="model">
+            {{model}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  </div>
     <app-indicators [equity]="mostRecentEquity" [model]="activeModel" *ngIf="activeModel.length > 0"></app-indicators>
 
 

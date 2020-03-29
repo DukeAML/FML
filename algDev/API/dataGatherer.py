@@ -15,6 +15,7 @@
 import yfinance as yf
 import requests
 from ftplib import FTP
+import numpy as np
 
 def getPrices(ticker):
     tickerObj = yf.Ticker(ticker.upper())
@@ -23,6 +24,8 @@ def getPrices(ticker):
     jsonList = []
 
     for i in range(len(days)):
+        if np.isnan(days[i]):
+            continue
         tempObj = {}
         tempObj["name"] = i
         tempObj["value"] = days[i]

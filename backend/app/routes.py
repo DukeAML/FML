@@ -8,7 +8,7 @@ from app.mocks import *
 def getModelsAndAssets():
   mockModels = getAllModels()
   mockAssets = getAllAssetNames()
-  return jsonify({'models': mockModels, 'assets': mockAssets})
+  return jsonify({'models': mockModels, 'indicators': indicatorNames})
 
 
 @app.route('/asset-value-over-time/<string:name>', methods=['GET'])
@@ -79,3 +79,18 @@ def get_performance_stats(day):
 @app.route('/modelPerformance/<string:model>/<string:equity>', methods=['GET'])
 def get_indicators_for_asset(model, equity):
   return jsonify({'data':modelData})
+
+@app.route('/indicators/<string:indicator>/params', methods=['GET'])
+def getNumParams(indicator):
+  if(indicator[0] == 'a'):
+    return jsonify({'data': 2})
+  elif indicator[0] == 'b':
+    return jsonify({'data': 4})
+  else:
+    return jsonify({'data': 'n'})
+
+@app.route('/indicators/<string:indicator>', methods=['GET'])
+def getIndicatorData(indicator):
+  firstSeries = multiseriesData[0]
+  firstSeries['name'] = indicator
+  return jsonify({'data': [firstSeries]})

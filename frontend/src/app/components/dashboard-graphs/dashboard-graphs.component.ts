@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatChip, MatChipInputEvent, MatChipList, MatError, MatFormField, MatOption, MatPlaceholder, MatSelect } from '@angular/material';
+import { MatChip, MatChipInputEvent, MatChipList, MatError, MatFormField, MatInputModule, MatOption, MatPlaceholder, MatSelect } from '@angular/material';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { DataService } from '../../services/data.service';
@@ -18,8 +18,11 @@ export class DashboardGraphsComponent implements OnInit {
   models:string[];
   assetData:any[] = [];
   modelData:any[] = [];
-  activeAssets:any[] = [];
   activeModel:string = '';
+  indicators:string[];
+  indicatorSelected:boolean = false;
+  limitless:boolean = false;
+  numParams:number;
 
   invalidAssetField:boolean = false;
   mostRecentEquity:string;
@@ -30,49 +33,59 @@ export class DashboardGraphsComponent implements OnInit {
 
   ngOnInit() {
     this.populateDropdown();
-    this.getAssetData({'value': 'AAPL'})
+    this.getAssetData({'value': 'AAPL'}, 'asset')
   }
 
   populateDropdown(){
     this.dataService.getDropdownInfo().subscribe(result => {
+      console.log('dropdown finished populating');
       this.models = result['models'];
+      this.indicators = result['indicators'];
     })
+    
   }
 
-
-  getAssetData($event: any){
-    console.log('event just took place')
+  getAssetData($event:any, dataType:string){
     let newValues = $event['value'];
     let input = $event.input;
     let value = $event.value.toUpperCase();
 
-    // now add them to the array, if no match, then pop up model asking for valid ticker
-    console.log('get asset value over time called with value: ', value);
     if(!value){
       return
     }
-    this.dataService.getAssetValueOverTime(value).subscribe(result => {
-      
-      if(result['data']){
-        this.invalidAssetField = false;
+
+    if(dataType == 'asset'){
+      this.dataService.getAssetValueOverTime(value).subscribe(result => {
+        console.log('result was', result);
+        this.handleNewGraphData(result, value, dataType);
         if(input){ input.value = ''; }
-        this.mostRecentEquity = value;
-        let data = result['data']
-        let tempObj = {'name': value, 'series': data}
+      })
+    }
+    else{
+      console.log('event in getAssetData', $event);
+      // eventually need to handle new graph data as well
+    }
+  }
 
-        console.log('tempObj', tempObj)
-        let assetDataCopy = [...this.assetData];
-        assetDataCopy.push(tempObj);
-        this.assetData = assetDataCopy;
-        
-        // handle updating equity for indicators performance
+  handleNewGraphData(result:any, value:string, dataType:string){
+    if(result['data']){
+      this.invalidAssetField = false;
+      this.mostRecentEquity = value;
+      let data = result['data']
+      let tempObj = {'name': value, 'series': data, 'type': dataType}
 
-      }
-      else{
-        this.invalidAssetField = true;
-        // handle invalid asset
-      }
-    })
+      console.log('tempObj', tempObj)
+      let assetDataCopy = [...this.assetData];
+      assetDataCopy.push(tempObj);
+      this.assetData = assetDataCopy;
+      
+      // handle updating equity for indicators performance
+
+    }
+    else{
+      this.invalidAssetField = true;
+      // handle invalid asset
+    }
   }
 
   remove(ticker){
@@ -95,12 +108,28 @@ export class DashboardGraphsComponent implements OnInit {
     this.assetData = assetDataCopy;
   }
 
+  loadParameterFields($event){
+    console.log('loadParamterFields called with event', $event);
+    let indicatorName = $event['value'];
+    this.dataService.getNumberOfParameters(indicatorName).subscribe(result => {
+      let number = result['data']
+      this.indicatorSelected = true;
+      if(number == 'n'){
+        this.limitless = true;
+      }
+      else{
+        this.numParams = number;
+      }
+    })
+  }
+
   getModelData($event){
     this.activeModel = '';
 
     let modelName = $event['value'];
     this.activeModel = modelName;    
   }
+
 
     // ----------- FORMFIELD OPTIONS ---------------
     visible: boolean = true;

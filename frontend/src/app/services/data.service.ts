@@ -47,5 +47,13 @@ export class DataService {
     return this.http.get(this.serverURL + '/modelPerformance/' + model + '/' + equity);
   }
 
+  getNumberOfParameters(indicator:string){
+    return this.http.get(this.serverURL + '/indicators/' + indicator + '/params');
+  }
+
+  getCustomIndicatorsInfo(indicator:string){
+    return this.http.get(this.serverURL + '/indicators/' + indicator)
+  }
+
 
 }

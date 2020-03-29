@@ -10,7 +10,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AboutComponent } from './components/about/about.component';
-import { MatChipsModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatOptionModule, MatSelectModule, MatSliderModule, MatToolbarModule } from '@angular/material';
+import { MatChipsModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatSelectModule, MatSliderModule, MatToolbarModule } from '@angular/material';
 import { AssetModalComponent } from './components/asset-modal/asset-modal.component';
 import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component';
 import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboard-graphs.component';
@@ -38,6 +38,7 @@ import { IndicatorComponent } from './components/indicator/indicator.component'
     BrowserAnimationsModule,
     HttpClientModule,
     MatIconModule,
+    MatInputModule,
     MatToolbarModule, 
     MatChipsModule,
     MatDialogModule,
