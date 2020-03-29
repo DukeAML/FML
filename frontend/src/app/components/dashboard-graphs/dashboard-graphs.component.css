@@ -15,14 +15,6 @@ mat-label{
     background-color: #ffffff;
 }
 
-input label {
-    color: red;
-  }
-  
-  /* When the input is focused */
-  md-input-container.md-input-focused label {
-    color: blue;
-  }
 
 .main{
     margin-left: 50%;

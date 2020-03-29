@@ -65,11 +65,10 @@
       <div class="paramsField" *ngIf="indicatorSelected">
         
         <div *ngIf="limitless">
-          <input placeholder="Separate parameters with commas"
-                  [matChipInputFor]="chipList"
-                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  [matChipInputAddOnBlur]="addOnBlur"
-                  (matChipInputTokenEnd)="getAssetData($event, 'indicator')">
+          <mat-form-field class="example-full-width">
+            <mat-label>Separate parameters with commas</mat-label>
+            <input matInput>
+          </mat-form-field>
         </div>
         
         <div *ngIf="!limitless">
