@@ -2,14 +2,15 @@
 
   <mat-form-field class="example-chip-list" floatPlaceholder="always">
     <mat-chip-list aria-label="Selected" #chipList>
-      <div *ngFor="let asset of assetData"> 
+        <div *ngFor="let asset of assetData"> 
         <mat-chip *ngIf="asset.type=='asset'" [selectable]="selectable"
+        
         [removable]="removable" (removed)="remove(asset.name)">
         {{asset.name}}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
-      </div>
-    </mat-chip-list>
+        </div>
+
       <input  
               placeholder="Add stocks..."
               [matChipInputFor]="chipList"
@@ -21,7 +22,7 @@
         Please use a valid ticker
       </mat-error>
 
-
+    </mat-chip-list>
   </mat-form-field>
 
   <div class="equitySpecific">
