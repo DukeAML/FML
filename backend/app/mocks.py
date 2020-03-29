@@ -566,7 +566,9 @@ indicatorValues = {
         }
     ]}
 
-indicatorNames = ["Volumes",
+indicatorNames = ["a",
+    "b",
+    "Volumes",
     "Prices",
     "SMA",
     "EMA",
@@ -593,3 +595,30 @@ indicatorNames = ["Volumes",
     "SNP"]
 
 modelData = [{'indicator': indicatorName, 'data':[indicatorValues]} for indicatorName in indicatorNames]
+
+mockIndicatorData = [
+          {
+            "name": 0,
+            "value": 40
+          },
+          {
+            "name": 4,
+            "value": 10
+          },
+          {
+            "name": 8,
+            "value": 20
+          },
+          {
+            "name": 12,
+            "value": 30
+          },
+          {
+              "name": 16,
+              "value": 40
+            },
+            {
+              "name": 20,
+              "value": 50
+            }
+        ]

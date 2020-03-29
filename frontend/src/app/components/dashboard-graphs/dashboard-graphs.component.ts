@@ -20,9 +20,10 @@ export class DashboardGraphsComponent implements OnInit {
   modelData:any[] = [];
   activeModel:string = '';
   indicators:string[];
+  mostRecentIndicator:string;
   indicatorSelected:boolean = false;
-  limitless:boolean = false;
-  numParams:number;
+  numParams:any;
+  invalidNumParams:boolean = false;
 
   invalidAssetField:boolean = false;
   mostRecentEquity:string;
@@ -33,7 +34,7 @@ export class DashboardGraphsComponent implements OnInit {
 
   ngOnInit() {
     this.populateDropdown();
-    this.getAssetData({'value': 'AAPL'}, 'asset')
+    this.getAssetData({'value': 'AAPL'})
   }
 
   populateDropdown(){
@@ -45,8 +46,30 @@ export class DashboardGraphsComponent implements OnInit {
     
   }
 
-  getAssetData($event:any, dataType:string){
-    let newValues = $event['value'];
+  getIndicatorData($event:any){
+    console.log('getIndicatorData event', $event);
+    this.invalidNumParams = false;
+    let params:string = event['target']['value'];
+
+    if(this.numParams != 'n' && params.split(",").length != this.numParams){
+      this.invalidNumParams = true;
+      return;
+    }
+
+    // make the textbox blank after parameters have been confirmed
+    event['target']['value'] = '';
+
+    if(this.mostRecentIndicator){
+      let formatted = this.mostRecentIndicator + "," + params;
+      this.mostRecentIndicator = null;
+      this.dataService.getCustomIndicatorsInfo(formatted).subscribe(result => {
+        this.handleNewGraphData(result, formatted, 'indicator');
+      })
+    }
+
+  }
+
+  getAssetData($event:any){
     let input = $event.input;
     let value = $event.value.toUpperCase();
 
@@ -54,20 +77,16 @@ export class DashboardGraphsComponent implements OnInit {
       return
     }
 
-    if(dataType == 'asset'){
-      this.dataService.getAssetValueOverTime(value).subscribe(result => {
-        console.log('result was', result);
-        this.handleNewGraphData(result, value, dataType);
-        if(input){ input.value = ''; }
-      })
-    }
-    else{
-      console.log('event in getAssetData', $event);
-      // eventually need to handle new graph data as well
-    }
+    this.dataService.getAssetValueOverTime(value).subscribe(result => {
+      console.log('result was', result);
+      this.handleNewGraphData(result, value, 'asset');
+      if(input){ input.value = ''; }
+    })
+    
   }
 
   handleNewGraphData(result:any, value:string, dataType:string){
+    console.log('result', result);
     if(result['data']){
       this.invalidAssetField = false;
       this.mostRecentEquity = value;
@@ -103,23 +122,17 @@ export class DashboardGraphsComponent implements OnInit {
         break;
       }
     }
-    // MAKE SURE SPLICE CORRECTLY MODIFIES THE ARRAY
     assetDataCopy.splice(tickerIndex, 1);
     this.assetData = assetDataCopy;
   }
 
   loadParameterFields($event){
     console.log('loadParamterFields called with event', $event);
-    let indicatorName = $event['value'];
-    this.dataService.getNumberOfParameters(indicatorName).subscribe(result => {
+    this.mostRecentIndicator = $event['value'];
+    this.dataService.getNumberOfParameters(this.mostRecentIndicator).subscribe(result => {
       let number = result['data']
       this.indicatorSelected = true;
-      if(number == 'n'){
-        this.limitless = true;
-      }
-      else{
-        this.numParams = number;
-      }
+      this.numParams = number;
     })
   }
 

@@ -91,6 +91,4 @@ def getNumParams(indicator):
 
 @app.route('/indicators/<string:indicator>', methods=['GET'])
 def getIndicatorData(indicator):
-  firstSeries = multiseriesData[0]
-  firstSeries['name'] = indicator
-  return jsonify({'data': [firstSeries]})
+  return jsonify({'data': mockIndicatorData})

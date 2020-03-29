@@ -4,7 +4,6 @@
     <mat-chip-list aria-label="Selected" #chipList>
         <div *ngFor="let asset of assetData"> 
         <mat-chip *ngIf="asset.type=='asset'" [selectable]="selectable"
-        
         [removable]="removable" (removed)="remove(asset.name)">
         {{asset.name}}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
@@ -16,7 +15,7 @@
               [matChipInputFor]="chipList"
              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
              [matChipInputAddOnBlur]="addOnBlur"
-             (matChipInputTokenEnd)="getAssetData($event, 'asset')">
+             (matChipInputTokenEnd)="getAssetData($event)">
 
       <mat-error *ngIf="invalidAssetField">
         Please use a valid ticker
@@ -50,7 +49,10 @@
 
     <div class="adder">
       <mat-chip-list *ngFor="let asset of assetData">
-        <mat-chip *ngIf="asset.type=='indicator'">{{asset.name}}</mat-chip>
+        <mat-chip *ngIf="asset.type=='indicator'" [removable]="removable" (removed)="remove(asset.name)">
+          {{asset.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
       </mat-chip-list>
 
       <mat-form-field>
@@ -64,15 +66,14 @@
 
       <div class="paramsField" *ngIf="indicatorSelected">
         
-        <div *ngIf="limitless">
+        <div>
           <mat-form-field class="example-full-width">
-            <mat-label>Separate parameters with commas</mat-label>
-            <input matInput>
+            <mat-label>Commas between {{this.numParams}} parameters</mat-label>
+            <input matInput (keydown.enter)="getIndicatorData($event)">
           </mat-form-field>
-        </div>
-        
-        <div *ngIf="!limitless">
-
+          <mat-error *ngIf="invalidNumParams">
+            Please use {{this.numParams}} parameters
+          </mat-error>
         </div>
 
       </div>
