@@ -2,6 +2,19 @@ from preprocessing.feature_generation import *
 from models.indicator import Indicator
 import numpy as np
 
+def parse_features(features):
+    feature_set = []
+    for feature in features:
+        if 'rainbow' in feature:
+            rainbows = feature.split('_')
+            for i,rainbow in enumerate(rainbows):
+                if i == 0:
+                    continue
+                feature_set.append('rainbow_'+rainbow)
+        else:
+            feature_set.append(feature)
+
+    return feature_set
 def get_subset(eq, feature_set, start_index, end_index, threshold, period):
     """Get a specific feature, instead of the whole features set
     
@@ -72,7 +85,7 @@ def gen_svm_data(eq, feature, length, threshold, period):
         ndarray -- input and labels
     """
     feature = create_features(eq, feature)
-
+    print(feature)
     X, y = format_data(eq.ticker, feature, 'svm', length, threshold, period)
     print(X.shape)
     return X.reshape(X.shape[0],X.shape[1],),y
@@ -136,6 +149,10 @@ def format_data(ticker, data, type, length, threshold, period):
                 X[i-length,:,:] = data[i-length:i,:]
             elif type=='svm':
                 X[i-length,:] = data[i-length:i]
+    if len(X) > len(y):
+        y = y[0:len(X)]
+    elif len(y) > len(X):
+        X = X[0:len(y)]
     return X, y
 
     

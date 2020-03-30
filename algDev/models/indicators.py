@@ -375,6 +375,7 @@ class Indicators:
     
     @staticmethod
     def rainbow_ma(prices, periods=(1, 3, 5, 7, 9)):
+        print(periods)
         return [Indicator(Indicators.sma(prices, period).T) for period in periods]
     
     @staticmethod

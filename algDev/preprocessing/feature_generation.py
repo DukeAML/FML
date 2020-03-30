@@ -52,10 +52,10 @@ def olhc_feature(eq):
     return [Indicator(ohlc_vec)]
 
 def rainbow_feature(eq, smas):
-
+    
     ohlc_vec = olhc_feature(eq)[0].values
     rainbow_vecs = Indicators.rainbow_ma(ohlc_vec, smas)
-
+    
     return rainbow_vecs
 
 def oil_feature():
@@ -293,15 +293,15 @@ def get_feature(eq, feature_arg):
     """
     args = feature_arg.split('_')
     feature = args[0]
-
+    print(args)
     if len(args)==1:
         args.append('9')
+    all_periods = [int(i) for i in args[1:]]
     if len(args)==2:
         args.append('18')
 
     fast_period = int(args[1])
     slow_period = int(args[2])
-    all_periods = [int(i) for i in args[1:]]
 
     ## Come up with good way to parse an input for a feature and return correct function call
     if(feature=='sma'):
