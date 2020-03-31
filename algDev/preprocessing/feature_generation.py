@@ -5,10 +5,10 @@ import datetime
 import os
 import matplotlib.pyplot as plt
 
-from models.equity import Equity
-from models.indicators import Indicators
-from models.indicator import Indicator
-from preprocessing import utils
+from algDev.models.equity import Equity
+from algDev.models.indicators import Indicators
+from algDev.models.indicator import Indicator
+from algDev.preprocessing import utils
 here = os.path.abspath(os.path.dirname(__file__))
 
 def macd_raw_feature(eq, slow_period, fast_period):

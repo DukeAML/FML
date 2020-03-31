@@ -6,14 +6,14 @@ import app.mocks as mocks
 
 @app.route('/dashboard-dropdown', methods=['GET'])
 def getModelsAndAssets():
-  mockModels = getAllModels()
-  mockAssets = getAllAssetNames()
-  return jsonify({'models': mockModels, 'indicators': indicatorNames})
+  mockModels = mocks.getAllModels()
+  mockAssets = mocks.getAllAssetNames()
+  return jsonify({'models': mockModels, 'indicators': mocks.indicatorNames})
 
 
 @app.route('/asset-value-over-time/<string:name>', methods=['GET'])
 def get_description_over_time(name):
-  mock = getAssetValueOverTime(name)
+  mock = mocks.getAssetValueOverTime(name)
   if(len(mock) > 0):
     return jsonify({'data':mock})
   else:
@@ -22,7 +22,7 @@ def get_description_over_time(name):
 @app.route('/asset-category-description/<string:assetType>/<string:day>', methods=['GET'])
 def get_asset_description(assetType, day):
 
-  mock = getCategoryDescriptionAtDate(assetType, day)
+  mock = mocks.getCategoryDescriptionAtDate(assetType, day)
   
   return jsonify({'data': mock})
 
@@ -33,7 +33,7 @@ def get_asset_description(assetType, day):
 def get_alloc_info():
     print('got here')
     # get most recent day's values across all asset categories
-    testSeries = multiseriesData[0]['series']
+    testSeries = mocks.multiseriesData[0]['series']
     maxDay = testSeries[0]['name']
     for entry in testSeries:
       if entry['name'] > maxDay:
@@ -42,7 +42,7 @@ def get_alloc_info():
 
     mostRecentAllocation = []
 
-    for assetType in multiseriesData:
+    for assetType in mocks.multiseriesData:
       tempDict = {}
       assetName = assetType['name']
       currentSeries = assetType['series']
@@ -56,7 +56,7 @@ def get_alloc_info():
       mostRecentAllocation.append(tempDict)
     print(mostRecentAllocation)
 
-    return jsonify({'data':multiseriesData, 'mostRecent':mostRecentAllocation})
+    return jsonify({'data': mocks.multiseriesData, 'mostRecent':mostRecentAllocation})
 
   
 @app.route('/most-recent-day', methods=['GET'])
@@ -78,7 +78,7 @@ def get_performance_stats(day):
 
 @app.route('/modelPerformance/<string:model>/<string:equity>', methods=['GET'])
 def get_indicators_for_asset(model, equity):
-  return jsonify({'data':modelData})
+  return jsonify({'data': mocks.modelData})
 
 @app.route('/indicators/<string:indicator>/params', methods=['GET'])
 def getNumParams(indicator):
