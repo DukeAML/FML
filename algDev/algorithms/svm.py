@@ -45,7 +45,8 @@ class SVM:
             y = self.data['labels']
         
         X_train, y_train, X_test, y_test = split_data(X, y, splits)
-        
+        print(X_train.shape)
+        print(y_train.shape)
         self.model.fit(X_train, y_train)
 
         self.test(X_test, y_test)
