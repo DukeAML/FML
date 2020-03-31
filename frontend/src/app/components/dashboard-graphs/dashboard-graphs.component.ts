@@ -47,10 +47,11 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   getIndicatorData($event:any){
-    console.log('getIndicatorData event', $event);
+    console.log('getIndicatorData event', $event['target']);
     let formatted = this.mostRecentIndicator;
 
     if(this.numParams != 0){
+        console.log('using parameters')
         this.invalidNumParams = false;
         let params:string = event['target']['value'];
     
@@ -63,10 +64,10 @@ export class DashboardGraphsComponent implements OnInit {
         event['target']['value'] = '';
     
         if(this.mostRecentIndicator){
-          let formatted = this.mostRecentIndicator + "," + params;
-          this.mostRecentIndicator = null;
+          formatted = this.mostRecentIndicator + "," + params;
         }
     }
+    console.log('using the parameter', formatted);
     this.dataService.getCustomIndicatorsInfo(formatted, this.mostRecentEquity).subscribe(result => {
       this.handleNewGraphData(result, formatted + ' ' + this.mostRecentEquity, 'indicator');
     })
@@ -75,10 +76,10 @@ export class DashboardGraphsComponent implements OnInit {
   getAssetData($event:any){
     let input = $event.input;
     let value = $event.value.toUpperCase();
-    this.mostRecentEquity = value;
     if(!value){
       return
     }
+    this.mostRecentEquity = value;
 
     this.dataService.getAssetValueOverTime(value).subscribe(result => {
       console.log('result was', result);
@@ -129,16 +130,25 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   loadParameterFields($event){
+    this.indicatorSelected = false;
     console.log('loadParamterFields called with event', $event);
+    if(!$event['value']){
+      return;
+    }
     this.mostRecentIndicator = $event['value'];
     this.dataService.getNumberOfParameters(this.mostRecentIndicator).subscribe(result => {
+      console.log('result from getting params for', this.mostRecentIndicator, result)
       let number = result['data']
       this.numParams = number;
 
-      if(number != 0){
-        this.indicatorSelected = true;
+      if(number == 0){
+        this.getIndicatorData({})
+        return;
+        console.log('got here, using zero parameters')
       }
-      this.getIndicatorData({})
+      this.indicatorSelected = true;
+      console.log('got here, not using zero parameters')
+
 
     })
   }

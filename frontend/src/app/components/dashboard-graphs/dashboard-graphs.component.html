@@ -68,7 +68,12 @@
         
         <div>
           <mat-form-field class="example-full-width">
-            <mat-label>Commas between {{this.numParams}} parameters</mat-label>
+            <div *ngIf='numParams != 1'>
+              <mat-label>Commas between {{this.numParams}} parameters</mat-label>
+            </div>
+            <div *ngIf='numParams == 1'>
+              <mat-label>Parameter</mat-label>
+            </div>
             <input matInput (keydown.enter)="getIndicatorData($event)">
           </mat-form-field>
           <mat-error *ngIf="invalidNumParams">

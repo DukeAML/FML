@@ -1,7 +1,7 @@
 import sys
 # gives backend app access to modules in algDev by adding directory to pythonpath
 sys.path.insert(1, '../')
-
+import numpy as np
 # gonna have to rewrite this once DB structure in place
 import algDev.API.dataGatherer as dataGatherer
 import algDev.API.indicators as indicators
@@ -622,7 +622,21 @@ mockIndicatorData = [
         ]
 
 def getIndicatorData(indicatorName, equity):
-  print('indicatorName is ', indicatorName)
-  test = indicators.get_indicator_value(equity, indicatorName)
+  formatted = indicatorName.replace(",", "_")
+  print('indicatorName is ', formatted)
+
+  # FOR NOW - JUST USING LENGTH OF HISTORICAL PRICES DATA TO GET LAST X VALUES
+  numDays = len(dataGatherer.getPrices('AAPL'))
+  test = indicators.get_indicator_value(equity, formatted)
   print('test data looks like', test)
-  return mockIndicatorData
+  samples = test[:numDays]
+  samples = np.flipud(samples) 
+  samples = [item[0] for item in samples] #unpack it
+
+  print('samples', samples )
+  data = []
+
+  for i in range(len(samples)):
+    data.append({'name': i, 'value': samples[i]}) # reverse the days
+
+  return data
