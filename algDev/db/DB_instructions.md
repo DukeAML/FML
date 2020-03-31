@@ -29,6 +29,9 @@ This line, taken from the primer script, imports the credentials from the creden
 ### Fetching Information From the DB
 To fetch data from the DB, you can use the `wrapper.py` script. Right now, the only implemented functions are `getData()`, which takes in a ticker as an argument and returns a list of tuples of historical data for that ticker, and `getTickers()` which returns a list of all the tickers in the DB.
 
+### DB Schema
+The DB uses the following schema:
+(ticker, date, open, high, low, close, volume, smavg)
 
 
 
