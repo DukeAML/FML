@@ -84,7 +84,7 @@
 
 
   <div class="headings">
-    <h2>Model Performance</h2>
+    <h2>Model Performance <div *ngIf="this.mostRecentEquity">for {{this.mostRecentEquity}}</div></h2>
       <mat-form-field>
         <mat-label>Model</mat-label>
         <mat-select (selectionChange)="getModelData($event)">
