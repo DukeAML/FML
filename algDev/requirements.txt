@@ -5,3 +5,5 @@ numpy
 keras
 gensim
 sklearn
+psycopg2
+openpyxl

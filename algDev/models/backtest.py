@@ -9,7 +9,7 @@ import os
 ### Simulate the success of a model or trading strategy
 class Backtest():
 
-    def __init__(self, eqs, start_date, end_date, portfolio_value, verbose=False):
+    def __init__(self, eqs, trading_algorithm, asset_strategy, start_date, end_date, portfolio_value, verbose=False):
         super().__init__()
         
         self.today = start_date
@@ -17,24 +17,24 @@ class Backtest():
         self.end_date = end_date
         self.eqs = eqs
 
-        self.portfolio = Portfolio(self.value, self.eqs, self.today, verbose)
+        self.asset_strategy = asset_strategy
+        self.trading_algorithm = trading_algorithm
 
-    def step(self, strategy_lookback, strategy_threshold, verbose=False):
+        self.portfolio = Portfolio(self.value, self.eqs, self.today, self.trading_algorithm, self.asset_strategy, verbose)
+
+    def step(self, verbose=False):
         start = time.perf_counter()
-        self.portfolio.realloc(self.today, strategy_lookback, strategy_threshold, verbose)
+        self.portfolio.realloc(self.today, verbose)
         end = time.perf_counter()
         if verbose:
             print("", self.today, (end-start))
         self.today = self.today + datetime.timedelta(days=1)
 
-    def simulate(self, strategy, verbose=False):
-
-        strategy_lookback = strategy['lookback_period']
-        strategy_threshold = strategy['strategy_threshold']
+    def simulate(self, verbose=False):
         
         while not self.portfolio.date_ob(self.today) and self.end_date >= self.today:
             
-            self.step(strategy_lookback, strategy_threshold, verbose)
+            self.step(verbose)
             
         final_day = self.today - datetime.timedelta(days=1)
         if verbose is True:
