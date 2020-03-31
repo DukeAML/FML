@@ -9,10 +9,12 @@ from models.equity import Equity
 # from algorithms.svm import SVM
 from API.indicators import get_indicator_value
 from db.wrapper import *
-eq = Equity('AAPL')
-print(eq.opens)
-print(eq.dates)
-print(getTickers())
+
+def test_one():
+    eq = Equity('AAPL')
+    print(eq.opens)
+    print(eq.dates)
+    print(getTickers())
 # feature_set = ['macd_9_18', 'volumes', 'rainbow_1_5_9_13', 'oil', 'snp', 'reit','accumSwing']
 # feature_set = ['closes']
 # length = 10
