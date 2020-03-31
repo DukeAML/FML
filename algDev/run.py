@@ -4,11 +4,15 @@
 # from preprocessing import data_generator
 # import matplotlib.pyplot as plt
 # import numpy as np
-# from models.equity import Equity
+from models.equity import Equity
 # from algorithms.cnn import CNN
 # from algorithms.svm import SVM
 from API.indicators import get_indicator_value
-#eq = Equity('AAPL')
+from db.wrapper import *
+eq = Equity('AAPL')
+print(eq.opens)
+print(eq.dates)
+print(getTickers())
 # feature_set = ['macd_9_18', 'volumes', 'rainbow_1_5_9_13', 'oil', 'snp', 'reit','accumSwing']
 # feature_set = ['closes']
 # length = 10
@@ -25,4 +29,4 @@ from API.indicators import get_indicator_value
 # svm.train([0.8,0.2])
 # cnn.train_model(X_train,y_train,X_test,y_test)
 
-print(get_indicator_value('AAPL', 'macd_9_18'))
+# print(get_indicator_value('AAPL', 'macd_9_18'))
