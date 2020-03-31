@@ -4,6 +4,7 @@ sys.path.insert(1, '../')
 
 # gonna have to rewrite this once DB structure in place
 import algDev.API.dataGatherer as dataGatherer
+import algDev.API.indicators as indicators
 
 def getCategoryDescriptionAtDate(asset, date):
     
@@ -622,3 +623,8 @@ mockIndicatorData = [
               "value": 50
             }
         ]
+
+def getIndicatorData(indicatorName, equity):
+  test = get_indicator_value(equity, indicatorName)
+  print('test data looks like', test)
+  return mockIndicatorData

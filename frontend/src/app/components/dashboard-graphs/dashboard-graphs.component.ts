@@ -48,31 +48,34 @@ export class DashboardGraphsComponent implements OnInit {
 
   getIndicatorData($event:any){
     console.log('getIndicatorData event', $event);
-    this.invalidNumParams = false;
-    let params:string = event['target']['value'];
+    let formatted = this.mostRecentIndicator;
 
-    if(this.numParams != 'n' && params.split(",").length != this.numParams){
-      this.invalidNumParams = true;
-      return;
+    if(this.numParams != 0){
+        this.invalidNumParams = false;
+        let params:string = event['target']['value'];
+    
+        if(this.numParams != 'n' && params.split(",").length != this.numParams){
+          this.invalidNumParams = true;
+          return;
+        }
+    
+        // make the textbox blank after parameters have been confirmed
+        event['target']['value'] = '';
+    
+        if(this.mostRecentIndicator){
+          let formatted = this.mostRecentIndicator + "," + params;
+          this.mostRecentIndicator = null;
+        }
     }
-
-    // make the textbox blank after parameters have been confirmed
-    event['target']['value'] = '';
-
-    if(this.mostRecentIndicator){
-      let formatted = this.mostRecentIndicator + "," + params;
-      this.mostRecentIndicator = null;
-      this.dataService.getCustomIndicatorsInfo(formatted).subscribe(result => {
-        this.handleNewGraphData(result, formatted, 'indicator');
-      })
-    }
-
+    this.dataService.getCustomIndicatorsInfo(formatted, this.mostRecentEquity).subscribe(result => {
+      this.handleNewGraphData(result, formatted + ' ' + this.mostRecentEquity, 'indicator');
+    })
   }
 
   getAssetData($event:any){
     let input = $event.input;
     let value = $event.value.toUpperCase();
-
+    this.mostRecentEquity = value;
     if(!value){
       return
     }
@@ -89,7 +92,6 @@ export class DashboardGraphsComponent implements OnInit {
     console.log('result', result);
     if(result['data']){
       this.invalidAssetField = false;
-      this.mostRecentEquity = value;
       let data = result['data']
       let tempObj = {'name': value, 'series': data, 'type': dataType}
 
@@ -131,8 +133,13 @@ export class DashboardGraphsComponent implements OnInit {
     this.mostRecentIndicator = $event['value'];
     this.dataService.getNumberOfParameters(this.mostRecentIndicator).subscribe(result => {
       let number = result['data']
-      this.indicatorSelected = true;
       this.numParams = number;
+
+      if(number != 0){
+        this.indicatorSelected = true;
+      }
+      this.getIndicatorData({})
+
     })
   }
 

@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, flash, redirect, url_for, session, request
 from flask import jsonify
-from app.mocks import *
+import app.mocks as mocks
 
 
 @app.route('/dashboard-dropdown', methods=['GET'])
@@ -82,6 +82,8 @@ def get_indicators_for_asset(model, equity):
 
 @app.route('/indicators/<string:indicator>/params', methods=['GET'])
 def getNumParams(indicator):
+  if(indicator.lower() == "prices"):
+    return jsonify({'data': 0})
   if(indicator[0] == 'a'):
     return jsonify({'data': 2})
   elif indicator[0] == 'b':
@@ -89,6 +91,7 @@ def getNumParams(indicator):
   else:
     return jsonify({'data': 'n'})
 
-@app.route('/indicators/<string:indicator>', methods=['GET'])
-def getIndicatorData(indicator):
-  return jsonify({'data': mockIndicatorData})
+@app.route('/indicators/<string:indicator>/<string:equity>', methods=['GET'])
+def getIndicatorData(indicator, equity):
+  test = mocks.getIndicatorData(indicator, equity)
+  return jsonify({'data': test})
