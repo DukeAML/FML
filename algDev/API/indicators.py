@@ -11,9 +11,9 @@ def get_indicator_value(ticker, feature):
     ema - per
     return: ndarray - floats -- one for each day going back n days
     """
-
+    print("Calling indicators.py", feature)
     eq = Equity(ticker)
 
-    inds = create_features(eq, feature, normalize = False)
+    inds = create_features(eq, [feature], normalize = False)
 
     return inds

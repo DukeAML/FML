@@ -7,8 +7,8 @@ import app.mocks as mocks
 @app.route('/dashboard-dropdown', methods=['GET'])
 def getModelsAndAssets():
   mockModels = mocks.getAllModels()
-  mockAssets = mocks.getAllAssetNames()
-  return jsonify({'models': mockModels, 'indicators': mocks.indicatorNames})
+
+  return jsonify({'models': mockModels, 'indicators': sorted([*mocks.indicatorDict])})
 
 
 @app.route('/asset-value-over-time/<string:name>', methods=['GET'])
@@ -82,14 +82,8 @@ def get_indicators_for_asset(model, equity):
 
 @app.route('/indicators/<string:indicator>/params', methods=['GET'])
 def getNumParams(indicator):
-  if(indicator.lower() == "prices"):
-    return jsonify({'data': 0})
-  if(indicator[0] == 'a'):
-    return jsonify({'data': 2})
-  elif indicator[0] == 'b':
-    return jsonify({'data': 4})
-  else:
-    return jsonify({'data': 'n'})
+  test = mocks.indicatorDict
+  return jsonify({'data':test[indicator]})
 
 @app.route('/indicators/<string:indicator>/<string:equity>', methods=['GET'])
 def getIndicatorData(indicator, equity):

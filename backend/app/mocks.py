@@ -567,35 +567,32 @@ indicatorValues = {
         }
     ]}
 
-indicatorNames = ["a",
-    "b",
-    "Volumes",
-    "Prices",
-    "SMA",
-    "EMA",
-    "Wilder MA",
-    "Upper Bolinger Band",
-    "Lower Bolinger Band",
-    "Accumulative Swing Index",
-    "Average True Range",
-    "Balance of Power",
-    "Gopalakrishnan Range Index",
-    "Pivot Point",
-    "Pring's Know Sure Thing",
-    "MACD - SMA(MACD)",
-    "d KST * d TRIX",
-    "TRIX - MA(TRIX)",
-    "RSI",
-    "MA OHLC 4 1",
-    "MA OHLC 4 3",
-    "MA OHLC 4 5",
-    "MA OHLC 4 7",
-    "MA OHLC 4 9",
-    "West Texas",
-    "Wilshire US Real Estate",
-    "SNP"]
+indicatorDict = {
+"SMA": 1,
+"EMA": 1,
+"Wilder MA": 1,
+"MACD": 2,
+"MACDSig": 2,
+"KST": 0,
+"TRIX": 0,
+"KSTTrix": 0,
+"RSI": 0,
+"Prings": 0,
+"OLHC": 0,
+"Rainbow": "n",
+"Oil": 0,
+"SNP": 0,
+"Reit": 0,
+"GOP": 1,
+"BOP": 0,
+"Volumes": 0,
+"Closes": 0,
+"UpperBol": 0,
+"LowerBol": 0,
+"AccumSwing": 0,
+"ATR": 1}
 
-modelData = [{'indicator': indicatorName, 'data':[indicatorValues]} for indicatorName in indicatorNames]
+modelData = [{'indicator': indicatorName, 'data':[indicatorValues]} for indicatorName in sorted(indicatorDict.keys())]
 
 mockIndicatorData = [
           {
@@ -625,6 +622,7 @@ mockIndicatorData = [
         ]
 
 def getIndicatorData(indicatorName, equity):
+  print('indicatorName is ', indicatorName)
   test = indicators.get_indicator_value(equity, indicatorName)
   print('test data looks like', test)
   return mockIndicatorData

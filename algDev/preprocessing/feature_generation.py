@@ -232,7 +232,7 @@ def concat_features(feature_set):
         ndarray -- 2d array of features over time
     """
     num_features = len(feature_set)
-
+    print(feature_set)
     lens = np.array([f.len for f in feature_set])
     min_len = np.min(lens)
     
@@ -260,6 +260,7 @@ def create_features(eq, features, normalize = True, save = False):
     Returns:
         ndarray -- 2d array of features over time
     """
+
     feature_set = get_feature_set(eq, features)
     fs = concat_features(feature_set)
     
@@ -303,8 +304,7 @@ def get_feature(eq, feature_arg):
         ndarray -- array of feature values
     """
     args = feature_arg.split('_')
-    feature = args[0]
-    print(args)
+    feature = args[0].lower()
     if len(args)==1:
         args.append('9')
     all_periods = [int(i) for i in args[1:]]
@@ -323,13 +323,13 @@ def get_feature(eq, feature_arg):
         return wilder_feature(eq, fast_period)
     elif(feature=='macd'):
         return macd_raw_feature(eq, slow_period, fast_period)
-    elif(feature=='macdSig'):
+    elif(feature=='macdsig'):
         return macd_signal(eq, slow_period, fast_period)
     elif(feature=='kst'):
         return kst_feature(eq)
     elif(feature=='trix'):
         return trix_feature(eq)
-    elif(feature=='kstTrix'):
+    elif(feature=='ksttrix'):
         return kst_trix_vec_feature(eq)
     elif(feature=='rsi'):
         return rsi_feature(eq)
@@ -353,11 +353,11 @@ def get_feature(eq, feature_arg):
         return volume_feature(eq)
     elif(feature=='closes'):
         return close_feature(eq)
-    elif(feature=='upperBol'):
+    elif(feature=='upperbol'):
         return upper_bollinger_feature(eq)
-    elif(feature=='lowerBol'):
+    elif(feature=='lowerbol'):
         return lower_bollinger_feature(eq)
-    elif(feature=='accumSwing'):
+    elif(feature=='accumswing'):
         return accum_swing_feature(eq)
     elif(feature=='atr'):
         return atr_feature(eq, fast_period)
