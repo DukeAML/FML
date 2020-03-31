@@ -1,5 +1,5 @@
-from models.trade import Trade
-from models.finance import Finance
+from algDev.models.trade import Trade
+from algDev.models.finance import Finance
 import datetime
 
 class Position:

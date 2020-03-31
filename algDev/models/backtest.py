@@ -2,8 +2,8 @@ import numpy as np
 import math
 import time
 import matplotlib.pyplot as plt
-from models.equity import Equity
-from models.portfolio import Portfolio
+from algDev.models.equity import Equity
+from algDev.models.portfolio import Portfolio
 import datetime
 import os
 ### Simulate the success of a model or trading strategy

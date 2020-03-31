@@ -3,8 +3,8 @@ import random
 import os
 import datetime
 import pandas as pd
-from models.equity import Equity
-from models.position import Position
+from algDev.models.equity import Equity
+from algDev.models.position import Position
 
 ## Dummy function for testing purposes
 def model_output(position, verbose=False):

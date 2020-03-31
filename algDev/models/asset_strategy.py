@@ -1,4 +1,4 @@
-from algorithms.asset_allocation import AssetAllocation
+from algDev.algorithms.asset_allocation import AssetAllocation
 
 class AssetStrategy:
 

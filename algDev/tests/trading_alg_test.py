@@ -1,4 +1,4 @@
-from models.trading_algorithm import TradingAlgorithm
+from algDev.models.trading_algorithm import TradingAlgorithm
 
 def run_test_one():
     tickers = ['AAPL']
