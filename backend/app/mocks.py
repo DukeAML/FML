@@ -625,6 +625,6 @@ mockIndicatorData = [
         ]
 
 def getIndicatorData(indicatorName, equity):
-  test = get_indicator_value(equity, indicatorName)
+  test = indicators.get_indicator_value(equity, indicatorName)
   print('test data looks like', test)
   return mockIndicatorData
