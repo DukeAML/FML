@@ -2,8 +2,7 @@ import math
 import numpy as np
 import pandas as pd
 import datetime
-from db.wrapper import getData
-
+from algDev.db.wrapper import getData
 from algDev.models.indicators import Indicators
 
 class Equity: 
