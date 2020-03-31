@@ -1,6 +1,6 @@
 import psycopg2
 from openpyxl import load_workbook
-import db.credentials as credentials
+import algDev.db.credentials as credentials
 
 from os import listdir
 from os.path import isfile, join

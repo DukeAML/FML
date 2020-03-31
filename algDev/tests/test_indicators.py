@@ -1,5 +1,5 @@
 import numpy as np
-from models.indicators import Indicators
+from algDev.models.indicators import Indicators
 
 
 class TestIndicators:

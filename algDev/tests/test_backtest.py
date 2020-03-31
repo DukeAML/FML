@@ -1,4 +1,4 @@
-from models.backtest import Backtest
+from algDev.models.backtest import Backtest
 import datetime
 
 def run_test():

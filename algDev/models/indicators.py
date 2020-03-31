@@ -2,7 +2,7 @@ import pandas as pd
 import math
 import numpy as np
 
-from models.indicator import Indicator
+from algDev.models.indicator import Indicator
 
 class Indicators:
     

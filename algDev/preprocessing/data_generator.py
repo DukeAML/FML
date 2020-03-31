@@ -1,5 +1,5 @@
-from preprocessing.feature_generation import * 
-from models.indicator import Indicator
+from algDev.preprocessing.feature_generation import create_features, build_labels
+from algDev.models.indicator import Indicator
 import numpy as np
 
 def parse_features(features):
@@ -29,7 +29,7 @@ def get_subset(eq, feature_set, start_index, end_index, threshold, period):
     Returns:
         [ndarray] -- one data point
     """
-    features = create_feautres(eq, feature_set)
+    features = create_features(eq, feature_set)
 
     if type=='cnn':
         X = features[start_index:end_index,:]

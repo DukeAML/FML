@@ -4,11 +4,11 @@
 # from preprocessing import data_generator
 # import matplotlib.pyplot as plt
 # import numpy as np
-from models.equity import Equity
+from algDev.models.equity import Equity
 # from algorithms.cnn import CNN
 # from algorithms.svm import SVM
-from API.indicators import get_indicator_value
-from db.wrapper import *
+from algDev.API.indicators import get_indicator_value
+from algDev.db.wrapper import *
 
 def test_one():
     eq = Equity('AAPL')

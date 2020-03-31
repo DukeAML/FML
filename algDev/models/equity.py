@@ -2,9 +2,9 @@ import math
 import numpy as np
 import pandas as pd
 import datetime
-from db.wrapper import getData
+from algDev.db.wrapper import getData
 
-from models.indicators import Indicators
+from algDev.models.indicators import Indicators
 
 class Equity: 
     """[Class that represents an asset by parsing the inputted data file.

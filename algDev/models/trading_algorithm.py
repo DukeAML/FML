@@ -1,7 +1,7 @@
-from models.equity import Equity
-from algorithms.model_collection import ModelCollection
-from algorithms.voter import Voter
-from preprocessing import data_generator
+from algDev.models.equity import Equity
+from algDev.algorithms.model_collection import ModelCollection
+from algDev.algorithms.voter import Voter
+from algDev.preprocessing import data_generator
 
 class TradingAlgorithm:
     """ This is the main class. You would make a TradingAlgorithm 
