@@ -156,6 +156,17 @@ def atr_feature(eq, period):
 
     return [Indicator(atr_vec)]
 
+def trix_feature(eq):
+    trix_vec = np.array(Indicators.trix_indicator(eq.closes))
+    trix_vec = trix_vec.T
+
+    return [Indicator((trix_vec))]
+    
+def kst_feature(eq):
+    kst_vec = np.array(Indicators.kst(eq.closes))
+    kst_vec = kst_vec.T
+
+    return [Indicator(kst_vec)]
 def plot_features(eq, features, ax, range=-1):
     feature_set = get_feature_set(eq, features)
     fs = concat_indicators(feature_set)
@@ -315,9 +326,9 @@ def get_feature(eq, feature_arg):
     elif(feature=='macdSig'):
         return macd_signal(eq, slow_period, fast_period)
     elif(feature=='kst'):
-        return ''
+        return kst_feature(eq)
     elif(feature=='trix'):
-        return ''
+        return trix_feature(eq)
     elif(feature=='kstTrix'):
         return kst_trix_vec_feature(eq)
     elif(feature=='rsi'):
