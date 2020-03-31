@@ -85,7 +85,7 @@ for file in onlyFiles:
             print(formatted)
             cursor.execute(formatted)
 
-        except (Exception, psycopg2.Error) as error :
+        except (Exception, psycopg2.Error) as error:
             print ("Error while connecting to PostgreSQL", error)
 
 

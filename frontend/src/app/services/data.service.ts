@@ -51,8 +51,8 @@ export class DataService {
     return this.http.get(this.serverURL + '/indicators/' + indicator + '/params');
   }
 
-  getCustomIndicatorsInfo(indicator:string){
-    return this.http.get(this.serverURL + '/indicators/' + indicator)
+  getCustomIndicatorsInfo(indicator:string, ticker:string){
+    return this.http.get(this.serverURL + '/indicators/' + indicator + '/' + ticker)
   }
 
 
