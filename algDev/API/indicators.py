@@ -1,4 +1,4 @@
-from preprocessing.feature_generation import get_feature
+from preprocessing.feature_generation import create_features
 from models.equity import Equity
 
 def get_indicator_value(ticker, feature):
@@ -14,6 +14,6 @@ def get_indicator_value(ticker, feature):
 
     eq = Equity(ticker)
 
-    ind = get_feature(eq, feature)
+    inds = create_features(eq, feature, normalize = False)
 
-    return ind[0].values
+    return inds
