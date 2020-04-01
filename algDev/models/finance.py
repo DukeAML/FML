@@ -20,8 +20,6 @@ class Finance:
     #DONE
     @staticmethod
     def pChange(p1, p2):
-        print("p1:", p1)
-        print("p2:", p2)
         if p1 == 0 or p2 == 0:
             return 0
         return (p2-p1)/p1
@@ -39,10 +37,8 @@ class Finance:
     @staticmethod
     def dailyChanges(eq, today = datetime.datetime(2020,2,5), days = 500, start = 'O', stop = 'C'):
         
-        print("Days:", days)
 
         today_index = eq.get_index_from_date(today)
-        print("Today Index:", today_index)
 
         start = start.upper()
         stop = stop.upper()
@@ -51,7 +47,6 @@ class Finance:
         switcher = {'O':eq.opens, 'C':eq.closes, 'H':eq.highs, 'L':eq.lows}
 
         p1 = switcher.get(start, 0)
-        print("Length:", len(p1))
         p2 = switcher.get(stop, 0)
 
         #If IPO date happened < days days ago from today
@@ -71,12 +66,10 @@ class Finance:
             daily_returns = np.zeros(days)
             i = today_index
             counter = 0
-            for i in range(today_index,today_index + days): 
-                print("i:",i)
+            for i in range(today_index,today_index + days):
                 daily_returns[counter] = Finance.pChange(p1[i],p2[i])
                 counter = counter + 1
-        
-        print("Should come after i's")
+                
         return daily_returns
 
     #DONE

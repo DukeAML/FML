@@ -211,10 +211,8 @@ def concat_indicators(feature_set):
         [list of Indicators] -- list of resized Indicators
     """
     num_features = len(feature_set)
-    print(feature_set)
     lens = np.array([f.len for f in feature_set])
     min_len = np.min(lens)
-    print(min_len)
 
     for i in range(num_features):
         
@@ -232,7 +230,7 @@ def concat_features(feature_set):
         ndarray -- 2d array of features over time
     """
     num_features = len(feature_set)
-    print(feature_set)
+    
     lens = np.array([f.len for f in feature_set])
     min_len = np.min(lens)
     

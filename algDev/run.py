@@ -7,6 +7,7 @@ from algDev.algorithms.cnn import CNN
 from algDev.algorithms.svm import SVM
 from algDev.API.indicators import get_indicator_value
 from algDev.db.wrapper import *
+from algDev.tests import trading_alg_test, asset_alloc_test
 
 def test_one():
     eq = Equity('AAPL')
@@ -32,3 +33,10 @@ def test_two():
     # cnn.train_model(X_train,y_train,X_test,y_test)
 
     print(get_indicator_value('AAPL', 'lowerBol'))
+
+def test_three():
+    
+    trading_alg_test.run_test_one()
+
+def test_four():
+    asset_alloc_test.run_test_one()

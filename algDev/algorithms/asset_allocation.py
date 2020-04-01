@@ -4,7 +4,6 @@ from algDev.models.finance import Finance
 class AssetAllocation:
 
     def __init__(self, upper_threshold, lower_threshold):
-        super.__init__()
         self.upper_threshold = upper_threshold
         self.lower_threshold = lower_threshold
 
@@ -15,22 +14,24 @@ class AssetAllocation:
 
         return expected_returns
 
-    def exp_ret(self, prediction, confidence, verbose):
+    def exp_ret(self, prediction, verbose=False):
         threshold = 0
-        if prediction == 1:
+        pred_val = prediction[0]
+        pred_conf = prediction[1]
+        if pred_val == 1:
             threshold = self.upper_threshold
-        elif prediction == -1:
+        elif pred_val == -1:
             threshold = self.lower_threshold
         
         ##ISSUE HERE IS THAT EXPECTED RETURN IS CAPPED AT THRESHOLD (condiser multiplying is by 2)
-        return confidence * threshold
+        return pred_conf * threshold
     
     ##UPDATE THIS
     def calculate_allocations(self, date, positions, predictions, verbose=False):
         
         expected_returns = self.get_exp_ret(positions, predictions)
 
-        cov_arr = self.get_cov_arr(positions, date)
+        cov_arr = self.get_cov_arr(date, positions)
         unit_vector = np.ones(len(expected_returns))
         inv_cov_arr = np.linalg.inv(cov_arr)
 
@@ -55,13 +56,14 @@ class AssetAllocation:
 
         return allocations
 
-    def get_DC_arr(self, positions, today, start = 'O', stop = 'C'):
+    def get_DC_arr(self, today, positions, days=500, start = 'O', stop = 'C'):
         DC_arr = []
         for position in positions:
-            DC_arr.append(Finance.update_dailyChanges(position, today, start, stop))
+            DC_arr.append(Finance.dailyChanges(position.eq, today, days, start, stop))
+        return DC_arr
 
     def get_cov_arr(self, date, positions):
-        DC_arr = self.get_DC_arr(positions, date)
+        DC_arr = self.get_DC_arr(date, positions)
         cov_arr = np.cov(DC_arr)
         #for i in range(0, len(self.positions)):
         #    eq1 = self.positions[i].eq
