@@ -1,5 +1,5 @@
 from sklearn import svm
-from preprocessing.data_generator import split_data
+from algDev.preprocessing.data_generator import split_data
 #this is the file for running all versions of svm-model based voting algorithms
 
 #20-50 svm models 

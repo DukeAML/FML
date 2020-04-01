@@ -1,5 +1,5 @@
 import numpy as np
-from models.finance import Finance
+from algDev.models.finance import Finance
 
 class AssetAllocation:
 

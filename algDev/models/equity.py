@@ -297,8 +297,8 @@ class Equity:
         ma = Indicators.sma(prices=tp, period=period)
         std = Indicators.calc_std(prices=tp, period=period)
 
-        bolu = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
-        bold = np.array([ma[i] + stds * std[i] for i in range(len(tp))])
+        bolu = np.array([ma[i] + stds * std[i] for i in range(len(ma))])
+        bold = np.array([ma[i] + stds * std[i] for i in range(len(ma))])
 
         return bolu, bold
 

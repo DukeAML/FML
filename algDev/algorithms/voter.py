@@ -1,6 +1,6 @@
 from sklearn import svm
-from algorithms.svm import SVM
-from models.equity import Equity
+from algDev.algorithms.svm import SVM
+from algDev.models.equity import Equity
 
 class Voter:
     """Voting algorithm class

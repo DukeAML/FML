@@ -1,7 +1,7 @@
-from algorithms.svm import SVM
-from algorithms.cnn import CNN
-from models.equity import Equity
-from preprocessing import data_generator  
+from algDev.algorithms.svm import SVM
+from algDev.algorithms.cnn import CNN
+from algDev.models.equity import Equity
+from algDev.preprocessing import data_generator  
 class ModelCollection:
     """a collection of models that each make a prediction for a given equity.
     

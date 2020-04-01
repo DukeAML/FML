@@ -4,7 +4,7 @@ from keras.optimizers import SGD
 from sklearn.utils import compute_class_weight
 from keras.utils import to_categorical
 import numpy as np
-from preprocessing.data_generator import split_data
+from algDev.preprocessing.data_generator import split_data
 class CNN:
     """wrapper for a CNN model
     

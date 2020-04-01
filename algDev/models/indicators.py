@@ -406,7 +406,9 @@ class Indicators:
     
     @staticmethod
     def prings_know_sure_thing(prices):
-        kst_vec = Indicators.kst(prices)[:-9]
+
+        kst_vec = Indicators.kst(prices)
         kst_sma = Indicators.sma(kst_vec, 9)
+        kst_vec = kst_vec[:-9]
         assert len(kst_vec)==len(kst_sma)
         return np.array([kst_vec[i] - kst_sma[i] for i in range(len(kst_sma))])
