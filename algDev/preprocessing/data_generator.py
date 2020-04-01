@@ -85,9 +85,9 @@ def gen_svm_data(eq, feature, length, threshold, period):
         ndarray -- input and labels
     """
     feature = create_features(eq, feature)
-    print(feature)
+    
     X, y = format_data(eq.ticker, feature, 'svm', length, threshold, period)
-    print(X.shape)
+    
     return X.reshape(X.shape[0],X.shape[1],),y
 
 def split_data(X, y, splits):

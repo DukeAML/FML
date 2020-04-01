@@ -2,6 +2,7 @@ from algDev.algorithms.svm import SVM
 from algDev.algorithms.cnn import CNN
 from algDev.models.equity import Equity
 from algDev.preprocessing import data_generator  
+
 class ModelCollection:
     """a collection of models that each make a prediction for a given equity.
     
@@ -43,7 +44,7 @@ class ModelCollection:
         elif self.type=='svm':
             for feature in self.features:
                 X,y = data_generator.gen_svm_data(self.eq, [feature], self.params['length'], self.params['upper_threshold'], self.params['period'])
-                print(len(X),len(y))
+                
                 models.append(SVM(X,y,title=feature))
         return models
 
@@ -63,12 +64,18 @@ class ModelCollection:
         """
         self.update_params(params)
 
-    def train_models(self):
+    def train_models(self, verbose=False):
         """Train all the models
         """
+        if verbose:
+            print("Training Models for ", self.eq.ticker)
         for i, model in enumerate(self.models):
-            model.train(self.params['data_splits'])
+            model.train(self.params['data_splits'], verbose = verbose)
         self.update_accuracy()
+
+    def plot_rocs(self, verbose=False):
+        for model in self.models:
+            model.plot_roc(verbose)
 
     def update_accuracy(self):
         """Update the accuracy of the entire collection by averaging the
@@ -78,5 +85,5 @@ class ModelCollection:
         for model in self.models:
             acc += model.metrics['acc']
 
-        self.accuracy = acc/len(self.accuracy)
+        self.accuracy = acc/len(self.models)
         

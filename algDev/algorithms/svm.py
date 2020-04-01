@@ -1,5 +1,11 @@
 from sklearn import svm
+from scipy import interp
 from algDev.preprocessing.data_generator import split_data
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.metrics import auc
+from sklearn.metrics import plot_roc_curve
+from sklearn.model_selection import StratifiedKFold
 #this is the file for running all versions of svm-model based voting algorithms
 
 #20-50 svm models 
@@ -24,7 +30,7 @@ class SVM:
             gamma {str} -- kernal parameter (default: {'auto'})
             title {str} -- name of model (default: {'default'})
         """
-        self.model = svm.SVC(C=C, gamma=gamma)
+        self.model = svm.SVC(C=C, gamma=gamma, probability=True)
         self.data = {'features':X, 'labels':y}
         self.title = title
         self.metrics = {}
@@ -45,13 +51,17 @@ class SVM:
             y = self.data['labels']
         
         X_train, y_train, X_test, y_test = split_data(X, y, splits)
-        print(X_train.shape)
-        print(y_train.shape)
+        if verbose:
+            print("Feature Shape for SVM ", self.title)
+            print(X_train.shape)
+            print("Label Shape for SVM ", self.title)
+            print(y_train.shape)
+
         self.model.fit(X_train, y_train)
 
-        self.test(X_test, y_test)
+        self.test(X_test, y_test, verbose)
 
-    def test(self, X, y):
+    def test(self, X, y, verbose = False):
         """Run a test on a set of data
         
         Arguments:
@@ -59,8 +69,48 @@ class SVM:
             y {ndarray} -- labels
         """
         acc = self.model.score(X, y)
-        
+        if verbose:
+            print("Accuracy for SVM ", self.title, " - ", acc)
         self.metrics['acc'] = acc
+
+    def plot_roc(self, verbose=False):
+        tprs = []
+        aucs = []
+        mean_fpr = np.linspace(0, 1, 100)
+        cv = StratifiedKFold(n_splits=6)
+
+        fig, ax = plt.subplots()
+        for i, (train, test) in enumerate(cv.split(self.data['features'], self.data['labels'])):
+            self.model.fit(self.data['features'][train], self.data['labels'][train])
+            viz = plot_roc_curve(self.model, self.data['features'][test], self.data['labels'][test],
+                                 name='ROC fold {}'.format(i),
+                                 alpha=0.3, lw=1, ax=ax)
+            interp_tpr = interp(mean_fpr, viz.fpr, viz.tpr)
+            interp_tpr[0] = 0.0
+            tprs.append(interp_tpr)
+            aucs.append(viz.roc_auc)
+
+        ax.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r',
+                label='Chance', alpha=.8)
+
+        mean_tpr = np.mean(tprs, axis=0)
+        mean_tpr[-1] = 1.0
+        mean_auc = auc(mean_fpr, mean_tpr)
+        std_auc = np.std(aucs)
+        ax.plot(mean_fpr, mean_tpr, color='b',
+            label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
+            lw=2, alpha=.8)
+
+        std_tpr = np.std(tprs, axis=0)
+        tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+        tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+        ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                        label=r'$\pm$ 1 std. dev.')
+
+        ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
+               title="Receiver operating characteristic example")
+        ax.legend(loc="lower right")
+        plt.show()
 
     def predict(self, Xi):
         """make a prediction of a data point
