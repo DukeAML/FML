@@ -14,10 +14,11 @@ def getModelsAndAssets():
 @app.route('/asset-value-over-time/<string:name>', methods=['GET'])
 def get_description_over_time(name):
   assetData = mocks.getAssetValueOverTime(name)
-  if(len(assetData) > 0):
-    return jsonify({'data':assetData})
-  else:
+  if(assetData == "ERROR"):
     return jsonify({'ERROR': 'Invalid ticker used'})
+  else:
+    return jsonify({'data':assetData})
+
 
 @app.route('/asset-category-description/<string:assetType>/<string:day>', methods=['GET'])
 def get_asset_description(assetType, day):
