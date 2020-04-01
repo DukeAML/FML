@@ -93,14 +93,14 @@ export class DashboardGraphsComponent implements OnInit {
     console.log('result', result);
     if(result['data']){
       this.invalidAssetField = false;
-      let data = result['data']
-      let tempObj = {'name': value, 'series': data, 'type': dataType}
+      let tempObjArr = result['data']
 
-      console.log('tempObj', tempObj)
-      let assetDataCopy = [...this.assetData];
-      assetDataCopy.push(tempObj);
-      this.assetData = assetDataCopy;
-      
+      for(let tempObj of tempObjArr){
+        tempObj['type'] = dataType;
+        let assetDataCopy = [...this.assetData];
+        assetDataCopy.push(tempObj);
+        this.assetData = assetDataCopy;
+      }
       // handle updating equity for indicators performance
 
     }

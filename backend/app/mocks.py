@@ -403,9 +403,9 @@ funData = [
 
 def getAssetValueOverTime(name):
   if(len(name) < 5):
-    return dataGatherer.getPrices(name)
+    return [{'name': name, 'series': dataGatherer.getPrices(name)}]
   else:
-    return idkOtherBondsData
+    return []
 
 def getAllAssetNames():
   # THIS IS GONNA NEED TO BE SORTED
@@ -621,22 +621,44 @@ mockIndicatorData = [
             }
         ]
 
-def getIndicatorData(indicatorName, equity):
-  formatted = indicatorName.replace(",", "_")
-  print('indicatorName is ', formatted)
+def getIndicatorData(formatted, equity):
+  data = []
+  
+  underscored = formatted.replace(",", "_")
+  print('underscored is', underscored)
 
   # FOR NOW - JUST USING LENGTH OF HISTORICAL PRICES DATA TO GET LAST X VALUES
   numDays = len(dataGatherer.getPrices('AAPL'))
-  test = indicators.get_indicator_value(equity, formatted)
-  print('test data looks like', test)
-  samples = test[:numDays]
+  indicatorData = indicators.get_indicator_value(equity, underscored)
+
+  samples = indicatorData[:numDays]
   samples = np.flipud(samples) 
-  samples = [item[0] for item in samples] #unpack it
 
-  print('samples', samples )
-  data = []
+  if len(samples[0]) == 1:
+    series = []
+    samples = [item[0] for item in samples] #unpack it
 
-  for i in range(len(samples)):
-    data.append({'name': i, 'value': samples[i]}) # reverse the days
-
+    for i in range(len(samples)):
+      series.append({'name': i, 'value': samples[i]}) # reverse the days
+        
+    singleSeriesData = {'name': formatted, 'series': series}
+    data.append(singleSeriesData)
+  
+  else:
+    # big brain data processing
+    paramSplit = formatted.split(",")
+    for i in range(1, len(paramSplit)):
+      tempDict = {'name': paramSplit[0] + ',' + paramSplit[i], 'series': []}
+      data.append(tempDict)
+    
+    for i in range(len(samples)):
+      for j in range(len(samples[i])):
+        currentEntry = samples[i][j]
+        tempDict = {'name': i, 'value': currentEntry}
+        data[j]['series'].append(tempDict)
+  
   return data
+
+
+
+
