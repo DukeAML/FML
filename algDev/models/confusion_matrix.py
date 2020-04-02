@@ -11,7 +11,6 @@ class ConfusionMatrix():
 
 
     def add_value(self, true, predicted):
-        print(true, predicted)
         if true == 0 and predicted == 0:
             self.true_negatives += 1
         elif true == 0 and predicted == 1:

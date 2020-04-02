@@ -394,7 +394,7 @@ def get_label(eq, period, threshold, type, index):
         ind = len(closes)-i-1 # go backwards
         if(ind>len(highs)):
             continue
-        print(highs[ind], closes[len(closes)-1],threshold)
+        
         if(utils.log_returns(highs[ind], closes[len(closes)-1]) > threshold):
             passed_threshold = True
     
