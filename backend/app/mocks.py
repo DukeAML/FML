@@ -402,10 +402,12 @@ funData = [
 
 
 def getAssetValueOverTime(name):
-  if(len(name) < 5):
+  pricesData = dataGatherer.getPrices(name)
+  if(len(pricesData) > 0):
     return [{'name': name, 'series': dataGatherer.getPrices(name)}]
   else:
-    return []
+    return "ERROR"
+
 
 def getAllAssetNames():
   # THIS IS GONNA NEED TO BE SORTED
