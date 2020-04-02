@@ -9,12 +9,12 @@ def run_test():
 
     b = Backtest(["AAPL", "AMZN", "BRK.B"], start_date, end_date, pf_value, False)
 
-    after_value, positions = b.simulate({'lookback_period': 14, 'strategy_threshold': .025}, False)
+    after_value, positions = b.simulate({'lookback_period': 20, 'strategy_threshold': .055}, False)
 
     rtn = ((after_value - pf_value) / pf_value) * 100
 
+    print(b.portfolio.positions)
+
     print(str(rtn) + "%")
-
+    
     b.plot_value(pf_value, start_date, end_date)
-
-run_test()

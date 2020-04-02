@@ -26,14 +26,12 @@ class Portfolio:
 
     def init_positions(self, eqs, verbose=False):
         here = os.path.abspath(os.path.dirname(__file__))
-        data_directory = os.path.join(here, '..\\data')
-        eq_directory = os.path.join(data_directory, 'equities')
         for eq in eqs:
-            eq_file = os.path.join(eq_directory, eq + '.xlsx')
-            e = Equity(eq_file)
+            e = Equity(eq)
+            position = Position(e, verbose)
             position = Position(e, verbose)
             self.positions.append(position)
-    
+
     def getPosition(self, ticker, verbose=False):
 
         for p in self.positions:

@@ -51,8 +51,7 @@ class Backtest():
         dates = []
         snp = []
         here = os.path.abspath(os.path.dirname(__file__))
-        data_directory = os.path.join(here, '..\\data')
-        snp_directory = os.path.join(data_directory, 'indexes\\SNP.xlsx')
+        snp_directory = os.path.join('..\\indexes', 'SNP')
         sp = Equity(snp_directory)
         for i in range(day_diff):
             i_day = datetime.timedelta(days=i)
@@ -61,6 +60,8 @@ class Backtest():
             initial_val.append(initial_value)
             snp.append(sp.get_price(start_date + i_day))
 
+        snp_rtn = (snp[len(snp)-1] - snp[0])/snp[0]
+        print("SNP Return:", str(snp_rtn) + "%")
         import numpy as np
 
         fig, ax1 = plt.subplots()
