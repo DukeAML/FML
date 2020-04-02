@@ -86,4 +86,23 @@ class ModelCollection:
             acc += model.metrics['acc']
 
         self.accuracy = acc/len(self.models)
+
+    def predict(self, date, verbose=False):
+        if verbose:
+            print(date)
+        start_index = self.eq.get_index_from_date(date)
+        end_index = start_index + self.params['length']
+
+        predictions = []
+        if self.type=='cnn':
+            X_i = data_generator.get_subset(self.eq, self.features, start_index, end_index, self.type)
+            for model in self.models:
+                predictions.append(model.predict(X_i))
+        elif self.type=='svm':
+            for i,f in enumerate(self.features):
+                X_i = data_generator.get_subset(self.eq, [f], start_index, end_index, self.type)
+                predictions.append(self.models[i].predict(X_i))
         
+        return predictions
+
+    

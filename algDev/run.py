@@ -40,3 +40,6 @@ def test_three():
 
 def test_four():
     asset_alloc_test.run_test_one()
+
+def test_five():
+    trading_alg_test.build_confusion_matrix()

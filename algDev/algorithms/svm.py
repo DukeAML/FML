@@ -1,6 +1,7 @@
 from sklearn import svm
 from scipy import interp
 from algDev.preprocessing.data_generator import split_data
+from algDev.models.confusion_matrix import ConfusionMatrix
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import auc
@@ -34,6 +35,25 @@ class SVM:
         self.data = {'features':X, 'labels':y}
         self.title = title
         self.metrics = {}
+
+    def build_conf_matrix(self, splits, X=None, y=None, verbose=False):
+        if not X or not y:
+            X = self.data['features']
+            y = self.data['labels']
+
+        X_train, y_train, X_test, y_test = split_data(X, y, splits)
+
+        ## Want to step through the X_test and match up with y_test manually
+
+        cm = ConfusionMatrix()
+
+        for i,X_i in enumerate(X_test):
+            pred = self.predict(X_i.reshape(1, -1))
+            true = int(y_test[i])
+            pred = int(pred)
+            cm.add_value(true, pred)
+
+        cm.print_matrix()
 
     def train(self, splits, X=None, y=None, verbose=False):
         """train the svm
@@ -121,6 +141,7 @@ class SVM:
         Returns:
             float -- predicted class of input
         """
+        
         pred = self.model.predict(Xi)
         
-        return pred
+        return pred[0]

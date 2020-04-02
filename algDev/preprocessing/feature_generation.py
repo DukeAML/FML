@@ -301,10 +301,12 @@ def get_feature(eq, feature_arg):
     Returns:
         ndarray -- array of feature values
     """
+    
     args = feature_arg.split('_')
     feature = args[0].lower()
     if len(args)==1:
         args.append('9')
+
     all_periods = [int(i) for i in args[1:]]
     if len(args)==2:
         args.append('18')
@@ -361,6 +363,44 @@ def get_feature(eq, feature_arg):
         return atr_feature(eq, fast_period)
     
     return ''
+
+def get_label(eq, period, threshold, type, index):
+    """build the labels for a ticker
+    
+    Arguments:
+        ticker {string} -- equity ticker
+    
+    Keyword Arguments:
+        period {int} -- see documentation for label period (default: {10})
+        threshold {float} -- see documentation for label threshold (default: {.015})
+        type {str} -- see documentation for label type (default: {''})
+    
+    Returns:
+        list -- list of labels
+    """
+    if index-period<0:
+        closes = eq.closes[0:index]
+        highs = eq.highs[0:index]
+    elif index>=len(eq.closes):
+        return 0
+    else:
+        closes = eq.closes[index-period:index]
+        highs = eq.highs[index-period:index]
+
+    label = 0.0
+
+    passed_threshold = False
+    for i,close in enumerate(closes):
+        ind = len(closes)-i-1 # go backwards
+        if(ind>len(highs)):
+            continue
+        print(highs[ind], closes[len(closes)-1],threshold)
+        if(utils.log_returns(highs[ind], closes[len(closes)-1]) > threshold):
+            passed_threshold = True
+    
+    label = 1 if passed_threshold else 0
+
+    return label
 
 def build_labels(ticker, period=10, threshold=.015, type=''):
     """build the labels for a ticker
