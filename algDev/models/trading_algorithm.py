@@ -1,7 +1,10 @@
 from algDev.models.equity import Equity
 from algDev.algorithms.model_collection import ModelCollection
 from algDev.algorithms.voter import Voter
-from algDev.preprocessing import data_generator
+from algDev.preprocessing import data_generator, feature_generation
+import datetime
+import time
+from algDev.models.confusion_matrix import ConfusionMatrix
 
 class TradingAlgorithm:
     """ This is the main class. You would make a TradingAlgorithm 
@@ -54,8 +57,37 @@ class TradingAlgorithm:
             if len(tickers) == 0 or model.eq.ticker in tickers:
                 model.plot_rocs(verbose)
             
+    def generate_conf_matricies(self, start_date, end_date, verbose=False):
+        next_day = datetime.timedelta(days = 1)
+        date = start_date
+        cms = []
+        for eq in self.eqs:
+            cm = ConfusionMatrix()
+            cms.append(cm)
+        while date <= end_date:
+            predictions = self.predict(date, verbose)
+            truths = self.get_labels(date)
+            for i,eq in enumerate(self.eqs):
+                pred = predictions[eq.ticker][0]
+                truth = truths[i]
+                cms[i].add_value(truth,pred)
+            date += next_day
+        for cm in cms:
+            cm.print_matrix()
 
-    def predict(self, date):
+    def get_labels(self, date):
+        index = self.eqs[0].get_index_from_date(date)
+
+        index = index + self.params['length']
+        preds = []
+
+        for eq in self.eqs:
+            preds.append(feature_generation.get_label(eq, self.params['period'],self.params['upper_threshold'], self.type, index))
+        
+        return preds
+
+
+    def predict(self, date, verbose=False):
         """ Generate a prediction for each equity for this algorithm
         
         Arguments:
@@ -64,12 +96,11 @@ class TradingAlgorithm:
         Returns:
             dictionary -- key - ticker, value - tuple of prediction (0 or 1) and model accuracy
         """
-        start_index = self.eqs[0].get_index_from_date(date)
-        end_index = start_index + self.params['length']
+        
         predictions = {}
         for i, eq in enumerate(self.eqs):
-            new_feature = data_generator.get_subset(eq, self.features, self.type, self.params['length'], self.params['upper_threshold'], self.params['period'])
-            predictions.update({eq.ticker: Voter.predict(self.models[i], new_feature)})
+            pred = self.voter.predict(self.models[i], date, verbose)
+            predictions.update({eq.ticker: pred})
         
         return predictions
 

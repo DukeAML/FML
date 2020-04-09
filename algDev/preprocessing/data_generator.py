@@ -15,7 +15,7 @@ def parse_features(features):
             feature_set.append(feature)
 
     return feature_set
-def get_subset(eq, feature_set, start_index, end_index, threshold, period):
+def get_subset(eq, feature_set, start_index, end_index, type):
     """Get a specific feature, instead of the whole features set
     
     Arguments:
@@ -34,8 +34,7 @@ def get_subset(eq, feature_set, start_index, end_index, threshold, period):
     if type=='cnn':
         X = features[start_index:end_index,:]
     elif type=='svm':
-        X = features[start_index:end_index]
-
+        X = features[start_index:end_index].reshape(1,-1)
     return X
 
 def gen_cnn_data(eq, feature_set, length, threshold, period, split=0):
