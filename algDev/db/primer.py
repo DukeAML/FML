@@ -5,7 +5,7 @@ import credentials
 from os import listdir
 from os.path import isfile, join
 
-conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password)
+conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
 conn.autocommit = True
 cursor = conn.cursor()
 
@@ -41,7 +41,7 @@ drop_table_query = "DROP TABLE Prices"
 # cursor.execute(create_table_query)
 
 pathToData = "../../algDev/data/"
-equitiesPath = pathToData + 'equities/'
+equitiesPath = pathToData + 'commodities/'
 
 postgres_insert_query = """ INSERT INTO Prices (ticker, date, open, high, low, close, volume, smavg) VALUES ('{}','{}',{},{},{},{},{},{})"""
 
@@ -51,14 +51,14 @@ print('files?')
 onlyFiles.sort()
 print(onlyFiles)
 
-# completed = ['AAPL.xlsx', 'ABBV.xlsx', 'ABT.xlsx', 'ACN.xlsx', 'ADBE.xlsx', 'ADP.xlsx', 'AMGN.xlsx', 'AMT.xlsx', 'AMZN.xlsx', 'ANTM.xlsx', 'AVGO.xlsx', 'AXP.xlsx', 'BA.xlsx', 'BAC.xlsx', 'BDX.xlsx', 'BKNG.xlsx', 'BLK.xlsx', 'BMY.xlsx', 'BRK.B.xlsx', 'C.xlsx', 'CAT.xlsx', 'CB.xlsx', 'CHTR.xlsx', 'CI.xlsx', 'CL.xlsx', 'CMCSA.xlsx', 'CME.xlsx', 'COST.xlsx', 'CRM.xlsx', 'CSCO.xlsx', 'CVS.xlsx', 'CVX.xlsx', 'D.xlsx', 'DHR.xlsx', 'DIS.xlsx', 'DUK.xlsx', 'FB.xlsx', 'FIS.xlsx', 'FISV.xlsx', 'GE.xlsx', 'GILD.xlsx', 'GOOG.xlsx', 'GOOGL.xlsx', 'GS.xlsx', 'HD.xlsx', 'HON.xlsx', 'IBM.xlsx', 'INTU.xlsx', 'ISRG.xlsx', 'JNJ.xlsx', 'JPM.xlsx', 'KO.xlsx', 'LIN.xlsx', 'LLY.xlsx', 'LMT.xlsx', 'LOW.xlsx', 'MA.xlsx', 'MCD.xlsx', 'MDLZ.xlsx', 'MDT.xlsx', 'MMM.xlsx', 'MO.xlsx', 'MRK.xlsx', 'MS.xlsx', 'MSFT.xlsx', 'NEE.xlsx']
+completed = ['AAPL.xlsx', 'ABBV.xlsx', 'ABT.xlsx', 'ACN.xlsx', 'ADBE.xlsx', 'ADP.xlsx', 'AMGN.xlsx', 'AMT.xlsx', 'AMZN.xlsx', 'ANTM.xlsx', 'AVGO.xlsx', 'AXP.xlsx', 'BA.xlsx', 'BAC.xlsx', 'BDX.xlsx', 'BKNG.xlsx', 'BLK.xlsx', 'BMY.xlsx', 'BRK.B.xlsx', 'C.xlsx', 'CAT.xlsx', 'CB.xlsx', 'CHTR.xlsx', 'CI.xlsx', 'CL.xlsx', 'CMCSA.xlsx', 'CME.xlsx', 'COST.xlsx', 'CRM.xlsx', 'CSCO.xlsx', 'CVS.xlsx', 'CVX.xlsx', 'D.xlsx', 'DHR.xlsx', 'DIS.xlsx', 'DUK.xlsx', 'FB.xlsx', 'FIS.xlsx', 'FISV.xlsx', 'GE.xlsx', 'GILD.xlsx', 'GOOG.xlsx', 'GOOGL.xlsx', 'GS.xlsx', 'HD.xlsx', 'HON.xlsx', 'IBM.xlsx', 'INTU.xlsx', 'ISRG.xlsx', 'JNJ.xlsx', 'JPM.xlsx', 'KO.xlsx', 'LIN.xlsx', 'LLY.xlsx', 'LMT.xlsx', 'LOW.xlsx', 'MA.xlsx', 'MCD.xlsx', 'MDLZ.xlsx', 'MDT.xlsx', 'MMM.xlsx', 'MO.xlsx', 'MRK.xlsx', 'MS.xlsx', 'MSFT.xlsx', 'NEE.xlsx', 'SNP.xlsx', 'RE.xlsx']
 completedSet = set(completed)
 
 for file in onlyFiles:
     if file in completedSet:
         continue
     tickerName = file[:-5]
-
+    print('opening file:', file)
     wb = load_workbook(equitiesPath + file)
     ws = wb.active
 
@@ -70,12 +70,18 @@ for file in onlyFiles:
             dateObj = row[0]
             dateStr = str(dateObj.year) + '-' + str(dateObj.month) + '-' + str(dateObj.day)
 
-            toUse = (tickerName, dateStr, row[1], row[2], row[3], row[4], row[5], row[6])
+            toUse = ()
+            if(len(row) == 7):
+                toUse = (tickerName, dateStr, row[1], row[2], row[3], row[4], row[5], row[6])
+            elif(len(row) == 2):
+                toUse = (tickerName, dateStr, "NULL", "NULL", "NULL", row[1], "NULL", "NULL")
+            else:
+                raise Exception('INVALID ROW LENGTH') 
 
             modified = False
             lst = list(toUse)
             for i in range(len(toUse)):
-                if not toUse[i]:
+                if not toUse[i] or toUse[i] == '#N/A':
                     modified = True
                     lst[i] = "NULL"
             if modified:
@@ -87,6 +93,7 @@ for file in onlyFiles:
 
         except (Exception, psycopg2.Error) as error:
             print ("Error while connecting to PostgreSQL", error)
+            
 
 
 if(conn):

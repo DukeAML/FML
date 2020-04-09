@@ -15,7 +15,9 @@ import { AssetModalComponent } from './components/asset-modal/asset-modal.compon
 import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component';
 import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboard-graphs.component';
 import { IndicatorsComponent } from './components/indicators/indicators.component';
-import { IndicatorComponent } from './components/indicator/indicator.component'
+import { IndicatorComponent } from './components/indicator/indicator.component';
+import { TopTickersComponent } from './components/top-tickers/top-tickers.component';
+import { TickerComponent } from './components/ticker/ticker.component';
 
 
 
@@ -30,7 +32,9 @@ import { IndicatorComponent } from './components/indicator/indicator.component'
     PerformancePaneComponent,
     DashboardGraphsComponent,
     IndicatorsComponent,
-    IndicatorComponent
+    IndicatorComponent,
+    TopTickersComponent,
+    TickerComponent,
   ],
   imports: [
     AppRoutingModule,

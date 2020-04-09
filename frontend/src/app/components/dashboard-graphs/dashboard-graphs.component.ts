@@ -39,7 +39,6 @@ export class DashboardGraphsComponent implements OnInit {
 
   populateDropdown(){
     this.dataService.getDropdownInfo().subscribe(result => {
-      console.log('dropdown finished populating');
       this.models = result['models'];
       this.indicators = result['indicators'];
     })
@@ -47,11 +46,9 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   getIndicatorData($event:any){
-    console.log('getIndicatorData event', $event['target']);
     let formatted = this.mostRecentIndicator;
 
     if(this.numParams != 0){
-        console.log('using parameters')
         this.invalidNumParams = false;
         let params:string = event['target']['value'];
     
@@ -67,7 +64,7 @@ export class DashboardGraphsComponent implements OnInit {
           formatted = this.mostRecentIndicator + "," + params;
         }
     }
-    console.log('using the parameter', formatted);
+    console.log('most recent equity', this.mostRecentEquity);
     this.dataService.getCustomIndicatorsInfo(formatted, this.mostRecentEquity).subscribe(result => {
       this.handleNewGraphData(result, formatted + ' ' + this.mostRecentEquity, 'indicator');
     })
@@ -82,7 +79,6 @@ export class DashboardGraphsComponent implements OnInit {
     this.mostRecentEquity = value;
 
     this.dataService.getAssetValueOverTime(value).subscribe(result => {
-      console.log('result was', result);
       this.handleNewGraphData(result, value, 'asset');
       if(input){ input.value = ''; }
     })
@@ -90,13 +86,14 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   handleNewGraphData(result:any, value:string, dataType:string){
-    console.log('result', result);
     if(result['data']){
       this.invalidAssetField = false;
       let tempObjArr = result['data']
 
       for(let tempObj of tempObjArr){
         tempObj['type'] = dataType;
+        tempObj['name'] = value;
+        console.log('tempObj to be added', tempObj);
         let assetDataCopy = [...this.assetData];
         assetDataCopy.push(tempObj);
         this.assetData = assetDataCopy;
@@ -113,8 +110,6 @@ export class DashboardGraphsComponent implements OnInit {
   remove(ticker){
     this.invalidAssetField = false;
 
-    console.log('ticker to remove', ticker)
-    console.log('assetData', this.assetData);
     let i=0;
     let tickerIndex;
     let assetDataCopy = [...this.assetData];
@@ -131,23 +126,20 @@ export class DashboardGraphsComponent implements OnInit {
 
   loadParameterFields($event){
     this.indicatorSelected = false;
-    console.log('loadParamterFields called with event', $event);
     if(!$event['value']){
       return;
     }
     this.mostRecentIndicator = $event['value'];
     this.dataService.getNumberOfParameters(this.mostRecentIndicator).subscribe(result => {
-      console.log('result from getting params for', this.mostRecentIndicator, result)
       let number = result['data']
       this.numParams = number;
 
       if(number == 0){
         this.getIndicatorData({})
         return;
-        console.log('got here, using zero parameters')
+
       }
       this.indicatorSelected = true;
-      console.log('got here, not using zero parameters')
 
 
     })

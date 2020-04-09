@@ -1,0 +1,25 @@
+<div class="ticker">
+    <div class="text">
+        <h2> {{assetName}} </h2>
+        <h2> {{percentChange}} </h2>
+    </div>
+    <ngx-charts-line-chart
+    [view]="view"
+    [scheme]="lineColorScheme"
+    [legend]="lineLegend"
+    [showXAxisLabel]="lineShowXAxisLabel"
+    [showYAxisLabel]="lineShowYAxisLabel"
+    [legendPosition]="lineLegendPosition"
+    [xAxis]="lineXaxis"
+    [yAxis]="lineYaxis"
+    [xAxisLabel]="lineXaxisLabel"
+    [yAxisLabel]="lineYaxisLabel"
+    [timeline]="lineTimeline"
+    [results]="data"
+    (select)="lineOnSelect($event)"
+    (activate)="lineOnActivate($event)"
+    (deactivate)="lineOnDeactivate($event)"
+    >
+    </ngx-charts-line-chart>
+</div>
+
