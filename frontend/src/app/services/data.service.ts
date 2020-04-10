@@ -33,8 +33,8 @@ export class DataService {
     return this.http.get(this.serverURL + '/dashboard-dropdown')
   }
 
-  getAssetValueOverTime(assetName:string){
-    return this.http.get(this.serverURL + '/asset-value-over-time/' + assetName);
+  getAssetValueOverTime(assetName:string, time:string="1mo"){
+    return this.http.get(this.serverURL + '/asset-value-over-time/' + assetName + '/' + time);
 
   }
 
@@ -53,6 +53,10 @@ export class DataService {
 
   getCustomIndicatorsInfo(formatted:string, ticker:string){
     return this.http.get(this.serverURL + '/indicators/' + formatted + '/' + ticker);
+  }
+
+  getTopIndicators(){
+    return this.http.get(this.serverURL + '/assets/top');
   }
 
 

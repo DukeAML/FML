@@ -1,0 +1,4 @@
+<h2> Highlights </h2>
+<div class="ticker">
+    <app-ticker *ngFor='let ticker of highlights' [assetName]="ticker['asset']" [percentChange]="ticker['percentChange']" [type]="ticker['type']"></app-ticker>
+</div>

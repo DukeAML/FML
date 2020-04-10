@@ -5,6 +5,8 @@ import numpy as np
 # gonna have to rewrite this once DB structure in place
 import algDev.API.dataGatherer as dataGatherer
 import algDev.API.indicators as indicators
+import algDev.db.wrapper as wrapper
+
 
 def getCategoryDescriptionAtDate(asset, date):
     
@@ -401,10 +403,10 @@ funData = [
         ]
 
 
-def getAssetValueOverTime(name):
-  pricesData = dataGatherer.getPrices(name)
+def getAssetValueOverTime(name, period):
+  pricesData = dataGatherer.getPrices(name, period)
   if(len(pricesData) > 0):
-    return [{'name': name, 'series': dataGatherer.getPrices(name)}]
+    return [{'name': name, 'series': pricesData}]
   else:
     return "ERROR"
 
@@ -662,5 +664,40 @@ def getIndicatorData(formatted, equity):
   return data
 
 
+def getTopAssets():
+  print('getTopAssets called')
+  allAssets = wrapper.getTickers()
+  
+  changes = []
 
+  for asset in allAssets:
+    print('current asset', asset)
+    data = dataGatherer.getPrices(asset, "5d")
+
+    print('data in top assets is', data)
+
+    firstObj = data[0]
+    lastObj = data[len(data)-1]
+
+    totalChange = lastObj['value'] - firstObj['value']
+    percentChange = (totalChange/firstObj['value']) * 100
+    print('percentChange is', percentChange)
+    changes.append((percentChange, asset))
+
+  changes.sort()
+
+  finalResult = []
+
+  for item in changes[-3:]:
+    tempDict = {'percentChange': item[0], 'asset': item[1], 'type': 'top'} 
+    finalResult.append(tempDict)
+
+  for item in changes[:3]:
+    tempDict = {'percentChange': item[0], 'asset': item[1], 'type': 'bottom'} 
+    finalResult.append(tempDict)
+
+  return finalResult
+
+
+  
 

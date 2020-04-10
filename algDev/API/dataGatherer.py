@@ -17,9 +17,10 @@ import requests
 from ftplib import FTP
 import numpy as np
 
-def getPrices(ticker):
+# valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max 
+def getPrices(ticker, period):
     tickerObj = yf.Ticker(ticker.upper())
-    history = tickerObj.history(period="1mo")
+    history = tickerObj.history(period=period)
     days = list(history['Close'])
     jsonList = []
 
@@ -32,7 +33,6 @@ def getPrices(ticker):
         jsonList.append(tempObj)
     
     return jsonList
-
 
 
 def getTickers():
