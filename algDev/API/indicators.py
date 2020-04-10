@@ -1,6 +1,7 @@
 from algDev.preprocessing.feature_generation import create_features
 from algDev.models.equity import Equity
 
+
 def get_indicator_value(ticker, feature):
     """
     ticker: 'AAPL'

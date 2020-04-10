@@ -57,6 +57,11 @@ class TradingAlgorithm:
             if len(tickers) == 0 or model.eq.ticker in tickers:
                 model.plot_rocs(verbose)
             
+    def plot_model_cm(self, ticker, verbose=False):
+        for model in self.models:
+            if model.ticker==ticker:
+                model.get_conf_matricies(verbose)
+    
     def generate_conf_matricies(self, start_date, end_date, verbose=False):
         next_day = datetime.timedelta(days = 1)
         date = start_date
