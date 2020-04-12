@@ -19,7 +19,7 @@ class SVM:
     Returns:
         SVM -- SVM with model and data
     """
-    def __init__(self, X, y, C=1, gamma='auto', title='default'):
+    def __init__(self, X, y, C=1, gamma="auto", title='default'):
         """Initialize SVM
         
         Arguments:
