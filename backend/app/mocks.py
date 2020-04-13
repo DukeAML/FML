@@ -686,15 +686,21 @@ def getTopAssets():
 
   changes.sort()
 
+  tempResult = []
   finalResult = []
 
   for item in changes[-3:]:
     tempDict = {'percentChange': item[0], 'asset': item[1], 'type': 'top'} 
-    finalResult.append(tempDict)
+    tempResult.append(tempDict)
 
   for item in changes[:3]:
     tempDict = {'percentChange': item[0], 'asset': item[1], 'type': 'bottom'} 
-    finalResult.append(tempDict)
+    tempResult.append(tempDict)
+  
+  half = int(len(tempResult)/2)
+  for i in range(half):
+    finalResult.append(tempResult[i])
+    finalResult.append(tempResult[i+3])
 
   return finalResult
 
