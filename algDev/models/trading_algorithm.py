@@ -5,7 +5,7 @@ from algDev.preprocessing import data_generator, feature_generation
 import datetime
 import time
 from algDev.models.confusion_matrix import ConfusionMatrix
-
+from algDev.db.wrapper import createTradingAlgorithm
 class TradingAlgorithm:
     """ This is the main class. You would make a TradingAlgorithm 
     object to actually generate your predictions on and pass them into
@@ -124,3 +124,7 @@ class TradingAlgorithm:
     def update(self, date):
         # Retrain the model overtime
         return 0
+
+    def save(self):
+        id = createTradingAlgorithm(self)
+        return id
