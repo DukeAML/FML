@@ -100,14 +100,13 @@ def createTradingAlgorithm(tradingAlgorithm):
 
     return id
 
-
-def loadModels(ticker):
+def loadModelCollections(ticker):
 
     conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
     conn.autocommit = True
     cursor = conn.cursor()
 
-    query = "SELECT * FROM Models WHERE ticker = '{}'"
+    query = "SELECT * FROM ModelCollections WHERE ticker = '{}'"
     cursor.execute(query.format(ticker))
     result = cursor.fetchall()
     return result

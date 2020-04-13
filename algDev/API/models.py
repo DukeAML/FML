@@ -65,3 +65,6 @@ def loadTradingAlgorithm(tradingAlgorithmId):
 
 def getModels(ticker):
     
+    models = db_wrapper.loadModelCollections(ticker)
+
+    return models
