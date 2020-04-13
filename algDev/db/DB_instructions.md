@@ -3,6 +3,9 @@ Our database is hosted on Google Cloud, so before setting up a local client conn
 
 Once you've downloaded that, initialize the tool with `gcloud init` and authenticate into FML's Google Cloud account by running  `gcloud auth login` and signing in on your browser.
 
+#financialmlpartners@gmail.com
+#daddyluke123
+
 ### Setting up the Proxy
 For mac, WHILE IN THE `backend/db` directory, run the following command to download the proxy into the correct location:
 `curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64`

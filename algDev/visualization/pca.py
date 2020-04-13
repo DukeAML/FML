@@ -1,10 +1,12 @@
-from preprocessing.gen_lstm_data import gen_data
+from algDev.preprocessing.data_generator import gen_cnn_data
+from algDev.models.equity import Equity
 from sklearn import decomposition
 import matplotlib
 
 import matplotlib.pyplot as plt
 def run_pca(ticker, save=False):
-    (X_train, y_train, X_test, y_test) = gen_data(eq = ticker, verbose= True)
+    eq = Equity(ticker)
+    X_train, y_train = gen_cnn_data(eq, ['macd_9_18', 'closes', 'rainbow_4_8_18_23', 'prings', 'kstTrix'], verbose= True)
 
     X_train = X_train.reshape((len(X_train), 19*25))
 

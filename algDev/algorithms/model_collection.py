@@ -9,7 +9,7 @@ class ModelCollection:
     Returns:
         ModelCollection -- object for storing and testing models
     """
-    def __init__(self, ticker, type, features, params):
+    def __init__(self, ticker, type, features=[], params=None, models=None):
         """initialize model collection
         
         Arguments:
@@ -24,10 +24,15 @@ class ModelCollection:
                                     cnn_split: number of cnns to use if necessary
         """
         self.eq = Equity(ticker)
+        self.ticker = ticker
         self.features = data_generator.parse_features(features)
         self.type = type
         self.params = params
-        self.models = self.init_models()
+        if len(models) > 0:
+            self.models = models
+        else:
+            assert(len(features)>0)
+            self.models = self.init_models()
         self.accuracy = 0.0
         
     def init_models(self):
@@ -76,6 +81,10 @@ class ModelCollection:
     def plot_rocs(self, verbose=False):
         for model in self.models:
             model.plot_roc(verbose)
+
+    def get_conf_matricies(self, verbose=False):
+        for model in self.models:
+            model.build_conf_matrix(self.params['data_splits'])
 
     def update_accuracy(self):
         """Update the accuracy of the entire collection by averaging the

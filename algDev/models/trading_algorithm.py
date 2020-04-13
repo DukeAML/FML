@@ -5,7 +5,7 @@ from algDev.preprocessing import data_generator, feature_generation
 import datetime
 import time
 from algDev.models.confusion_matrix import ConfusionMatrix
-
+from algDev.db.wrapper import createTradingAlgorithm
 class TradingAlgorithm:
     """ This is the main class. You would make a TradingAlgorithm 
     object to actually generate your predictions on and pass them into
@@ -15,7 +15,7 @@ class TradingAlgorithm:
         TradingAlgorithm -- Object to be used to retrain and predict data points
     """
     
-    def __init__(self, tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.025, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=False):
+    def __init__(self, tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.025, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=False, voting_type = 'accuracy', models = None):
         """Initialize the TradingAlgorithm Object
         
         Arguments:
@@ -40,8 +40,11 @@ class TradingAlgorithm:
         self.features = features
         self.eqs = [Equity(t) for t in tickers]
         self.params = {'length': data_lookback_period, 'lower_threshold': label_lower_threshold, 'upper_threshold':label_upper_threshold, 'period': label_period, 'cnn_split': cnn_split, 'data_splits': data_splits}
-        self.voter = Voter('accuracy')
-        self.models = [ModelCollection(t, type, features, self.params) for t in tickers]
+        self.voter = Voter(voting_type)
+        if models is None:
+            self.models = [ModelCollection(t, type, features, self.params) for t in tickers]
+        else:
+            self.models = models
         if verbose:
             print("Initializing Models")
         self.initialize_models(verbose)
@@ -57,6 +60,11 @@ class TradingAlgorithm:
             if len(tickers) == 0 or model.eq.ticker in tickers:
                 model.plot_rocs(verbose)
             
+    def plot_model_cm(self, ticker, verbose=False):
+        for model in self.models:
+            if model.ticker==ticker:
+                model.get_conf_matricies(verbose)
+    
     def generate_conf_matricies(self, start_date, end_date, verbose=False):
         next_day = datetime.timedelta(days = 1)
         date = start_date
@@ -116,3 +124,7 @@ class TradingAlgorithm:
     def update(self, date):
         # Retrain the model overtime
         return 0
+
+    def save(self):
+        id = createTradingAlgorithm(self)
+        return id
