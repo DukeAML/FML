@@ -9,7 +9,7 @@ class ModelCollection:
     Returns:
         ModelCollection -- object for storing and testing models
     """
-    def __init__(self, ticker, type, features, params):
+    def __init__(self, ticker, type, features=[], params=None, models=None):
         """initialize model collection
         
         Arguments:
@@ -28,7 +28,11 @@ class ModelCollection:
         self.features = data_generator.parse_features(features)
         self.type = type
         self.params = params
-        self.models = self.init_models()
+        if len(models) > 0:
+            self.models = models
+        else:
+            assert(len(features)>0)
+            self.models = self.init_models()
         self.accuracy = 0.0
         
     def init_models(self):
