@@ -3,6 +3,21 @@ h2{
 }
 
 .ticker{
-    border: 3px solid blue;
+    padding-top: 5%;
+    display: -webkit-box;   
+    display: -moz-box; 
+    display: -ms-flexbox;  
+    display: -webkit-flex;
+    display: flex;  
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+    text-align: center;
 }
 

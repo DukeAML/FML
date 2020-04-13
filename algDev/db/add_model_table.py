@@ -19,6 +19,8 @@ print("You are connected to - ", record,"\n")
 
 drop_table_query = "DROP TABLE Models"
 drop_table_query2 = "DROP TABLE ModelCollections"
+drop_table_query3 = "DROP TABLE TradingAlgorithms"
+
 try:
     cursor.execute(drop_table_query)
     print('dropped models table')
@@ -29,31 +31,46 @@ try:
     print('dropped modelcollections table')
 except:
     print("modelcollections table didn't exist, continuing...")
-
+try:
+    cursor.execute(drop_table_query3)
+    print('dropped tradingalgorithms table')
+except:
+    print("tradingalgorithms table didn't exist, continuing...")
 create_table_query = '''
 CREATE TABLE Models(
-    ticker VARCHAR(10) NOT NULL,
+    modelId uuid  NOT NULL,
     modelbinary bytea NOT NULL,
-    epoch DECIMAL,
     title VARCHAR(100),
-    metrics VARCHAR(1000),
-    indicatorId VARCHAR(1000),
-    PRIMARY KEY (ticker, title)
+    metrics VARCHAR,
+    PRIMARY KEY (modelId)
     ); '''
 
 create_table_query2 = '''
 CREATE TABLE ModelCollections(
+    modelCollectionId uuid  NOT NULL,
     ticker VARCHAR(10) NOT NULL,
-    modelIds VARCHAR(1000) NOT NULL,
+    modelIds VARCHAR NOT NULL,
     length BIGINT,
     upperthreshold DECIMAL,
     lowerthreshold DECIMAL,
     period BIGINT,
-    PRIMARY KEY (ticker, modelIds)
+    title VARCHAR(100),
+    features VARCHAR,
+    PRIMARY KEY (modelCollectionId)
+    ); '''
+
+create_table_query3 = '''
+CREATE TABLE TradingAlgorithm(
+    tradingAlgorithmId uuid  NOT NULL,
+    tickers VARCHAR NOT NULL,
+    modelCollectionIds VARCHAR NOT NULL,
+    votingType VARCHAR(10),
+    PRIMARY KEY (tradingAlgorithmId)
     ); '''
 
 cursor.execute(create_table_query)
 cursor.execute(create_table_query2)
+cursor.execute(create_table_query3)
 
 if(conn):
     cursor.close()

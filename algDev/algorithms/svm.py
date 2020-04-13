@@ -26,7 +26,7 @@ class SVM:
     Returns:
         SVM -- SVM with model and data
     """
-    def __init__(self, X, y, C=1, gamma="auto", title='default'):
+    def __init__(self, X=None, y=None, C=1, gamma="auto", title='default',model = None, metrics = {}, ):
         """Initialize SVM
         
         Arguments:
@@ -38,10 +38,14 @@ class SVM:
             gamma {str} -- kernal parameter (default: {'auto'})
             title {str} -- name of model (default: {'default'})
         """
-        self.model = svm.SVC(C=C, gamma=gamma, probability=True)
+        if model:
+            self.model = model
+        else:
+            self.model = svm.SVC(C=C, gamma=gamma, probability=True)
         self.data = {'features':X, 'labels':y}
         self.title = title
-        self.metrics = {}
+        
+        self.metrics = metrics
 
     def build_conf_matrix(self, splits, X=None, y=None, verbose=False):
         if not X or not y:

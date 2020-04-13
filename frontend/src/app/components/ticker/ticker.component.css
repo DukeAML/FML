@@ -1,12 +1,11 @@
 .ticker{
-    width: 60%;
-    padding-top: 5%;
+    width: 80%;
+    padding-top: 0%;
     padding-bottom: 5%;
     margin-top: 2%;
-    border: 3px solid red;
+    box-shadow: 0 0 15px #000000;
     align-self: center;
-    
-    padding-top: 5%;
+
     display: -webkit-box;   
     display: -moz-box; 
     display: -ms-flexbox;  
@@ -23,6 +22,4 @@
     flex-wrap: wrap;
     text-align: center;
     padding-bottom: 10%;
-    
-
 }

@@ -17,6 +17,12 @@ export class TickerComponent implements OnInit {
   constructor(private dataService:DataService) { }
 
   ngOnInit() {
+    if(this.type == 'bottom'){
+      this.lineColorScheme = {
+        domain: ['#A10A28']
+      };
+
+    }
     this.dataService.getAssetValueOverTime(this.assetName, '5d').subscribe(result => {
       this.data = result['data'];
     })
@@ -39,7 +45,7 @@ export class TickerComponent implements OnInit {
   view: any[] = [150, 100];
   
   lineColorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#5AA454']
   };
 
   lineOnSelect(data): void {
