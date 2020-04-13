@@ -110,4 +110,9 @@ class ModelCollection:
         
         return predictions
 
+    def plot_hyperparam_viz(self, verbose=False):
+        for model in self.models:
+            model.generate_hyperparam_viz(verbose)
+
+
     

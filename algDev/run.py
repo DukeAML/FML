@@ -47,3 +47,5 @@ def test_five():
 def test_six():
     trading_alg_test.test_conf_matrix_model_coll()
 
+def test_seven():
+    trading_alg_test.plot_hyperparam_viz()

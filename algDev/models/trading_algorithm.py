@@ -121,3 +121,14 @@ class TradingAlgorithm:
     def update(self, date):
         # Retrain the model overtime
         return 0
+
+    def plot_models_hyperparam_viz(self, tickers = [], verbose = False):
+        for model in self.models:
+            if len(tickers) == 0 or model.eq.ticker in tickers:
+                model.plot_hyperparam_viz(verbose)
+            
+    
+
+
+
+        
