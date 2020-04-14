@@ -9,7 +9,7 @@ class ModelCollection:
     Returns:
         ModelCollection -- object for storing and testing models
     """
-    def __init__(self, ticker, type, features=[], params=None, models=None):
+    def __init__(self, ticker, type, features=[], params=None, models=[]):
         """initialize model collection
         
         Arguments:
