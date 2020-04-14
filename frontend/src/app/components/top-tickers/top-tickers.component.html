@@ -1,4 +1,9 @@
 <h2> Highlights </h2>
-<div class="ticker">
+
+<div class="spinny" *ngIf="!loaded">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="ticker" *ngIf="loaded">
     <app-ticker *ngFor='let ticker of highlights' [assetName]="ticker['asset']" [percentChange]="ticker['percentChange']" [type]="ticker['type']"></app-ticker>
 </div>
