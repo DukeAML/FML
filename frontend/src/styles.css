@@ -20,6 +20,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-toolbar.mat-primary{background:#222222;color:#dddddd}
 
+.mat-dialog-container{
+    background:#222222; 
+    color: #dddddd;
+    box-shadow: 0 0 15px #000000;
+}
+
 .mat-form-field-underline {
  /*change color of underline*/
   background-color: #DDDDDD !important;
@@ -34,3 +40,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: #DDDDDD !important;
 }
 
+.backtesterButton:hover{
+    background-color: #444444;
+}
