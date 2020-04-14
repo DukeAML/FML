@@ -1,3 +1,61 @@
-<div class="startButton">
+<div class="startButton" *ngIf="showButton">
     <button mat-button (click)="openDialog()" class="backtesterButton"><h2>Start backtest</h2></button>
 </div>
+
+<div class="loading" *ngIf="testerRunning">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="main" *ngIf="testerComplete">
+
+
+<!-- choose between dates, positions -->
+
+    <div class="tradeViewer">
+        <h2>Trades Made</h2>
+        <div class="selectors">
+            <mat-form-field>
+                <mat-label>Positions</mat-label>
+                <mat-select (selectionChange)=onPositionsChange($event) multiple>
+                <mat-option style="background-color: #222222; color:#DDDDDD" *ngFor="let position of positions" [value]="position['ticker']">{{position.ticker}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="datepickers">
+                <mat-form-field>
+                    <mat-label>Start Date</mat-label>
+                    <input matInput (dateChange)="updateStartDate($event)" [min]="startDate"  [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                
+                </mat-form-field>
+            
+                <mat-form-field>
+                    <mat-label>End Date</mat-label>
+                    <input matInput (dateChange)="updateEndDate($event)" [min]="minEndDate" [max]="endDate" [matDatepicker]="picker2">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <mat-accordion>
+                <mat-expansion-panel *ngFor="let position of renderedTrades" style="box-shadow: 0 0 15px #000000; margin-bottom: 3%;">
+                    <mat-expansion-panel-header>
+                    {{position.name}}
+                    </mat-expansion-panel-header>
+                    <div class="trades" *ngFor="let trade of position['trades']">
+                        <u>Date Purchased:</u> {{trade.datePurchased.toDateString()}} <br>
+                        <u>Number of Shares:</u> {{trade.numShares}} <br>
+                        <u>Date Sold:</u> {{trade.dateSold ? trade.dateSold : 'N/A'}} <br>
+                        <div class="line">
+                            <br>
+                        </div>
+                    </div>
+                </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+
+</div>
+
+

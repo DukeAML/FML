@@ -17,6 +17,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-select-value{
     color: #DDDDDD;
 }
+.mat-expansion-panel{
+    background-color: #222222;
+    color: #DDDDDD;
+}
+/* 
+.mat-expansion-panel-header.mat-expanded {
+    background: #222222;
+    color: #dddddd;
+  } */
 
 .mat-toolbar.mat-primary{background:#222222;color:#dddddd}
 

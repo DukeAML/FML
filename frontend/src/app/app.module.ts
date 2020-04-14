@@ -12,7 +12,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { AboutComponent } from './components/about/about.component';
-import { MatButtonModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatProgressSpinner, MatSelectModule, MatSliderModule, MatToolbarModule, MatTooltipModule, MatProgressSpinnerModule, MatButton } from '@angular/material';
+import { MatButtonModule, MatChipsModule, MatDatepickerModule, MatDialogModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatProgressSpinner, MatSelectModule, MatSliderModule, MatToolbarModule, MatTooltipModule, MatProgressSpinnerModule, MatButton } from '@angular/material';
 import { AssetModalComponent } from './components/asset-modal/asset-modal.component';
 import { PerformancePaneComponent } from './components/performance-pane/performance-pane.component';
 import { DashboardGraphsComponent } from './components/dashboard-graphs/dashboard-graphs.component';
@@ -50,13 +50,14 @@ import { BacktesterDialogComponent } from './components/backtester-dialog/backte
     HttpClientModule,
     MatButtonModule,
     MatChipsModule,
+    MatDialogModule,
     MatDatepickerModule,
+    MatExpansionModule,
     MatIconModule,
     MatInputModule,
     MatNativeDateModule,
     MatToolbarModule, 
     MatTooltipModule,
-    MatDialogModule,
     MatFormFieldModule,
     MatOptionModule,
     MatProgressSpinnerModule,

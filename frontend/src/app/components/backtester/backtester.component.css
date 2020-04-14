@@ -1,3 +1,18 @@
+.main{
+    margin-top: 5%;
+    background-color: #222222;
+    color: #dddddd;
+}
+
+.line{
+    margin-top: 5%;
+    width: 80%;
+    margin-left: 10%;
+    border-top: 1px solid #DDDDDD;
+
+}
+
+
 .startButton{
     text-align: center;
     vertical-align: middle;
@@ -7,4 +22,20 @@
 
 button:hover{
     background-color: #444444;
+}
+
+
+
+.tradeViewer{
+    text-align: center;
+    width: 40%;
+    margin-left: 5%;
+}
+
+mat-accordion{
+    width: 60%;
+}
+
+mat-form-field{
+    padding-left: 5%;
 }
