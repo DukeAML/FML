@@ -1,0 +1,10 @@
+.startButton{
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 20%;
+
+}
+
+button:hover{
+    background-color: #444444;
+}

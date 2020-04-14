@@ -156,6 +156,8 @@ class SVM:
         pred = self.model.predict(Xi)
         
         return pred[0]
+
+    
     
     
 
@@ -198,7 +200,7 @@ class SVM:
 
         # Now we need to fit a classifier for all parameters in the 2d version
         # (we use a smaller set of parameters here because it takes a while to train)
-
+        '''
         C_2d_range = [1e-2, 1, 1e2]
         gamma_2d_range = [1e-1, 1, 1e1]
 
@@ -256,3 +258,4 @@ class SVM:
         plt.yticks(np.arange(len(C_range)), C_range)
         plt.title('Validation accuracy')
         plt.show()
+        '''
