@@ -6,6 +6,8 @@ import datetime
 import time
 from algDev.models.confusion_matrix import ConfusionMatrix
 from algDev.db.wrapper import createTradingAlgorithm
+import csv
+
 class TradingAlgorithm:
     """ This is the main class. You would make a TradingAlgorithm 
     object to actually generate your predictions on and pass them into
@@ -15,7 +17,7 @@ class TradingAlgorithm:
         TradingAlgorithm -- Object to be used to retrain and predict data points
     """
     
-    def __init__(self, tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.025, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=False, voting_type = 'accuracy', models = None):
+    def __init__(self, tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.025, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=False, voting_type = 'accuracy', models = None, model_params = None):
         """Initialize the TradingAlgorithm Object
         
         Arguments:
@@ -42,7 +44,7 @@ class TradingAlgorithm:
         self.params = {'length': data_lookback_period, 'lower_threshold': label_lower_threshold, 'upper_threshold':label_upper_threshold, 'period': label_period, 'cnn_split': cnn_split, 'data_splits': data_splits}
         self.voter = Voter(voting_type)
         if models is None:
-            self.models = [ModelCollection(t, type, features, self.params) for t in tickers]
+            self.models = [ModelCollection(t, type, features, self.params, model_params = model_params) for t in tickers]
         else:
             self.models = models
         if verbose:
@@ -125,12 +127,13 @@ class TradingAlgorithm:
         # Retrain the model overtime
         return 0
 
-    def plot_models_hyperparam_viz(self, tickers = [], verbose = False):
-        for model in self.models:
-            if len(tickers) == 0 or model.eq.ticker in tickers:
-                model.plot_hyperparam_viz(verbose)
+    # def plot_models_hyperparam_viz(self, tickers = [], verbose = False):
+    #     for model in self.models:
+    #         if len(tickers) == 0 or model.eq.ticker in tickers:
+    #             model.plot_hyperparam_viz(verbose)
             
 
     def save(self):
         id = createTradingAlgorithm(self)
         return id
+

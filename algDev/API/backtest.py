@@ -1,7 +1,7 @@
 from algDev.API.models import loadTradingAlgorithm
 from algDev.models.backtest import Backtest
 from algDev.models.trading_algorithm import TradingAlgorithm
-fr
+
 from algDev.models.asset_strategy import AssetStrategy, AssetAllocation
 import datetime
 

@@ -9,7 +9,7 @@ class ModelCollection:
     Returns:
         ModelCollection -- object for storing and testing models
     """
-    def __init__(self, ticker, type, features=[], params=None, models=[]):
+    def __init__(self, ticker, type, features=[], params=None, models=[], model_params =None):
         """initialize model collection
         
         Arguments:
@@ -28,6 +28,7 @@ class ModelCollection:
         self.features = data_generator.parse_features(features)
         self.type = type
         self.params = params
+        self.model_params = model_params
         if len(models) > 0:
             self.models = models
         else:
@@ -50,7 +51,7 @@ class ModelCollection:
             for feature in self.features:
                 X,y = data_generator.gen_svm_data(self.eq, [feature], self.params['length'], self.params['upper_threshold'], self.params['period'])
                 
-                models.append(SVM(X,y,title=feature))
+                models.append(SVM(X,y,title=feature, params= self.model_params))
         return models
 
     def update_params(self, params):

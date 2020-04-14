@@ -26,7 +26,7 @@ class SVM:
     Returns:
         SVM -- SVM with model and data
     """
-    def __init__(self, X=None, y=None, C=1, gamma="auto", title='default',model = None, metrics = {}, ):
+    def __init__(self, X=None, y=None, params = None, title='default',model = None, metrics = {}, ):
         """Initialize SVM
         
         Arguments:
@@ -35,13 +35,24 @@ class SVM:
         
         Keyword Arguments:
             C {int} -- error penalty (default: {1})
-            gamma {str} -- kernal parameter (default: {'auto'})
-            title {str} -- name of model (default: {'default'})
+            params {dict} -- dictionary of parameters below, if None default values are used
+                gamma {str} -- kernal parameter (default: {'auto'}, if not auto or scale - not str)
+                C {int} -- 
+                title {str} -- name of model (default: {'default'})
+            
         """
+        if not bool(params) == True:
+            gamma = 'auto'
+            C = 1
+        else:
+            gamma = params['gamma']
+            C = params['C']
+
         if model:
             self.model = model
         else:
             self.model = svm.SVC(C=C, gamma=gamma, probability=True)
+        
         self.data = {'features':X, 'labels':y}
         self.title = title
         
