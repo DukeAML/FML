@@ -9,7 +9,7 @@ class ModelCollection:
     Returns:
         ModelCollection -- object for storing and testing models
     """
-    def __init__(self, ticker, type, features=[], params=None, models=None):
+    def __init__(self, ticker, type, features=[], params=None, models=[]):
         """initialize model collection
         
         Arguments:
@@ -113,5 +113,10 @@ class ModelCollection:
                 predictions.append(self.models[i].predict(X_i))
         
         return predictions
+
+    def plot_hyperparam_viz(self, verbose=False):
+        for model in self.models:
+            model.generate_hyperparam_viz(verbose)
+
 
     
