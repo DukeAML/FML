@@ -130,11 +130,7 @@ class TradingAlgorithm:
             if len(tickers) == 0 or model.eq.ticker in tickers:
                 model.plot_hyperparam_viz(verbose)
             
-    
 
-
-
-        
     def save(self):
         id = createTradingAlgorithm(self)
         return id
