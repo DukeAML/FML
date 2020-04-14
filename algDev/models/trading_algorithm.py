@@ -6,6 +6,8 @@ import datetime
 import time
 from algDev.models.confusion_matrix import ConfusionMatrix
 from algDev.db.wrapper import createTradingAlgorithm
+import csv
+
 class TradingAlgorithm:
     """ This is the main class. You would make a TradingAlgorithm 
     object to actually generate your predictions on and pass them into
@@ -125,12 +127,13 @@ class TradingAlgorithm:
         # Retrain the model overtime
         return 0
 
-    def plot_models_hyperparam_viz(self, tickers = [], verbose = False):
-        for model in self.models:
-            if len(tickers) == 0 or model.eq.ticker in tickers:
-                model.plot_hyperparam_viz(verbose)
+    # def plot_models_hyperparam_viz(self, tickers = [], verbose = False):
+    #     for model in self.models:
+    #         if len(tickers) == 0 or model.eq.ticker in tickers:
+    #             model.plot_hyperparam_viz(verbose)
             
 
     def save(self):
         id = createTradingAlgorithm(self)
         return id
+
