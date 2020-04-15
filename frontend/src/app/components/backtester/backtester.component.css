@@ -19,14 +19,20 @@
     margin-top: 20%;
 
 }
+::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #7FC6B8 !important;
+   } 
 
 button:hover{
-    background-color: #444444;
+    background-color: #7FC6B8;
 }
 
 
 
 .tradeViewer{
+    float:left; 
+    display:inline; 
     text-align: center;
     width: 40%;
     margin-left: 5%;
@@ -38,4 +44,15 @@ mat-accordion{
 
 mat-form-field{
     padding-left: 5%;
+}
+
+.statistics{
+    float:left; 
+    display:inline; 
+    box-shadow: 0 0 20px #000000;
+    margin-left: 10%;
+    margin-right: 0%;
+    width: 40%;
+    text-align: center;
+
 }

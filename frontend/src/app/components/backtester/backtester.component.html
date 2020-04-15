@@ -8,9 +8,6 @@
 
 <div class="main" *ngIf="testerComplete">
 
-
-<!-- choose between dates, positions -->
-
     <div class="tradeViewer">
         <h2>Trades Made</h2>
         <div class="selectors">
@@ -54,6 +51,19 @@
                     </div>
                 </mat-expansion-panel>
         </mat-accordion>
+    </div>
+
+    <div class="statistics">
+        <h2>Summary Statistics</h2>
+        <div class="line">
+        </div>
+
+        <div class="statsView" *ngFor="let stat of performanceStats">
+            <div class="stat">
+                <h4>{{stat.name}}:</h4> {{stat.value}}
+            </div>
+        </div>
+
     </div>
 
 </div>
