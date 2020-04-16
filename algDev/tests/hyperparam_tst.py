@@ -19,6 +19,5 @@ def hyper_param_haul(features_list,ticker_list, model_params):
                     acc = ta.models[0].accuracy
                     acc_lst.append(acc)
                     writer.writerow([ticker, features, params, acc, cm)
-    
     return max(acc_lst)
     
