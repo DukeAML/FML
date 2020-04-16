@@ -6,3 +6,10 @@ h1{
     text-align: center;
 }
 
+.cancel:hover{
+    background-color: #A10A28;
+}
+
+.ok:hover{
+    background-color: #5AA454
+}

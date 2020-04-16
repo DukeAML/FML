@@ -62,7 +62,7 @@ export class BacktesterComponent implements OnInit {
           this.testerComplete = true;
 
           this.positions = result['positions'];
-          this.performanceStats=  result['stats'];
+          this.performanceStats =  result['stats'];
 
         })
       }
