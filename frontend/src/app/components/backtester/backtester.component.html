@@ -2,8 +2,8 @@
     <button mat-button (click)="openDialog()" class="backtesterButton"><h2>Start backtest</h2></button>
 </div>
 
-<div class="loading" *ngIf="testerRunning">
-    <mat-spinner></mat-spinner>
+<div class="loading" *ngIf="isLoading">
+    <mat-spinner color="#DDDDDD"></mat-spinner>
 </div>
 
 <div class="main" *ngIf="testerComplete">
@@ -21,7 +21,7 @@
             <div class="datepickers">
                 <mat-form-field>
                     <mat-label>Start Date</mat-label>
-                    <input matInput (dateChange)="updateStartDate($event)" [min]="startDate"  [matDatepicker]="picker">
+                    <input matInput (dateChange)="updateStartDate($event)" [min]="startDate" [max]="maxStartDate" [matDatepicker]="picker">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 
@@ -36,31 +36,74 @@
             </div>
         </div>
 
-        <mat-accordion>
+        <mat-accordion multi="true">
                 <mat-expansion-panel *ngFor="let position of renderedTrades" style="box-shadow: 0 0 15px #000000; margin-bottom: 3%;">
                     <mat-expansion-panel-header>
                     {{position.name}}
                     </mat-expansion-panel-header>
-                    <div class="trades" *ngFor="let trade of position['trades']">
-                        <u>Date Purchased:</u> {{trade.datePurchased.toDateString()}} <br>
-                        <u>Number of Shares:</u> {{trade.numShares}} <br>
-                        <u>Date Sold:</u> {{trade.dateSold ? trade.dateSold : 'N/A'}} <br>
-                        <div class="line">
-                            <br>
-                        </div>
-                    </div>
+
+                    <table mat-table [dataSource]="position['trades']" class="mat-elevation-z8">
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="datePurchased">
+                          <th mat-header-cell *matHeaderCellDef> Date Purchased </th>
+                          <td mat-cell *matCellDef="let element"> {{element.datePurchased.toDateString()}} </td>
+                        </ng-container>
+                      
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="numShares">
+                          <th mat-header-cell *matHeaderCellDef style="background-color: #222222"> Number of Shares </th>
+                          <td mat-cell *matCellDef="let element" style="background-color: #222222"> {{element.numShares}} </td>
+                        </ng-container>
+                      
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="dateSold">
+                          <th mat-header-cell *matHeaderCellDef> Date Sold </th>
+                          <td mat-cell *matCellDef="let element"> {{element.dateSold ? element.dateSold.toDateString() : 'N/A'}} </td>
+                        </ng-container>
+                      
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+
                 </mat-expansion-panel>
         </mat-accordion>
     </div>
 
     <div class="statistics">
-        <h2>Summary Statistics</h2>
-        <div class="line">
+
+        <div class="graph">
+            <h2>Portfolio Value</h2>
+            <div class="chart">
+                <ngx-charts-line-chart
+                [view]="view"
+                [scheme]="lineColorScheme"
+                [legend]="lineLegend"
+                [showXAxisLabel]="lineShowXAxisLabel"
+                [showYAxisLabel]="lineShowYAxisLabel"
+                [legendPosition]="lineLegendPosition"
+                [xAxis]="lineXaxis"
+                [yAxis]="lineYaxis"
+                [xAxisLabel]="lineXaxisLabel"
+                [yAxisLabel]="lineYaxisLabel"
+                [timeline]="lineTimeline"
+                [results]="portfolioValues"
+                (select)="lineOnSelect($event)"
+                (activate)="lineOnActivate($event)"
+                (deactivate)="lineOnDeactivate($event)"
+                >
+                </ngx-charts-line-chart>
+            </div>
         </div>
 
-        <div class="statsView" *ngFor="let stat of performanceStats">
-            <div class="stat">
-                <h4>{{stat.name}}:</h4> {{stat.value}}
+        <div class="statPanel">
+            <h2>Summary Statistics</h2>
+            <div class="line">
+            </div>
+
+            <div class="statsView">
+                <div class="stat" *ngFor="let stat of performanceStats">
+                    <b>{{stat.name}}:</b> {{stat.value}}
+                </div>
             </div>
         </div>
 

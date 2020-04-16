@@ -59,6 +59,11 @@ export class DataService {
     return this.http.get(this.serverURL + '/assets/top');
   }
 
+  getBacktesterDropdownData(){
+    console.log('called service');
+    return this.http.get(this.serverURL + '/backtester/dropdown');
+  }
+
   runBacktester(params:any){
 
     let positions = [{'ticker': 'GS', 'values':[50,60,40], 'trades': [{'datePurchased': new Date('2020-04-03'), 'numShares': 50, 'sold': true, 'dateSold': new Date('2020-01-12')}]},
@@ -67,8 +72,10 @@ export class DataService {
     
     let stats = [{'name': 'Total Returns', 'value': '5%'},{'name': 'Market Returns', 'value': '2%'},{'name': 'Beta', 'value': '69'},
     {'name': 'Average Free Cash', 'value': 2000}, {'name': 'Log Returns', 'value': 1.5}, {'name': 'Average Free Cash', 'value': 2000}, {'name': 'Standard Deviation', 'value': 25}]
+    
+    let portfolioValues = [{'name': 'Portfolio Value', 'series': [{'name': 0, 'value': 10}, {'name': 30, 'value': 100}]}]
 
-    let testObj = {'positions': positions, 'stats': stats};
+    let testObj = {'positions': positions, 'stats': stats, 'portfolioValues': portfolioValues};
 
     return of(testObj);
   }

@@ -146,3 +146,38 @@ def loadModelCollection(modelCollId):
 
     return result
 
+def getFirstDate():
+    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    getDateStatement = "SELECT date FROM Prices WHERE NOT (date > ANY(SELECT DISTINCT date FROM Prices))" # handle enumeration in the DB ya digg
+    cursor.execute(getDateStatement)
+    firstDate = cursor.fetchone() # un-nest from list of tuples
+    firstDate = firstDate[0]
+    print('firstDate', firstDate)
+
+    return firstDate
+
+def getMostRecentDate():
+    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    getDateStatement = "SELECT date FROM Prices WHERE NOT (date < ANY(SELECT DISTINCT date FROM Prices))" # handle enumeration in the DB ya digg
+    cursor.execute(getDateStatement)
+    lastDate = cursor.fetchone() # un-nest from list of tuples
+    lastDate = lastDate[0]
+    print('lastDate', lastDate)
+
+    return lastDate
+
+def getTradingAlgorithm():
+    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM TradingAlgorithms"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return result

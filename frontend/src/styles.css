@@ -42,7 +42,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-form-field-ripple {
  /*change color of underline when focused*/
- background-color: blue !important;;
+ background-color: #EF6F6C !important;;
 }
 
 mat-datepicker-toggle {
@@ -52,6 +52,10 @@ mat-datepicker-toggle {
 .mat-form-field-label {
     color: #DDDDDD !important;
 }
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #DDDDDD;
+    }
 
 /* Calendar stuff */
 .mat-calendar-body-cell-content{
@@ -102,3 +106,4 @@ mat-datepicker-toggle {
 .mat-datepicker-content{
     background-color: #222222;
 }
+

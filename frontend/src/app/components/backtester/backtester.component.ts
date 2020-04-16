@@ -3,7 +3,7 @@ import {FormControl} from '@angular/forms';
 
 import { BacktesterDialogComponent } from '../backtester-dialog/backtester-dialog.component'
 import { DataService } from '../../services/data.service';
-import { MatButton, MatAccordion, MatExpansionPanel, MatProgressSpinner } from '@angular/material'
+import { MatButton, MatAccordion, MatExpansionPanel, MatProgressSpinner, MatTable } from '@angular/material'
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 
@@ -19,9 +19,10 @@ export class BacktesterComponent implements OnInit {
   startDate:Date;
   endDate:Date;
   minEndDate:Date;
+  maxStartDate:Date;
 
   showButton:boolean;
-  testerRunning:boolean;
+  isLoading:boolean;
   testerComplete:boolean;
   positions:any[];
   performanceStats:any[];
@@ -30,44 +31,62 @@ export class BacktesterComponent implements OnInit {
   minVizDate:Date = new Date('2018-01-01');
   maxVizDate:Date = new Date();
 
+  portfolioValues:any[];
+
   renderedTrades:any[] = [];
 
-
+  displayedColumns: string[] = ['datePurchased', 'numShares', 'dateSold'];
 
 
   constructor(private dataService:DataService, public dialog:MatDialog) { }
 
   ngOnInit() {
     this.showButton = true;
-    this.testerRunning = false;
+    this.isLoading = false;
     this.testerComplete = false;
   }
 
   openDialog(): void {
-    console.log('opened');
-    const dialogRef = this.dialog.open(BacktesterDialogComponent, {
-      width: '250px',
-      hasBackdrop:false
+    this.showButton = false;
+    this.isLoading = true
+    this.dataService.getBacktesterDropdownData().subscribe(result => {
+      this.isLoading = false;
+      console.log('opened');
+      const dialogRef = this.dialog.open(BacktesterDialogComponent, {
+        width: '250px',
+        hasBackdrop:false,
+        data: result
+      });
+
+      dialogRef.afterClosed().subscribe(params => {
+        if(params){
+          this.startDate = params['startDate'];
+          this.endDate = params['endDate'];
+          this.maxStartDate = new Date(this.endDate.getTime() - 24*60*60*1000);
+          this.showButton = false;
+          this.isLoading = true;
+    
+          this.dataService.runBacktester(params).subscribe(result => {
+            this.isLoading = false;
+            this.testerComplete = true;
+
+            this.positions = result['positions'];
+            this.performanceStats =  result['stats'];
+            this.portfolioValues = result['portfolioValues'];
+
+            // currently mocked, but eventually get this from the backend
+
+
+          })
+        }
+        else{
+          this.showButton = true;
+        }
+
+      });
+
     });
-
-    dialogRef.afterClosed().subscribe(params => {
-      if(params){
-        this.startDate = params['startDate'];
-        this.endDate = params['endDate'];
-        this.showButton = false;
-        this.testerRunning = true;
-  
-        this.dataService.runBacktester(params).subscribe(result => {
-          this.testerRunning = false;
-          this.testerComplete = true;
-
-          this.positions = result['positions'];
-          this.performanceStats =  result['stats'];
-
-        })
-      }
-
-    });
+    
   }
   onPositionsChange($event){
     console.log('positionsChangeEvent', $event);
@@ -104,5 +123,37 @@ export class BacktesterComponent implements OnInit {
       }
     })
   }
+
+    // GRAPH FORMAT OPTIONS
+    lineShowLabels: boolean = false;
+    lineAnimations: boolean = false;
+    lineLegendPosition: string = "right";
+    lineXaxis: boolean = true;
+    lineYaxis: boolean = true;
+    lineShowYAxisLabel: boolean = false;
+    lineShowXAxisLabel: boolean = false;
+    lineXaxisLabel: string = 'Days Since Last Month';
+    lineYaxisLabel: string = 'Value';
+    lineTimeline: boolean = false;
+  
+      
+    view: any[] = [450, 300];
+    
+    lineColorScheme = {
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    };
+
+    lineOnSelect(data): void {
+      // console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+    }
+  
+    lineOnActivate(data): void {
+      // console.log('Activate', JSON.parse(JSON.stringify(data)));
+    }
+  
+    lineOnDeactivate(data): void {
+      // console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+    }
+  
 
 }

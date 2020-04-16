@@ -54,14 +54,24 @@ def loadTradingAlgorithm(tradingAlgorithmId):
         mcs.append(mc)
     model_mc = mcs[0]
     features = model_mc.features
-    type = model_mc.type
+    t = model_mc.type
     length = model_mc.params['length']
     upper_threshold = model_mc.params['upper_threshold']
     lower_threshold = model_mc.params['lower_threshold']
     period = model_mc.params['period']
-    ta = TradingAlgorithm(tickers=tickers, features=features, type=type, data_lookback_period=length, label_upper_threshold=upper_threshold, label_lower_threshold=lower_threshold, label_period=period, voting_type=votingType, models = mcs)
+    ta = TradingAlgorithm(tickers=tickers, features=features, type=t, data_lookback_period=length, label_upper_threshold=upper_threshold, label_lower_threshold=lower_threshold, label_period=period, voting_type=votingType, models = mcs)
 
     return ta
+
+def getTradingAlgorithms():
+    tas = db_wrapper.loadTradingAlgorithms()
+
+    trading_algorithms = []
+    for ta in tas:
+        trading_algorithms.append(loadTradingAlgorithm(ta[0]))
+    
+    return trading_algorithms
+
 
 def getModels(ticker):
     

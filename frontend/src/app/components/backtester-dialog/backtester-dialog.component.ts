@@ -3,6 +3,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { MatDatepicker, MatError, MatTooltip } from '@angular/material'
 import { FormControl } from '@angular/forms'
 
+import { DataService } from '../../services/data.service';
+
 
 
 @Component({
@@ -14,10 +16,11 @@ export class BacktesterDialogComponent implements OnInit {
   startDate:Date;
   endDate:Date;
   portfolioValue:number;
-  models = [
+
+  models:any[] = [
     {'name': 'Model 1', 'parameters':[{'name': 'testParam1', 'value': 69}, {'name': 'testParam2', 'value': 420}]},
-    {'name': 'Model 2', 'parameters':[{'name': 'testParam3', 'value': 4}, {'name': 'testParam4', 'value': "ass"}]}
-]
+    {'name': 'Model 2', 'parameters':[{'name': 'testParam3', 'value': 4}, {'name': 'testParam4', 'value': "ass"}]}];
+
   selectedModel:string;
 
   inputError:boolean = false;
@@ -31,10 +34,14 @@ export class BacktesterDialogComponent implements OnInit {
   // possible trading algorithms i.e. show all the parameters in them so they know) and then what other things you want to plot 
   // (SNP, Oil, a different portfolio)
 
-  constructor(public dialogRef: MatDialogRef<BacktesterDialogComponent>) { }
+  constructor(private dataService:DataService, public dialogRef: MatDialogRef<BacktesterDialogComponent>, @Inject(MAT_DIALOG_DATA) private data) { }
 
   ngOnInit() {
-    this.getInitialDates();
+    this.minStartDate = new Date(this.data['firstDate'])
+    this.maxEndDate = new Date(this.data['endDate']);
+    this.maxStartDate = this.subtractDays(this.maxEndDate, 1);
+
+    // eventually move this to backend
     this.modelParamsToStrings();
   }
   modelParamsToStrings() {
@@ -63,14 +70,6 @@ export class BacktesterDialogComponent implements OnInit {
     this.dialogRef.close({'startDate': this.startDate, 'endDate': this.endDate, 'portfolioValue': this.portfolioValue, 'model': this.selectedModel})
   }
 
-  getInitialDates(){
-    // eventually run this through the service to get min start date
-    const currentYear = new Date().getFullYear();
-    this.minStartDate = new Date(currentYear - 40, 0, 1);
-    this.maxStartDate = this.subtractDays(new Date(), 1);
-    this.maxEndDate = new Date();
-  }
-
   updateStartDate($event){
     this.inputError = false;
     this.startDate = new Date($event['value']);
@@ -87,9 +86,10 @@ export class BacktesterDialogComponent implements OnInit {
     this.selectedModel = $event['value'];
   }
 
-  subtractDays(date:Date, days:number){  
-    date.setTime(date.getTime() - (days*24*60*60*1000));  
-    return date;  
+  subtractDays(date:Date, days:number){ 
+    let tempDate = new Date(); 
+    tempDate.setTime(date.getTime() - (days*24*60*60*1000));  
+    return tempDate;  
 } 
 
 }

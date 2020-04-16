@@ -9,18 +9,17 @@ import os
 ### Simulate the success of a model or trading strategy
 class Backtest():
 
-    def __init__(self, eqs, trading_algorithm, asset_strategy, start_date, end_date, portfolio_value, verbose=False):
+    def __init__(self, trading_algorithm, asset_strategy, start_date, end_date, portfolio_value, verbose=False):
         super().__init__()
         
         self.today = start_date
         self.value = portfolio_value
         self.end_date = end_date
-        self.eqs = eqs
 
         self.asset_strategy = asset_strategy
         self.trading_algorithm = trading_algorithm
 
-        self.portfolio = Portfolio(self.value, self.eqs, self.today, self.trading_algorithm, self.asset_strategy, verbose)
+        self.portfolio = Portfolio(self.value, self.today, self.trading_algorithm, self.asset_strategy, verbose)
 
     def step(self, verbose=False):
         start = time.perf_counter()

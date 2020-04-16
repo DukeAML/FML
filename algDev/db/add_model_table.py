@@ -60,7 +60,7 @@ CREATE TABLE ModelCollections(
     ); '''
 
 create_table_query3 = '''
-CREATE TABLE TradingAlgorithm(
+CREATE TABLE TradingAlgorithms(
     tradingAlgorithmId uuid  NOT NULL,
     tickers VARCHAR NOT NULL,
     modelCollectionIds VARCHAR NOT NULL,

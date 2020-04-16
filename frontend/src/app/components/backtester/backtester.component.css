@@ -1,17 +1,22 @@
-.main{
-    margin-top: 5%;
-    background-color: #222222;
-    color: #dddddd;
-}
-
 .line{
-    margin-top: 5%;
     width: 80%;
     margin-left: 10%;
     border-top: 1px solid #DDDDDD;
 
 }
 
+.loading {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
 
 .startButton{
     text-align: center;
@@ -29,10 +34,16 @@ button:hover{
 }
 
 
+.main{
+    margin-top: 5%;
+    background-color: #222222;
+    color: #dddddd;
+    width: 100%;
+}
 
 .tradeViewer{
-    float:left; 
-    display:inline; 
+    float: left;
+    display:block; 
     text-align: center;
     width: 40%;
     margin-left: 5%;
@@ -47,12 +58,116 @@ mat-form-field{
 }
 
 .statistics{
-    float:left; 
-    display:inline; 
-    box-shadow: 0 0 20px #000000;
-    margin-left: 10%;
+    margin-left: 5%;
     margin-right: 0%;
-    width: 40%;
-    text-align: center;
+    display: inline-block;
+    width: 49%;
 
+}
+
+h2 .graph{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.graph{
+    width: 90%;
+    display: block;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    display: -webkit-box;   
+    display: -moz-box; 
+    display: -ms-flexbox;  
+    display: -webkit-flex;
+    display: flex;  
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+    text-align: center;
+    box-shadow: 0 0 15px #000000;
+
+}
+
+.statPanel{
+    box-shadow: 0 0 15px #000000;
+    width: 80%;
+    margin-bottom: 5%;
+    display: -webkit-box;   
+    display: -moz-box; 
+    display: -ms-flexbox;  
+    display: -webkit-flex;
+    display: flex;  
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+
+}
+
+.statsView{
+    display: -webkit-box;   
+    display: -moz-box; 
+    display: -ms-flexbox;  
+    display: -webkit-flex;
+    display: flex;  
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.stat{
+    width: 40%;
+    margin-left: 5%;
+    margin-top: 5%;
+}
+
+
+
+::ng-deep .ngx-charts text { 
+    fill: #dddddd !important; 
+}
+::ng-deep span .chart-legend .legend-label .legend-label-text .active :hover{ 
+    fill: #ffffff !important; 
+    background-color: #ffffff;
+}
+
+.mat-table{
+    text-align: center;
+    box-shadow: none;
+    width: 100%;
+}
+
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    background-color: #222222;
+    color: #DDDDDD;
+    text-align: center;
+}
+
+mat-footer-row, mat-header-row, mat-row, td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    border-bottom-color: #DDDDDD;
 }

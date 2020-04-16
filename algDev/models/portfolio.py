@@ -20,10 +20,10 @@ def model_output(position, verbose=False):
 
 class Portfolio:
 
-    def __init__(self, value, eqs, init_date, trading_algorithm, asset_strategy, days = 500, start_price = 'O', stop_price = 'C', verbose=False):
+    def __init__(self, value, init_date, trading_algorithm, asset_strategy, days = 500, start_price = 'O', stop_price = 'C', verbose=False):
         self.positions = []
         self.free_cash = {init_date: value}
-        self.init_positions(eqs, init_date, days, verbose)
+        self.init_positions(init_date, days, verbose)
 
         self.days = days
         self.start_price = start_price
@@ -32,11 +32,11 @@ class Portfolio:
         self.trading_algorithm = trading_algorithm
         self.asset_strategy = asset_strategy
 
-    def init_positions(self, eqs, init_date, days = 500, verbose=False):
+    def init_positions(self, init_date, days = 500, verbose=False):
         here = os.path.abspath(os.path.dirname(__file__))
         data_directory = os.path.join(here, '..\\data')
         eq_directory = os.path.join(data_directory, 'equities')
-        for eq in eqs:
+        for eq in self.trading_algorithm.tickers:
             eq_file = os.path.join(eq_directory, eq + '.xlsx')
             e = Equity(eq_file)
             position = Position(e, init_date, days, verbose)

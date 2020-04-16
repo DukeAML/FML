@@ -12,7 +12,7 @@
 
     <mat-form-field>
         <mat-label>End Date</mat-label>
-        <input matInput (dateChange)="updateEndDate($event)" [min]="minEndDate" [max]="maxStartDate" [matDatepicker]="picker2">
+        <input matInput (dateChange)="updateEndDate($event)" [min]="minEndDate" [max]="maxEndDate" [matDatepicker]="picker2">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>

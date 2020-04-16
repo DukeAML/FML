@@ -3,7 +3,6 @@ h2{
 }
 
 .ticker{
-    padding-top: 5%;
     display: -webkit-box;   
     display: -moz-box; 
     display: -ms-flexbox;  
@@ -19,5 +18,18 @@ h2{
     -moz-flex-wrap: wrap;
     flex-wrap: wrap;
     text-align: center;
+}
+
+.spinny{
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin-left: 43%;
+    margin-top: 10%;
 }
 
