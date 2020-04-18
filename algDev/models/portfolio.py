@@ -25,7 +25,6 @@ class Portfolio:
         self.init_positions(eqs, verbose)
 
     def init_positions(self, eqs, verbose=False):
-        here = os.path.abspath(os.path.dirname(__file__))
         for eq in eqs:
             e = Equity(eq)
             position = Position(e, verbose)
