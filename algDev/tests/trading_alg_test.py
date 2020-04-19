@@ -1,6 +1,6 @@
 from algDev.models.trading_algorithm import TradingAlgorithm
 from algDev.algorithms.model_collection import ModelCollection
-from hyperparam_tst import hyper_param_haul
+from algDev.models.hyperparam_tst import hyper_param_haul
 import datetime
 import csv 
 
