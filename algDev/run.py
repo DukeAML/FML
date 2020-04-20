@@ -59,3 +59,5 @@ def test_nine():
 def test_ten():
     print(get_tas())
 
+def test_eleven():
+    trading_alg_test.grid_search()
