@@ -7,8 +7,8 @@ from algDev.algorithms.cnn import CNN
 from algDev.algorithms.svm import SVM
 from algDev.API.indicators import get_indicator_value
 from algDev.db.wrapper import *
-from algDev.tests import trading_alg_test, asset_alloc_test
-
+from algDev.tests import trading_alg_test, asset_alloc_test, test_svm
+from algDev.db.populate_models_table import build_example_model, get_tas
 def test_one():
     eq = Equity('AAPL')
     print(eq.opens)
@@ -51,4 +51,13 @@ def test_seven():
     trading_alg_test.hyper_param_tuning()
 
 def test_eight():
+    test_svm.run_2()
+
+def test_nine():
+    build_example_model()
+
+def test_ten():
+    print(get_tas())
+
+def test_eleven():
     trading_alg_test.grid_search()

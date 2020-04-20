@@ -150,11 +150,13 @@ class Equity:
         # volumeCol = self.ticker + ' US Equity - Volume'
         
         incoming_data = getData(self.ticker)
-
+        
         for day in incoming_data:
             day_arr = []
             day_arr.append(day[1]); day_arr.append(day[2]); day_arr.append(day[3]); day_arr.append(day[4]); day_arr.append(day[5]); day_arr.append(day[6])
             date, open, high, low, close, volume = self.val_row(day_arr)
+            if not open:
+                print(self.ticker, self.val_row(day_arr))
             self.dates.append(date)
             self.opens.append(float(open))
             self.highs.append(float(high))
