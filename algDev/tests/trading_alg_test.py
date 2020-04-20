@@ -31,7 +31,7 @@ def grid_search():
     tickers = ['AAPL']
     features = ['macd_9_18','closes']
     ta = TradingAlgorithm(tickers, features, type = 'svm', data_lookback_period = 15, label_lower_threshold = -0.15, label_upper_threshold = 0.015, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=True)
-    ta.grid_search(tickers[0])
+    ta.grid_search(tickers[0], verbose= True)
 
 
 def hyper_param_tuning():
