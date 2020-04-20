@@ -183,15 +183,15 @@ class SVM:
         # Utility function to move the midpoint of a colormap to be around
         # the values of interest.
         
-        class MidpointNormalize(Normalize):
+        # class MidpointNormalize(Normalize):
 
-            def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
-                self.midpoint = midpoint
-                Normalize.__init__(self, vmin, vmax, clip)
+        #     def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
+        #         self.midpoint = midpoint
+        #         Normalize.__init__(self, vmin, vmax, clip)
 
-            def __call__(self, value, clip=None):
-                x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
-                return np.ma.masked_array(np.interp(value, x, y))
+        #     def __call__(self, value, clip=None):
+        #         x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
+        #         return np.ma.masked_array(np.interp(value, x, y))
             
         #DATA
         X = self.data['features']
@@ -208,6 +208,8 @@ class SVM:
         if verbose == True:
             print("The best parameters are %s with a score of %0.2f"
                 % (grid.best_params_, grid.best_score_))
+        
+        return (grid.best_params_, grid.best_score_)
 
         # Now we need to fit a classifier for all parameters in the 2d version
         # (we use a smaller set of parameters here because it takes a while to train)

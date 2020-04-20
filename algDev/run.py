@@ -50,3 +50,5 @@ def test_six():
 def test_seven():
     trading_alg_test.hyper_param_tuning()
 
+def test_eight():
+    trading_alg_test.grid_search()
