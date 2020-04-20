@@ -105,9 +105,10 @@ def volume_feature(eq):
     return [Indicator(vol_vec)]
 
 def close_feature(eq):
+    
     close_vec = np.array(eq.closes)
     close_vec = close_vec.T
-
+    
     return [Indicator(close_vec)]
 
 def sma_feature(eq, period):
@@ -210,6 +211,7 @@ def concat_indicators(feature_set):
     Returns:
         [list of Indicators] -- list of resized Indicators
     """
+    
     num_features = len(feature_set)
     lens = np.array([f.len for f in feature_set])
     min_len = np.min(lens)
@@ -232,14 +234,15 @@ def concat_features(feature_set):
     num_features = len(feature_set)
     
     lens = np.array([f.len for f in feature_set])
+    
     min_len = np.min(lens)
     
     features = np.zeros((min_len, num_features))
-
+    
     for i in range(num_features):
         
         feature = feature_set[i].trim_vals(end_index=min_len).values
-
+        
         features[:,i] = feature
     
     return features
@@ -286,9 +289,9 @@ def get_feature_set(eq, features):
     feature_set = []
     for feature in features:
         f = get_feature(eq, feature)
+        
         for feat in f:
             feature_set.append(feat)
-
     return feature_set
 
 def get_feature(eq, feature_arg):
