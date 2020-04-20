@@ -1,6 +1,6 @@
 tickers,features,params,acc
 ['AAPL'],"['closes', 'kstTrix']","{'gamma': 10, 'C': 1}",0.7799385875127943
-confusion matrices for features: []
+"confusion matrices for features of earlier models trained on: AAPL and ['closes', 'kstTrix']"
 ---------------------------------------
 | Actual\Pred |  1   |   0   | Total  |
 |-------------|------|-------|--------|
@@ -21,7 +21,7 @@ confusion matrices for features: []
 ||-------------|------|-------|--------
 |
 ['AAPL'],"['macd_9_18', 'closes']","{'gamma': 10, 'C': 1}",0.8289473684210527
-confusion matrices for features: ['macd_9_18']
+"confusion matrices for features of earlier models trained on: AAPL and ['macd_9_18', 'closes']"
 ---------------------------------------
 | Actual\Pred |  1   |   0   | Total  |
 |-------------|------|-------|--------|

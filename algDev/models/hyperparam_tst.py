@@ -42,7 +42,7 @@ def hyper_param_haul(features_list,ticker_list, model_params):
                 acc = ta.models[0].accuracy
                 acc_lst.append(acc)   
                 writer.writerow([tickers, features, params, acc])
-                writer.writerow(["confusion matrices for features: " + str(features[:jj])])
+                writer.writerow(['confusion matrices for features of earlier models trained on: ' + str(tickers[0])+ ' and ' + str(features_list[jj])])
                 for ii in range(len(cm_lst)):
                     for jj in range(len(cm_lst[ii])):
                         file.write(str(cm_lst[ii][jj]))
