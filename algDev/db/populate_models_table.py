@@ -7,9 +7,9 @@ from algDev.models.asset_strategy import AssetStrategy
 
 from algDev.models.trading_algorithm import TradingAlgorithm
 
-from algDev.db.wrapper import createTradingAlgorithm, getTradingAlgorithm
+from algDev.db.wrapper import createTradingAlgorithm, getTradingAlgorithm, createModel, createModelCollection
 def build_example_model():
-    tickers = ['AAPL', 'GS', 'GOOG', 'AMZN', 'COST', 'PG', 'QCOM', 'T', 'VZ']
+    tickers = ['AAPL', 'GS', 'GOOG', 'AMZN', 'COST', 'INTC', 'IBM', 'PG', 'GE']
     
     features = [
         'macd_9_18',
@@ -28,3 +28,13 @@ def build_example_model():
 
 def get_tas():
     return getTradingAlgorithm()
+
+def test_add_model():
+    svm = SVM(metrics={'acc':0.9})
+
+    createModel(svm)
+
+def test_add_model_collection():
+    mc = ModelCollection('AAPL','svm',features=['macd_9_18','closes'],params={'length':10, 'upper_threshold':0.015, 'lower_threshold':-0.1, 'period':10})
+
+    createModelCollection(mc)

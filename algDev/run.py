@@ -8,9 +8,10 @@ from algDev.algorithms.svm import SVM
 from algDev.API.indicators import get_indicator_value
 from algDev.db.wrapper import *
 from algDev.tests import trading_alg_test, asset_alloc_test, test_svm
-from algDev.db.populate_models_table import build_example_model, get_tas
+from algDev.db.populate_models_table import build_example_model, get_tas, test_add_model, test_add_model_collection
+
 def test_one():
-    eq = Equity('AAPL')
+    eq = Equity('QCOM')
     print(eq.opens)
     print(eq.dates)
     print(getTickers())
@@ -55,6 +56,9 @@ def test_eight():
 
 def test_nine():
     build_example_model()
+    # test_add_model()
+    # test_add_model_collection()
+
 
 def test_ten():
     print(get_tas())

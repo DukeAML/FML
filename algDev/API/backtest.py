@@ -12,11 +12,24 @@ def run_backtest(start_date, end_date, pf_value, tradingAlgorithmId):
     asset_strategy = AssetStrategy(aa)
     
     b = Backtest(trading_algorithm, asset_strategy, start_date, end_date, pf_value, False)
-    after_value, positions = b.simulate(False)
+    return_vals = b.simulate(False)
 
-    #     let positions = [{'ticker': 'GS', 'values':[50,60,40], 'trades': [{'datePurchased': new Date('2020-04-03'), 'numShares': 50, 'sold': true, 'dateSold': new Date('2020-01-12')}]},
-    #                 {'ticker': 'AAPL', 'values':[70,80,90], 'trades': [{'datePurchased': new Date('2020-04-06'), 'numShares': 50, 'sold': false, 'dateSold': null}]}
-    #                 ]
+    ## Return vals format:
+    '''
+    return_val = {'return':rtn, 'snp_rtn':snp_rtn, 'net_rtn':net_rtn, 'average_free_cash':avg_free_cash, 'beta': beta, 'vol':vol, 'treynor':treynor, 'sharpe':sharpe, 'dates':dates, 'pf_vals':pf_vals, 'initial_val':initial_val, 'snp_vals':snp_vals, 'positions':self.portfolio.positions}
     
-    # let stats = [{'name': 'Total Returns', 'value': '5%'},{'name': 'Market Returns', 'value': '2%'},{'name': 'Beta', 'value': '69'},
-    # {'name': 'Average Free Cash', 'value': 2000}, {'name': 'Log Returns', 'value': 1.5}, {'name': 'Average Free Cash', 'value': 2000}, {'name': 'Standard Deviation', 'value': 25}]
+    return - float
+    snp_rtn - float
+    net_rtn - float
+    average_free_cash - float
+    beta - float
+    vol - float
+    treynor - float
+    sharpe - flaot
+    dates - datetime[]
+    pf_vals - float[]
+    initial_vals - float[]
+    snp_vals - float[]
+    positions - Position[]
+    '''
+    return return_vals

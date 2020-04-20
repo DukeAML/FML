@@ -59,7 +59,7 @@ class Indicators:
         Returns:
             [float[]] -- [the ema of the prices inputted as a vector]
         """
-
+        
         exponential_ma = np.zeros((len(prices),))
 
         simple_ma = Indicators.sma(prices, period)

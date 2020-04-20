@@ -41,10 +41,10 @@ def createModel(model):
     modelId = uuid.uuid4()
     modelData = pickle.dumps(model.model)
     modelTitle = model.title
-    modelMetrics = str(model.metrics)
+    modelMetrics = str(model.metrics).replace("'","\"")
 
-    sql = "INSERT INTO models (modelId, modelbinary, title, metrics) VALUES (%s)"
-    cursor.execute(sql, (modelId, psycopg2.BINARY(modelData), modelTitle, modelMetrics))
+    sql = "INSERT INTO models (modelId, modelbinary, title, metrics) VALUES ('{}',{},'{}','{}')"
+    cursor.execute(sql.format(modelId, psycopg2.Binary(modelData), modelTitle, modelMetrics))
 
     return modelId
 
@@ -58,7 +58,8 @@ def createModelCollection(modelCollection):
     modelIds = []
     for model in modelCollection.models:
         modelId = createModel(model)
-        modelIds.append(modelId)
+        modelIds.append(str(modelId))
+        
     modelIds = ','.join(modelIds)
     
     period = int(modelCollection.params['period'])
@@ -66,12 +67,14 @@ def createModelCollection(modelCollection):
     upper_threshold = float(modelCollection.params['upper_threshold'])
     lower_threshold = float(modelCollection.params['lower_threshold'])
     title = input("Enter name for modelCollection ")
+    if title=='':
+        title='default'
     features = ','.join(modelCollection.features)
     if title=='':
         title = str(modelCollection.features)
     title = modelCollection.type + ' - ' + title
-    sql = "INSERT INTO Models (modelCollectionId, ticker, modelIds, length, upperthreshold, lowerthreshold, period, title, features) VALUES (%s)"
-    cursor.execute(sql, (id, ticker, modelIds, length, upper_threshold, lower_threshold, period, title, features))
+    sql = "INSERT INTO ModelCollections (modelCollectionId, ticker, modelIds, length, upperthreshold, lowerthreshold, period, title, features) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}')"
+    cursor.execute(sql.format(id, ticker, modelIds, length, upper_threshold, lower_threshold, period, title, features))
 
     return id
 
@@ -89,14 +92,14 @@ def createTradingAlgorithm(tradingAlgorithm):
     for model in tradingAlgorithm.models:
 
         modelCollectionId = createModelCollection(model)
-        modelIds.append(modelCollectionId)
-
+        modelIds.append(str(modelCollectionId))
+    
     modelIds = ','.join(modelIds)
 
     votingType = tradingAlgorithm.voter.voting_type
 
-    sql = "INSERT INTO Models (tradingAlgorithmId, tickers, modelCollectionIds, votingType=) VALUES (%s)"
-    cursor.execute(sql, (id, tickers, modelIds, votingType))
+    sql = "INSERT INTO TradingAlgorithms (tradingAlgorithmId, tickers, modelCollectionIds, votingType) VALUES ('{}','{}','{}','{}')"
+    cursor.execute(sql.format(id, tickers, modelIds, votingType))
 
     return id
 

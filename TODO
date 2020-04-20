@@ -1,0 +1,7 @@
+- Integrate Backtester with DB 
+
+- Verify Backtester is working - Validation on dates(handle case when some equity not in range) - Send dates periodically for loading bar.
+
+- Send model outputs to Frontend for that one screen with many indicators
+
+- Fix the Model -- Probably a data issue.

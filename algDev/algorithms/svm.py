@@ -92,7 +92,7 @@ class SVM:
             X = self.data['features']
             y = self.data['labels']
         X_train, y_train, X_test, y_test = split_data(X, y, splits)
-        print(X_train, y_train)
+        
         if verbose:
             print("Feature Shape for SVM ", self.title)
             print(X_train.shape)

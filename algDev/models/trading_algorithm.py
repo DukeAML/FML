@@ -40,6 +40,7 @@ class TradingAlgorithm:
         assert type in self.algorithm_types
         self.type = type
         self.features = features
+        self.tickers = tickers
         self.eqs = [Equity(t) for t in tickers]
         self.params = {'length': data_lookback_period, 'lower_threshold': label_lower_threshold, 'upper_threshold':label_upper_threshold, 'period': label_period, 'cnn_split': cnn_split, 'data_splits': data_splits}
         self.voter = Voter(voting_type)

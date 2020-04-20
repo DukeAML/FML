@@ -6,7 +6,21 @@ class Position:
     def __init__(self, eq, init_date,days = 500, verbose=False):
         self.ticker = eq.ticker
         self.eq = eq
+        self.init_date = init_date
         self.trades = []
+
+    def get_values(self, date):
+        day_diff = (date - self.init_date).days
+        vals = []
+        dates = []
+        
+        for i in range(day_diff):
+            i_day = datetime.timedelta(days=i)
+            dates.append(self.init_date + i_day)
+            vals.append(self.get_values(self.init_date + i_day))
+
+        return dates, vals
+        
 
     ##CHANGE TO ACCOMODATE SHORTING
     def purchase(self, prediction, allocation, today,verbose=False):

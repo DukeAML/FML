@@ -156,7 +156,11 @@ class Equity:
             day_arr.append(day[1]); day_arr.append(day[2]); day_arr.append(day[3]); day_arr.append(day[4]); day_arr.append(day[5]); day_arr.append(day[6])
             date, open, high, low, close, volume = self.val_row(day_arr)
             if not open:
-                print(self.ticker, self.val_row(day_arr))
+                open = self.opens[len(self.opens)-1]
+                close = self.closes[len(self.closes)-1]
+                high = self.highs[len(self.highs)-1]
+                low = self.highs[len(self.lows)-1]
+                volume = self.volumes[len(self.volumes)-1]
             self.dates.append(date)
             self.opens.append(float(open))
             self.highs.append(float(high))
@@ -169,46 +173,6 @@ class Equity:
         self.lows = np.array(self.lows)       
         self.closes = np.array(self.closes)
         self.volumes = np.array(self.volumes)
-        # if 'Last Price' in self.data.columns:
-        #     self.data['Last Price'].astype(dtype=float)
-        #     self.closes = self.data['Last Price'].ffill().values  # fills values if not NaN
-        #     if self.ticker in 'RE OIL SNP':
-        #         self.closes = np.flip(self.closes)
-        
-        # if 'Open Price' in self.data.columns:
-        #     self.data['Open Price'].astype(dtype=float)
-        #     self.opens = self.data['Open Price'].ffill().values  # fills values if not NaN
-        #     if self.ticker in 'RE OIL SNP':
-        #         self.opens = np.flip(self.opens)
-
-        # if 'High Price' in self.data.columns:
-        #     self.data['High Price'].astype(dtype=float)
-        #     self.highs = self.data['High Price'].ffill().values  # fills values if not NaN
-        #     if self.ticker in 'RE OIL SNP':
-        #         self.highs = np.flip(self.highs)
-
-        # if 'Low Price' in self.data.columns:
-        #     self.data['Low Price'].astype(dtype=float)
-        #     self.lows = self.data['Low Price'].ffill().values  # fills values if not NaN
-        #     if self.ticker in 'RE OIL SNP':
-        #         self.lows = np.flip(self.lows)
-
-        # if volumeCol in self.data.columns:
-        #     self.data[volumeCol].astype(dtype=float) #Error if casted as an int
-        #     self.volumes = self.data[volumeCol].ffill().values 
-        #     if self.ticker in 'RE OIL SNP':
-        #         self.volums = np.flip(self.volumes)
-
-        # if 'Date' in self.data.columns:
-        #     self.data['Date'].astype(dtype=str)
-        #     self.dates = []
-        #     dates_temp = self.data['Date'].values
-        #     for i, date in enumerate(dates_temp):
-        #         d = self.conv_date(date)
-        #         self.dates.append(d)
-
-        #     if self.ticker in 'RE OIL SNP':
-        #         self.dates = np.flip(self.dates)
     
     def get_price(self, date, type='c', verbose=False):
         if verbose:
