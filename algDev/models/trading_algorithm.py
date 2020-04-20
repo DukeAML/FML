@@ -130,7 +130,7 @@ class TradingAlgorithm:
     def grid_search(self, tickers = [], verbose = False):
         for model in self.models:
             if len(tickers) == 0 or model.eq.ticker in tickers:
-                model.plot_hyperparam_viz(verbose)
+                model.grid_search_coll(verbose)
             
     def save(self):
         id = createTradingAlgorithm(self)
