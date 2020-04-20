@@ -30,7 +30,7 @@ def test_conf_matrix_model_coll():
 
 def hyper_param_tuning():
     ticker_list = ['AAPL']
-    features_list = ['macd_9_18','closes']
+    features_list = [['macd_9_18','closes'],['macd_9_27', 'upperbol']]
     model_params = [{'gamma':10, "C" :1}]
     hp = hyper_param_haul(features_list,ticker_list, model_params)
 

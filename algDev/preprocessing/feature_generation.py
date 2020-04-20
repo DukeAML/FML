@@ -258,7 +258,7 @@ def create_features(eq, features, normalize = True, save = False):
     Returns:
         ndarray -- 2d array of features over time
     """
-
+    
     feature_set = get_feature_set(eq, features)
     fs = concat_features(feature_set)
     

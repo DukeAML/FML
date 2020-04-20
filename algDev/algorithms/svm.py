@@ -91,8 +91,8 @@ class SVM:
         if not X or not y:
             X = self.data['features']
             y = self.data['labels']
-        
         X_train, y_train, X_test, y_test = split_data(X, y, splits)
+        print(X_train, y_train)
         if verbose:
             print("Feature Shape for SVM ", self.title)
             print(X_train.shape)
@@ -100,7 +100,8 @@ class SVM:
             print(y_train.shape)
 
         self.model.fit(X_train, y_train)
-
+        if len(X_test) <= 0:
+            return
         self.test(X_test, y_test, verbose)
 
     def test(self, X, y, verbose = False):
@@ -198,8 +199,8 @@ class SVM:
         y = self.data['labels']
 
         #grid search for values of C, gamma
-        C_range = np.logspace(-2, 10, 13)
-        gamma_range = np.logspace(-9, 3, 13)
+        C_range = np.logspace(-2, 2,4)
+        gamma_range = np.logspace(-1,1,2)
         param_grid = dict(gamma=gamma_range, C=C_range)
         cv = StratifiedShuffleSplit(n_splits=5, test_size=0.2, random_state=42)
         grid = GridSearchCV(SVC(), param_grid=param_grid, cv=cv)

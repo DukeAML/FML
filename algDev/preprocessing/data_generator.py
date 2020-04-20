@@ -86,7 +86,7 @@ def gen_svm_data(eq, feature, length, threshold, period):
     feature = create_features(eq, feature)
     
     X, y = format_data(eq.ticker, feature, 'svm', length, threshold, period)
-    
+
     return X.reshape(X.shape[0],X.shape[1],),y
 
 def split_data(X, y, splits):
@@ -114,12 +114,12 @@ def split_data(X, y, splits):
         y_val = y[train_length:train_length+val_length]
         X_val = X[train_length:train_length+val_length]
         test_length = len(X) - train_length - val_length
-        y_test = y[(-1 * test_length):-1]
-        X_test = X[(-1 * test_length):-1]
+        y_test = y[(-1 * test_length)]
+        X_test = X[(-1 * test_length)]
         return X_train, y_train, X_val, y_val, X_test, y_test
     else:
-        X_test = X[train_length:-1]
-        y_test = y[train_length:-1]
+        X_test = X[train_length:]
+        y_test = y[train_length:]
         return X_train, y_train, X_test, y_test
 
 def format_data(ticker, data, type, length, threshold, period):
