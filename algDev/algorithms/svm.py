@@ -75,7 +75,9 @@ class SVM:
             pred = int(pred)
             cm.add_value(true, pred)
 
-        cm.print_matrix()
+        matrix = cm.print_matrix()
+
+        return matrix
 
     def train(self, splits, X=None, y=None, verbose=False):
         """train the svm
@@ -192,4 +194,4 @@ class SVM:
         
         return (grid.best_params_, grid.best_score_)
     
-    
+

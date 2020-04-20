@@ -84,9 +84,13 @@ class ModelCollection:
             model.plot_roc(verbose)
 
     def get_conf_matricies(self, verbose=False):
+        cm_list =[]
         for model in self.models:
-            model.build_conf_matrix(self.params['data_splits'])
+            cm = model.build_conf_matrix(self.params['data_splits'])
+            cm_list.append(cm)
 
+        return cm_list
+        
     def update_accuracy(self):
         """Update the accuracy of the entire collection by averaging the
             individual accuracies, could probably be done better

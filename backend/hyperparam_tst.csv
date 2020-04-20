@@ -1,3 +1,0 @@
-tickers,features,params,acc,confusion_matrix
-['AAPL'],"['closes', 'kstTrix']","{'gamma': 10, 'C': 1}",0.7799385875127943
-['AAPL'],"['macd_9_18', 'closes']","{'gamma': 10, 'C': 1}",0.8289473684210527

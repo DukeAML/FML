@@ -1,4 +1,5 @@
 import numpy as np
+import textwrap
 
 
 class ConfusionMatrix():
@@ -22,7 +23,7 @@ class ConfusionMatrix():
 
     def print_matrix(self):
         print("---------------------------------------")
-        print("| Actual\Pred |  1   |   0   | Total  |")
+        print("| Actual\Pred |  1   |   0   |  Total |")
         print("|-------------|------|-------|--------|")
         print("|     1       |  " + str(self.true_positives) +"  |  "+ str(self.false_negatives)+"  |  "+ str(self.true_positives+self.false_negatives) +"  |")
         print("|-------------|------|-------|--------|")
@@ -30,3 +31,8 @@ class ConfusionMatrix():
         print("|-------------|------|-------|--------|")
         print("|   Total     |  " + str(self.true_positives + self.false_positives) +"  |  "+ str(self.false_negatives + self.true_negatives)+"  |  "+ str(self.true_positives+self.false_negatives + self.true_negatives+self.false_positives) +"  |")
         print("|-------------|------|-------|--------|")
+
+        #return this long string for file writing purposes
+        s = "---------------------------------------" + "| Actual\Pred |  1   |   0   | Total  |" + "|-------------|------|-------|--------|" + "|     1       | "+ str(self.true_positives) +" |  " + str(self.false_negatives)+"   |  "+ str(self.true_positives+self.false_negatives) + "   |" + "|-------------|------|-------|--------|" + "|     0       |  " + str(self.false_positives) +" |   "+ str(self.true_negatives)+"  |   "+ str(self.true_negatives+self.false_positives) +"   |" + "|-------------|------|-------|--------|" + "|   Total     |  " + str(self.true_positives + self.false_positives) +"  |  "+ str(self.false_negatives + self.true_negatives)+"  |  "+ str(self.true_positives+self.false_negatives + self.true_negatives+self.false_positives) +"  |" + "|-------------|------|-------|--------|"
+        
+        return textwrap.wrap(s, width=39)

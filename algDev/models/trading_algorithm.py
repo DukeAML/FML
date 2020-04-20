@@ -66,7 +66,9 @@ class TradingAlgorithm:
     def plot_model_cm(self, ticker, verbose=False):
         for model in self.models:
             if model.ticker==ticker:
-                model.get_conf_matricies(verbose)
+                cm = model.get_conf_matricies(verbose)
+
+        return cm
     
     def generate_conf_matricies(self, start_date, end_date, verbose=False):
         next_day = datetime.timedelta(days = 1)
