@@ -28,7 +28,7 @@ def hyper_param_haul(features_list,ticker_list, model_params):
     cm_lst = []
     file = open('hyperparam_tst.txt', 'w')
     writer = csv.writer(file)
-    writer.writerow(["tickers", "features", "params", "acc", "confusion_matrix"])
+    writer.writerow(["tickers", "features", "params", "acc"])
     for ii in range(len(ticker_list)):
         tickers = ticker_list[ii]
         for jj in range(len(features_list)):
@@ -38,9 +38,11 @@ def hyper_param_haul(features_list,ticker_list, model_params):
                 ta = TradingAlgorithm(tickers, features, type = 'svm', data_lookback_period = 30, label_lower_threshold = -0.15, label_upper_threshold = 0.015, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=True, model_params = params)
                 cm = ta.plot_model_cm(tickers[0])
                 cm_lst += cm
+                print(tickers[0], features, kk)
                 acc = ta.models[0].accuracy
                 acc_lst.append(acc)   
                 writer.writerow([tickers, features, params, acc])
+                writer.writerow(["confusion matrices for features: " + features[:jj]])
                 for ii in range(len(cm_lst)):
                     for jj in range(len(cm_lst[ii])):
                         file.write(str(cm_lst[ii][jj]))
