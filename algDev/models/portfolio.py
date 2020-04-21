@@ -60,7 +60,7 @@ class Portfolio:
         ## allocations will be a decimal indicating how much of our available cash we should give to that
         
         ## for first try, we will just ignore allocation, but this should turn allcations into dollar amounts
-        allocations = self.asset_strategy(date, positions, predictions, verbose) * self.free_cash[date]
+        allocations = self.asset_strategy.allocate(date, self.positions, predictions, verbose) * self.free_cash[date]
                 
         for i, pos in enumerate(self.positions):
             self.free_cash[date] -= pos.purchase(predictions[i], allocations[i], date, verbose)
@@ -68,7 +68,7 @@ class Portfolio:
             print("Current Free Cash: ", self.free_cash[date])
             print("Current Positions Value: ", self.getValue(date) - self.free_cash[date])
 
-        self.trading_algorithm.update()
+        self.trading_algorithm.update(date)
         return self.update(verbose)
 
     def update(self, verbose=False):
