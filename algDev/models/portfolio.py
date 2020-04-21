@@ -23,23 +23,19 @@ class Portfolio:
     def __init__(self, value, init_date, trading_algorithm, asset_strategy, days = 500, start_price = 'O', stop_price = 'C', verbose=False):
         self.positions = []
         self.free_cash = {init_date: value}
-        self.init_positions(init_date, days, verbose)
 
         self.days = days
         self.start_price = start_price
         self.stop_price = stop_price
 
         self.trading_algorithm = trading_algorithm
-        self.asset_strategy = asset_strategy
+        self.asset_strategy = asset_strategy        
+
+        self.init_positions(init_date, days, verbose)
 
     def init_positions(self, init_date, days = 500, verbose=False):
-        here = os.path.abspath(os.path.dirname(__file__))
-        data_directory = os.path.join(here, '..\\data')
-        eq_directory = os.path.join(data_directory, 'equities')
-        for eq in self.trading_algorithm.tickers:
-            eq_file = os.path.join(eq_directory, eq + '.xlsx')
-            e = Equity(eq_file)
-            position = Position(e, init_date, days, verbose)
+        for eq in self.trading_algorithm.eqs:
+            position = Position(eq, init_date, days, verbose)
             self.positions.append(position)
     
     def getPosition(self, ticker, verbose=False):
@@ -54,7 +50,7 @@ class Portfolio:
         ##ASK LUKE ABOUT THIS LINE
         self.free_cash[date] = self.free_cash[list(self.free_cash.keys())[len(self.free_cash.keys())-1]]
         
-        self.update_closings(self.trading_algorithm.getPeriod(), self.trading_algorithm.getUpperThreshold(), self.trading_algorithm.getLowerThreshold(), date, verbose)
+        self.update_closings(date, verbose)
 
         # Dictionary of tickers and tuples of prediction and confidence
         predictions = self.trading_algorithm.predict(date)

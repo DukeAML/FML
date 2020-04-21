@@ -23,7 +23,7 @@ def build_example_model():
     label_period = 5
 
     ta = TradingAlgorithm(tickers, features, type='svm', data_lookback_period=look_back, label_lower_threshold=lower_threshold, label_upper_threshold=upper_threshold, label_period=label_period)
-
+    print("Trading Alg Build")
     createTradingAlgorithm(ta)
 
 def get_tas():

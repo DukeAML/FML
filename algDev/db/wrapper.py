@@ -94,12 +94,21 @@ def createTradingAlgorithm(tradingAlgorithm):
         modelCollectionId = createModelCollection(model)
         modelIds.append(str(modelCollectionId))
     
+    
+    features = ','.join(tradingAlgorithm.features)
+    length = tradingAlgorithm.params['length']
+    upperthreshold = tradingAlgorithm.params['upper_threshold']
+    lowerthreshold = tradingAlgorithm.params['lower_threshold']
+    period = tradingAlgorithm.params['period']
+
     modelIds = ','.join(modelIds)
 
     votingType = tradingAlgorithm.voter.voting_type
-
-    sql = "INSERT INTO TradingAlgorithms (tradingAlgorithmId, tickers, modelCollectionIds, votingType) VALUES ('{}','{}','{}','{}')"
-    cursor.execute(sql.format(id, tickers, modelIds, votingType))
+    title = input("Trading Algorithm Name")
+    if title=='':
+        title='Default'
+    sql = "INSERT INTO TradingAlgorithms (tradingAlgorithmId, tickers, features, length, upperthreshold, lowerthreshold, period, modelCollectionIds, votingType, title) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')"
+    cursor.execute(sql.format(id, tickers, features, length, upperthreshold, lowerthreshold, period, modelIds, votingType, title))
 
     return id
 
