@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+
 
 
 
@@ -65,6 +66,12 @@ export class DataService {
   }
 
   runBacktester(params:any){
+    console.log('params in service', params);
+    this.http.post(this.serverURL + '/backtester/run', params).subscribe(result => {
+      console.log('result');
+    });
+
+
 
     let positions = [{'ticker': 'GS', 'values':[50,60,40], 'trades': [{'datePurchased': new Date('2020-04-03'), 'numShares': 50, 'sold': true, 'dateSold': new Date('2020-01-12')}]},
                     {'ticker': 'AAPL', 'values':[70,80,90], 'trades': [{'datePurchased': new Date('2020-04-06'), 'numShares': 50, 'sold': false, 'dateSold': null}]}

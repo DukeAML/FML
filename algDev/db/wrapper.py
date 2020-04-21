@@ -167,7 +167,6 @@ def getFirstDate():
     cursor.execute(getDateStatement)
     firstDate = cursor.fetchone() # un-nest from list of tuples
     firstDate = firstDate[0]
-    print('firstDate', firstDate)
 
     return firstDate
 
@@ -180,7 +179,6 @@ def getMostRecentDate():
     cursor.execute(getDateStatement)
     lastDate = cursor.fetchone() # un-nest from list of tuples
     lastDate = lastDate[0]
-    print('lastDate', lastDate)
 
     return lastDate
 

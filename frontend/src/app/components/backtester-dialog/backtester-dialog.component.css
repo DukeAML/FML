@@ -13,3 +13,7 @@ h1{
 .ok:hover{
     background-color: #5AA454
 }
+
+.my-tooltip {
+    white-space: pre-line;
+}

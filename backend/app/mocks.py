@@ -1,12 +1,13 @@
 import sys
+import datetime
 # gives backend app access to modules in algDev by adding directory to pythonpath
 sys.path.insert(1, '../')
 import numpy as np
 # gonna have to rewrite this once DB structure in place
 import algDev.API.dataGatherer as dataGatherer
 import algDev.API.indicators as indicators
+import algDev.API.backtest as backtest
 import algDev.db.wrapper as wrapper
-# import algDev.API.models as models
 
 
 def getCategoryDescriptionAtDate(asset, date):
@@ -704,8 +705,42 @@ def getBacktesterDates():
   toReturn = {'firstDate': dbStartDate, 'endDate': dbEndDate}
   return toReturn
 
-  
-# def getTradingAlgorithms():
-#   tradingAlgs = models.getTradingAlgorithms()
-#   return tradingAlgs # LOOK INTO THIS SHIT MORE
+def getTradingAlgorithms():
+  wrapperResult = wrapper.getTradingAlgorithms()
+  objArr = []
 
+  for tup in wrapperResult:
+    tempObj = {}
+    tempObj['name'] = tup[9]
+    tempObj['id'] = tup[0]
+    tempObj['modelCollectionIds'] = tup[7]
+    
+    params = []
+    params.append({'name': 'tickers', 'value': tup[1]})
+    params.append({'name': 'features', 'value': tup[2]})
+    params.append({'name': 'length', 'value': tup[3]})
+    params.append({'name': 'upper threshold', 'value': float(tup[4])})
+    params.append({'name': 'lower threshold', 'value': float(tup[5])})
+    params.append({'name': 'period', 'value': tup[6]})
+    params.append({'name': 'voting type', 'value': tup[8]})
+    tempObj['parameters'] = params
+
+    objArr.append(tempObj)
+  
+  return objArr
+
+
+
+def runBacktester(start, end, portfolioValue, algID):
+  startDate = toDate(start)
+  endDate = toDate(end)
+  
+  return backtest.run_backtest(startDate, endDate, portfolioValue, algID)
+
+# def run_backtest(start_date, end_date, pf_value, tradingAlgorithmId):
+
+
+def toDate(dateString): 
+    date = datetime.datetime.strptime(dateString, "%Y-%m-%dT%H:%M:%S.%fZ").date()
+    dt = datetime.datetime(date.year, date.month, date.day)
+    return dt
