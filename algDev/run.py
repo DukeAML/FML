@@ -9,6 +9,7 @@ from algDev.API.indicators import get_indicator_value
 from algDev.db.wrapper import *
 from algDev.tests import trading_alg_test, asset_alloc_test, test_svm
 from algDev.db.populate_models_table import build_example_model, get_tas, test_add_model, test_add_model_collection
+from algDev.API.models import loadTradingAlgorithm
 
 def test_one():
     eq = Equity('QCOM')
@@ -59,9 +60,15 @@ def test_nine():
     # test_add_model()
     # test_add_model_collection()
 
-
 def test_ten():
     print(get_tas())
 
 def test_eleven():
     trading_alg_test.grid_search()
+
+def test_twelve():
+    ta_entity = getTradingAlgorithms()
+    ta_id = ta_entity[0][0]
+    trading_alg = loadTradingAlgorithm(ta_id)
+
+    print(trading_alg)

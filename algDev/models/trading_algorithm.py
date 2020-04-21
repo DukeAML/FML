@@ -46,11 +46,12 @@ class TradingAlgorithm:
         self.voter = Voter(voting_type)
         if models is None:
             self.models = [ModelCollection(t, type, features, self.params, model_params = model_params) for t in tickers]
+            
+            if verbose:
+                print("Initializing Models")
+            self.initialize_models(verbose)
         else:
             self.models = models
-        if verbose:
-            print("Initializing Models")
-        self.initialize_models(verbose)
 
     def initialize_models(self, verbose=False):
         """Trains the model collections

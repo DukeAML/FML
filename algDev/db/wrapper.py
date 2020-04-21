@@ -59,7 +59,7 @@ def createModelCollection(modelCollection):
     for model in modelCollection.models:
         modelId = createModel(model)
         modelIds.append(str(modelId))
-        
+
     modelIds = ','.join(modelIds)
     
     period = int(modelCollection.params['period'])
@@ -131,10 +131,10 @@ def getTradingAlgorithm(tradingAlgId):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    query = "SELECT * FROM TradingAlgorithm WHERE tradingAlgorithmId = '{}'"
+    query = "SELECT * FROM TradingAlgorithms WHERE tradingAlgorithmId = '{}'"
     cursor.execute(query.format(tradingAlgId))
-    result = cursor.fetchall()
-
+    result = cursor.fetchone()
+    
     return result
 
 def loadModelCollection(modelCollId):
@@ -143,10 +143,10 @@ def loadModelCollection(modelCollId):
     conn.autocommit = True
     cursor = conn.cursor()
 
-    query = "SELECT * FROM ModelConnections WHERE modelCollectionId = '{}'"
+    query = "SELECT * FROM ModelCollections WHERE modelCollectionId = '{}'"
     cursor.execute(query.format(modelCollId))
-    result = cursor.fetchall()
-
+    result = cursor.fetchone()
+    
     return result
 
 def getFirstDate():
@@ -175,7 +175,7 @@ def getMostRecentDate():
 
     return lastDate
 
-def getTradingAlgorithm():
+def getTradingAlgorithms():
     conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
     conn.autocommit = True
     cursor = conn.cursor()

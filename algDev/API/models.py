@@ -10,7 +10,7 @@ from algDev.algorithms.asset_allocation import AssetAllocation
 import pickle
 
 def loadModelCollection(modelCollectionId):
-    model_collection = db_wrapper.loadModelCollection()[0]
+    model_collection = db_wrapper.loadModelCollection(modelCollectionId)
     ticker = model_collection[1]
     modelIds = model_collection[2]
     length = model_collection[3]
@@ -44,10 +44,11 @@ def loadModelCollection(modelCollectionId):
 
 def loadTradingAlgorithm(tradingAlgorithmId):
 
-    tradingAlgResult = db_wrapper.getTradingAlgorithm(tradingAlgorithmId)[0]
+    tradingAlgResult = db_wrapper.getTradingAlgorithm(tradingAlgorithmId)
+    
     tickers = tradingAlgResult[1].split(',')
-    modelCollectionIds = tradingAlgResult[1].split(',')
-    votingType = tradingAlgResult[2]
+    modelCollectionIds = tradingAlgResult[2].split(',')
+    votingType = tradingAlgResult[3]
     mcs = []
     for modelCollectionId in modelCollectionIds:
         mc = loadModelCollection(modelCollectionId)
@@ -64,7 +65,7 @@ def loadTradingAlgorithm(tradingAlgorithmId):
     return ta
 
 def getTradingAlgorithms():
-    tas = db_wrapper.loadTradingAlgorithms()
+    tas = db_wrapper.getTradingAlgorithms()
 
     trading_algorithms = []
     for ta in tas:
