@@ -10,6 +10,7 @@ from algDev.db.wrapper import *
 from algDev.tests import trading_alg_test, asset_alloc_test, test_svm
 from algDev.db.populate_models_table import build_example_model, get_tas, test_add_model, test_add_model_collection
 from algDev.API.models import loadTradingAlgorithm
+# from algDev.tests.test_backtest import run_test
 
 def test_one():
     eq = Equity('QCOM')
@@ -72,3 +73,6 @@ def test_twelve():
     trading_alg = loadTradingAlgorithm(ta_id)
 
     print(trading_alg)
+
+def backtest():
+    run_test()
