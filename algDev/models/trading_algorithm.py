@@ -111,10 +111,10 @@ class TradingAlgorithm:
             dictionary -- key - ticker, value - tuple of prediction (0 or 1) and model accuracy
         """
         
-        predictions = {}
+        predictions = []
         for i, eq in enumerate(self.eqs):
             pred = self.voter.predict(self.models[i], date, verbose)
-            predictions.update({eq.ticker: pred})
+            predictions.append(pred)
         
         return predictions
 

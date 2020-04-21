@@ -6,8 +6,8 @@ import datetime
 def run_test():
 
     pf_value = 1000000
-    start_date = datetime.date(2005, 1, 13)
-    end_date = datetime.date(2019, 1, 13)
+    start_date = datetime.datetime(2018, 7, 13)
+    end_date = datetime.datetime(2019, 1, 13)
     tickers = ["AAPL", "AMZN", "BRK-B"]
     features = [
         'macd_9_18'
@@ -26,4 +26,3 @@ def run_test():
 
     # b.plot_value(pf_value, start_date, end_date)
 
-run_test()

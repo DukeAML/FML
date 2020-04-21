@@ -47,7 +47,7 @@ class Backtest():
         snp_rtn = self.get_snp_return()
         net_rtn = self.get_net_rtn()
 
-        avg_free_cash = self.avg_free_cash()
+        avg_free_cash = self.get_avg_free_cash()
 
         beta = self.get_beta()
         vol = self.get_vol()
@@ -71,10 +71,10 @@ class Backtest():
         sp = Equity('SNP')
         for i in range(day_diff):
             i_day = datetime.timedelta(days=i)
-            dates.append(start_date + i_day)
-            vals.append(self.portfolio.getValue(start_date + i_day))
+            dates.append(self.start_date + i_day)
+            vals.append(self.portfolio.getValue(self.start_date + i_day))
             initial_val.append(self.value)
-            snp.append(sp.get_price(start_date + i_day))
+            snp.append(sp.get_price(self.start_date + i_day))
 
         return dates, vals, initial_val, snp
 

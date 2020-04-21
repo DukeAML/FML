@@ -161,7 +161,7 @@ class Equity:
                 high = self.highs[len(self.highs)-1]
                 low = self.highs[len(self.lows)-1]
                 volume = self.volumes[len(self.volumes)-1]
-            self.dates.append(date)
+            self.dates.append(datetime.datetime(date.year, date.month, date.day))
             self.opens.append(float(open))
             self.highs.append(float(high))
             self.lows.append(float(low))

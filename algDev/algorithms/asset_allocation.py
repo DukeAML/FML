@@ -9,8 +9,8 @@ class AssetAllocation:
 
     def get_exp_ret(self, positions, predictions):
         expected_returns = []
-        for position in positions:
-            expected_returns.append(self.exp_ret(predictions[position.eq.ticker]))
+        for i,position in enumerate(positions):
+            expected_returns.append(self.exp_ret(predictions[i]))
 
         return expected_returns
 

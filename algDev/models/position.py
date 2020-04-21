@@ -45,7 +45,7 @@ class Position:
 
     def trade_value(self, amt, date,verbose=False):
         day_open = self.eq.get_price(date, 'o')
-        print(day_open)
+        
         num_shares = int(amt/day_open)
         total_purchased = num_shares * day_open
         left_over = amt - total_purchased
