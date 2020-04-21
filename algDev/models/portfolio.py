@@ -61,7 +61,7 @@ class Portfolio:
         
         ## for first try, we will just ignore allocation, but this should turn allcations into dollar amounts
         allocations = self.asset_strategy.allocate(date, self.positions, predictions, verbose) * self.free_cash[date]
-                
+        print(allocations)
         for i, pos in enumerate(self.positions):
             self.free_cash[date] -= pos.purchase(predictions[i], allocations[i], date, verbose)
         if verbose is True:

@@ -49,7 +49,6 @@ class Voter:
             sum_voting = sum_voting/len(predictions)
             if sum_voting > 0.4:
                 prediction = 1
-
             else:
                 prediction = 0
 

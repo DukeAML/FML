@@ -193,3 +193,14 @@ def getTradingAlgorithms():
     cursor.execute(query)
     result = cursor.fetchall()
     return result
+
+def getModelCollections():
+    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM ModelCollections"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    return result
+

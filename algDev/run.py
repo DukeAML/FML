@@ -76,3 +76,8 @@ def test_twelve():
 
 def backtest():
     run_test()
+
+def getMCs():
+    print(getModelCollections())
+
+getMCs()

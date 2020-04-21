@@ -11,8 +11,6 @@ import numpy as np
 
 (X_train, y_train, X_test, y_test) = gen_data(eq = "VSLR", verbose= True)
 
-
-
 model1a.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categorical_accuracy', 'mae', 'mse'])
 model1a.fit(X_train, y_train, batch_size=32, epochs=500, verbose=2, validation_split=.2)
 predictions = np.array(model1a.predict(X_test))
@@ -23,6 +21,4 @@ np.savetxt('predictions.csv', predictions[0], delimiter=',')
 np.savetxt('actual.csv', y_test_arr[0], delimiter=',')
 score = model1a.evaluate(X_test, y_test, batch_size=32, verbose=2)
 print(score)
-
-
 

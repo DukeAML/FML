@@ -117,7 +117,7 @@ class TradingAlgorithm:
             predictions.append(pred)
         
         return predictions
-
+ 
     def getPeriod(self):
         return self.params['period']
 
