@@ -167,7 +167,6 @@ def getFirstDate():
     cursor.execute(getDateStatement)
     firstDate = cursor.fetchone() # un-nest from list of tuples
     firstDate = firstDate[0]
-    print('firstDate', firstDate)
 
     return firstDate
 
@@ -180,11 +179,10 @@ def getMostRecentDate():
     cursor.execute(getDateStatement)
     lastDate = cursor.fetchone() # un-nest from list of tuples
     lastDate = lastDate[0]
-    print('lastDate', lastDate)
 
     return lastDate
 
-def getTradingAlgorithm():
+def getTradingAlgorithms():
     conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
     conn.autocommit = True
     cursor = conn.cursor()

@@ -17,9 +17,7 @@ export class BacktesterDialogComponent implements OnInit {
   endDate:Date;
   portfolioValue:number;
 
-  models:any[] = [
-    {'name': 'Model 1', 'parameters':[{'name': 'testParam1', 'value': 69}, {'name': 'testParam2', 'value': 420}]},
-    {'name': 'Model 2', 'parameters':[{'name': 'testParam3', 'value': 4}, {'name': 'testParam4', 'value': "ass"}]}];
+  models:any[];
 
   selectedModel:string;
 
@@ -39,16 +37,19 @@ export class BacktesterDialogComponent implements OnInit {
   ngOnInit() {
     this.minStartDate = new Date(this.data['firstDate'])
     this.maxEndDate = new Date(this.data['endDate']);
+    this.models = this.data['models']
     this.maxStartDate = this.subtractDays(this.maxEndDate, 1);
 
     // eventually move this to backend
     this.modelParamsToStrings();
   }
   modelParamsToStrings() {
+    let paramsStrings = [];
     this.models.forEach(element => {
+      
       let paramsString = ''
       element['parameters'].forEach(item => {
-        paramsString = paramsString + item['name'] + ': ' + item['value'] + ', '
+        paramsString = paramsString + item['name'] + ': ' + item['value']  + '    |    '
       })
       element['paramsString'] = paramsString.substr(0,paramsString.length-2);
     });
@@ -65,9 +66,16 @@ export class BacktesterDialogComponent implements OnInit {
       this.startDate.getTime() >= this.endDate.getTime() || isNaN(Number(this.portfolioValue)) || this.selectedModel == null){
       this.inputError = true;
       return;
-    }    
+    }
+    let modelId = "";
+    
+    this.models.forEach( model => {
+      if(model['name'] == this.selectedModel){
+        modelId = model['id'];
+      }
+    });
 
-    this.dialogRef.close({'startDate': this.startDate, 'endDate': this.endDate, 'portfolioValue': this.portfolioValue, 'model': this.selectedModel})
+    this.dialogRef.close({'startDate': this.startDate, 'endDate': this.endDate, 'portfolioValue': this.portfolioValue, 'model': modelId});
   }
 
   updateStartDate($event){

@@ -57,6 +57,13 @@ mat-datepicker-toggle {
     stroke: #DDDDDD;
     }
 
+mat-tooltip {
+    white-space: pre-line;
+}
+.my-tooltip {
+    white-space: pre-line;
+}
+
 /* Calendar stuff */
 .mat-calendar-body-cell-content{
     color: #DDDDDD;
