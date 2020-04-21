@@ -26,4 +26,3 @@ def run_test():
 
     # b.plot_value(pf_value, start_date, end_date)
 
-run_test()
