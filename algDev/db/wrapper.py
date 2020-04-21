@@ -175,7 +175,7 @@ def getMostRecentDate():
 
     return lastDate
 
-def getTradingAlgorithms():
+def getTradingAlgorithm():
     conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
     conn.autocommit = True
     cursor = conn.cursor()

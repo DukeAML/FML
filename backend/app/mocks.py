@@ -5,8 +5,8 @@ import numpy as np
 # gonna have to rewrite this once DB structure in place
 import algDev.API.dataGatherer as dataGatherer
 import algDev.API.indicators as indicators
+import algDev.API.backtest as backtest
 import algDev.db.wrapper as wrapper
-# import algDev.API.models as models
 
 
 def getCategoryDescriptionAtDate(asset, date):
@@ -704,8 +704,13 @@ def getBacktesterDates():
   toReturn = {'firstDate': dbStartDate, 'endDate': dbEndDate}
   return toReturn
 
-  
-# def getTradingAlgorithms():
-#   tradingAlgs = models.getTradingAlgorithms()
-#   return tradingAlgs # LOOK INTO THIS SHIT MORE
+def getTradingAlgorithms():
+  return wrapper.getTradingAlgorithm()
+
+
+def runBacktester(start, end, portfolioValue, algID):
+  return backtest.run_backtest(start, end, portfolioValue, algID)
+
+# def run_backtest(start_date, end_date, pf_value, tradingAlgorithmId):
+
 

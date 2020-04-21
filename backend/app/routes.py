@@ -98,6 +98,11 @@ def getTopAssets():
 
 @app.route('/backtester/dropdown', methods=['GET'])
 def getDates():
-  print('got here')
+  tradingAlgs = mocks.getTradingAlgorithms()
+  print('algs', tradingAlgs)
   result = mocks.getBacktesterDates()
   return jsonify(result)
+
+# @app.route('/backtester/run', methods=['GET'])
+# def runBacktester():
+#   result = mocks.runBacktester()
