@@ -735,7 +735,9 @@ def runBacktester(start, end, portfolioValue, algID):
   startDate = toDate(start)
   endDate = toDate(end)
   
-  return backtest.run_backtest(startDate, endDate, portfolioValue, algID)
+  result = backtest.run_backtest(startDate, endDate, portfolioValue, algID)
+  print('backtester result was', result)
+  return result
 
 # def run_backtest(start_date, end_date, pf_value, tradingAlgorithmId):
 
