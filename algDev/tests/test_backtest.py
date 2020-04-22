@@ -26,5 +26,3 @@ def run_test():
     # print(str(rtn) + "%")
 
     # b.plot_value(pf_value, start_date, end_date)
-
-run_test()

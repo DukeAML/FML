@@ -27,10 +27,17 @@ class AssetAllocation:
         ##ISSUE HERE IS THAT EXPECTED RETURN IS CAPPED AT THRESHOLD (condiser multiplying is by 2)
         return pred_conf * threshold
     
+    def check_invalid(self, expected_returns):
+        for r in expected_returns:
+            if r != 0:
+                return False
+        return True
     ##UPDATE THIS
     def calculate_allocations(self, date, positions, predictions, verbose=False):
         
         expected_returns = self.get_exp_ret(positions, predictions)
+        if self.check_invalid(expected_returns):
+            return np.array(expected_returns)
         print(expected_returns)
         cov_arr = self.get_cov_arr(date, positions)
         print(cov_arr)

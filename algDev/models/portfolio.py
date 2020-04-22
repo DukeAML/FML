@@ -49,26 +49,28 @@ class Portfolio:
 
         ##ASK LUKE ABOUT THIS LINE
         self.free_cash[date] = self.free_cash[list(self.free_cash.keys())[len(self.free_cash.keys())-1]]
-        
-        self.update_closings(date, verbose)
-
+        print("Free Cash: ", self.free_cash)
         # Dictionary of tickers and tuples of prediction and confidence
         predictions = self.trading_algorithm.predict(date)
-        
+        print("Predictions ", predictions)
         ## After that loop, predictions will be 1/0/-1 corresponding to buy/do nothing/short
         ##Confidence is the output of the model, from which we can calculate expected return
         ## allocations will be a decimal indicating how much of our available cash we should give to that
         
         ## for first try, we will just ignore allocation, but this should turn allcations into dollar amounts
+        print("Allocation Breakdown ", self.asset_strategy.allocate(date, self.positions, predictions, verbose))
+        print("Todays Cash ", self.free_cash[date])
         allocations = self.asset_strategy.allocate(date, self.positions, predictions, verbose) * self.free_cash[date]
-        print(allocations)
+        print("Allocations in Total", allocations)
         for i, pos in enumerate(self.positions):
-            self.free_cash[date] -= pos.purchase(predictions[i], allocations[i], date, verbose)
+            self.free_cash[date + datetime.timedelta(days=1)] = self.free_cash[date] - pos.purchase(predictions[i], allocations[i], date, verbose)
         if verbose is True:
             print("Current Free Cash: ", self.free_cash[date])
             print("Current Positions Value: ", self.getValue(date) - self.free_cash[date])
 
         self.trading_algorithm.update(date)
+
+        self.update_closings(date, verbose)
         return self.update(verbose)
 
     def update(self, verbose=False):
@@ -78,7 +80,7 @@ class Portfolio:
 
         for i, pos in enumerate(self.positions):
         
-            self.free_cash[date] += pos.handle_closings(self.trading_algorithm.params, date, verbose)
+            self.free_cash[date + datetime.timedelta(days=1)] += pos.handle_closings(self.trading_algorithm.params, date, verbose)
         
     def date_ob(self, date, verbose=False):
 

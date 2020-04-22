@@ -118,7 +118,7 @@ class ModelCollection:
             for i,f in enumerate(self.features):
                 X_i = data_generator.get_subset(self.eq, [f], start_index, end_index, self.type)
                 predictions.append(self.models[i].predict(X_i))
-                
+        print("Todays Features: ", X_i)
         return predictions
 
     def grid_search_coll(self, verbose=False):
