@@ -79,5 +79,3 @@ def backtest():
 
 def getMCs():
     print(getModelCollections())
-
-getMCs()

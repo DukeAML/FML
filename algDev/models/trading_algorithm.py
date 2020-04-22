@@ -82,7 +82,7 @@ class TradingAlgorithm:
             predictions = self.predict(date, verbose)
             truths = self.get_labels(date)
             for i,eq in enumerate(self.eqs):
-                pred = predictions[eq.ticker][0]
+                pred = predictions[i][0]
                 truth = truths[i]
                 cms[i].add_value(truth,pred)
             date += next_day
