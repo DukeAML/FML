@@ -46,7 +46,7 @@ class Backtest():
 
         poss = []
         for p in positions:
-            poss.append({'ticker':p.ticker, 'values':p.get_values[1], 'trades':p.get_trades_dictionary})
+            poss.append({'ticker':p.ticker, 'values':p.get_values()[1], 'trades':p.get_trades_dictionary()})
 
         return poss
 
