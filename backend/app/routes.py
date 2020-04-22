@@ -105,10 +105,8 @@ def getDates():
 
 @app.route('/backtester/run', methods=['POST'])
 def runBacktester():
-  print('called route')
   json = request.get_json()
-  print('json is', str(json))
   result = mocks.runBacktester(json['startDate'], json['endDate'], int(json['portfolioValue']), json['model'])
-  return jsonify({})
+  return jsonify(result)
 
 

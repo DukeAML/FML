@@ -734,9 +734,44 @@ def getTradingAlgorithms():
 def runBacktester(start, end, portfolioValue, algID):
   startDate = toDate(start)
   endDate = toDate(end)
+
+    
+
   
   result = backtest.run_backtest(startDate, endDate, portfolioValue, algID)
-  print('backtester result was', result)
+
+  for stat in result['stats']:
+    stat['value'] = round(stat['value'], 3)
+    split = stat['name'].split('_')
+    for i in range(len(split)):
+      split[i] = (split[i][0].upper()) + split[i][1:]
+    
+    newName = " ".join(split)
+    stat['name'] = newName
+
+
+  portfolioSeries = []
+  snpSeries = []
+  initialSeries = []
+
+  for i in range(len(result['dates'])):
+    portObj = {'name': i, 'value': result['portfolioValues'][i]}
+    snpObj = {'name': i, 'value': result['snpVals'][i]}
+    initialObj = {'name': i, 'value': result['initialValues'][i]}
+
+    portfolioSeries.append(portObj)
+    snpSeries.append(snpObj)
+    initialSeries.append(initialObj)
+  
+  graphData = [{'name': 'Portfolio Value', 'series': portfolioSeries}, 
+              {'name': 'SNP Value', 'series': snpSeries},
+              {'name': 'Initial Value', 'series': initialSeries}
+  ]
+
+  result['graphData'] = graphData
+
+  formattedPositions = []
+  
   return result
 
 # def run_backtest(start_date, end_date, pf_value, tradingAlgorithmId):

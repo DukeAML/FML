@@ -68,16 +68,7 @@ export class DataService {
   runBacktester(params:any){
     console.log('params in service', params);
 
-    this.http.post(this.serverURL + '/backtester/run', params).subscribe(result => {
-      console.log('result');
-
-    });
-
-    //this is what the return will look like
-
-    //'stats': stats, 'dates':dates, 'portfolioValues':pf_vals, 'initialValues':initial_val, 'snpVals':snp_vals, 'positions':self.portfolio.positions}
-
-    // return of(testObj);
+    return this.http.post(this.serverURL + '/backtester/run', params)
   }
 
 }

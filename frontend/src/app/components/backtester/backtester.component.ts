@@ -31,7 +31,7 @@ export class BacktesterComponent implements OnInit {
   minVizDate:Date = new Date('2018-01-01');
   maxVizDate:Date = new Date();
 
-  portfolioValues:any[];
+  graphData:any[];
 
   renderedTrades:any[] = [];
 
@@ -72,7 +72,7 @@ export class BacktesterComponent implements OnInit {
 
             this.positions = result['positions'];
             this.performanceStats =  result['stats'];
-            this.portfolioValues = result['portfolioValues'];
+            this.graphData = result['graphData'];
           })
         }
         else{
