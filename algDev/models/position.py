@@ -9,6 +9,17 @@ class Position:
         self.init_date = init_date
         self.trades = []
 
+    def get_trades_dictionary(self):
+        ts = []
+        for t in self.trades:
+            if t.sold:
+                sell_date = None
+            else:
+                sell_date = t.date_sold
+            ts.append({'datePurchased': t.date_purchased, 'numShares': t.num_shares,'sold': t.sold, 'dateSold': sell_date})
+
+        return ts
+        
     def get_values(self, date):
         day_diff = (date - self.init_date).days
         vals = []
@@ -79,41 +90,52 @@ class Position:
         return total
 
     ##Note: lower_limit should be a negative float
-    def handle_closings(self, params, today, verbose=False):
+    def handle_closings(self, params, today, close_type='threshold', verbose=False):
         cash = 0
         exp = params['period']
         upper_limit = params['upper_threshold']
         lower_limit = params['lower_threshold']
-        if verbose:
-            print("Checking position for closings")
-        for i,trade in enumerate(self.trades):
-            if self.check_closed(trade, verbose):
-                continue
-            pur_date = trade.purchase_date()
-            days_since_pur = today - pur_date
-            if days_since_pur > datetime.timedelta(days=exp):
+
+        if close_type == 'threshold':
+            if verbose:
+                print("Checking position for closings")
+            for i,trade in enumerate(self.trades):
+                if self.check_closed(trade, verbose):
+                    continue
+                pur_date = trade.purchase_date()
+                days_since_pur = today - pur_date
+                if days_since_pur > datetime.timedelta(days=exp):
+                    if verbose:
+                        print("Bought at: ", self.eq.get_price(pur_date, 'o'))
+                        print("Sold at: ", self.eq.get_price(today, 'c'))
+                    cash += trade.num_shares * self.eq.get_price(today, 'c', verbose)
+                    self.trades[i] = trade.sell(today, verbose)
+                    continue
+                upper_limit_price = self.eq.get_price(pur_date, 'o', verbose) * (1 + upper_limit)
+            
+                if self.eq.get_price(today, 'h', verbose) >= upper_limit_price:
+                    if verbose:
+                        print("Bought at: ", self.eq.get_price(pur_date, 'o', verbose))
+                        print("Sold at: ", self.eq.get_price(today, 'h', verbose))
+                    cash += trade.num_shares * upper_limit_price
+                    self.trades[i] = trade.sell(today, verbose)
+
+                lower_limit_price = self.eq.get_price(pur_date, 'o', verbose) * (1+ lower_limit)
+
+                if self.eq.get_price(today, 'l', verbose) <= lower_limit_price:
+                    if verbose:
+                        print("Bought at: ", self.eq.get_price(pur_date, 'o', verbose))
+                        print("Sold at: ", self.eq.get_price(today, 'l', verbose))
+                    cash += trade.num_shares * lower_limit_price
+                    self.trades[i] = trade.sell(today, verbose)
+        else:
+            for i,trade in enumerate(self.trades):
+                if self.check_closed(trade, verbose):
+                    continue
                 if verbose:
                     print("Bought at: ", self.eq.get_price(pur_date, 'o'))
                     print("Sold at: ", self.eq.get_price(today, 'c'))
                 cash += trade.num_shares * self.eq.get_price(today, 'c', verbose)
-                self.trades[i] = trade.sell(today, verbose)
-                continue
-            upper_limit_price = self.eq.get_price(pur_date, 'o', verbose) * (1 + upper_limit)
-            
-            if self.eq.get_price(today, 'h', verbose) >= upper_limit_price:
-                if verbose:
-                    print("Bought at: ", self.eq.get_price(pur_date, 'o', verbose))
-                    print("Sold at: ", self.eq.get_price(today, 'h', verbose))
-                cash += trade.num_shares * upper_limit_price
-                self.trades[i] = trade.sell(today, verbose)
-
-            lower_limit_price = self.eq.get_price(pur_date, 'o', verbose) * (1+ lower_limit)
-
-            if self.eq.get_price(today, 'l', verbose) <= lower_limit_price:
-                if verbose:
-                    print("Bought at: ", self.eq.get_price(pur_date, 'o', verbose))
-                    print("Sold at: ", self.eq.get_price(today, 'l', verbose))
-                cash += trade.num_shares * lower_limit_price
                 self.trades[i] = trade.sell(today, verbose)
 
         if verbose:

@@ -3,9 +3,12 @@ from algDev.models.finance import Finance
 
 class AssetAllocation:
 
-    def __init__(self, upper_threshold, lower_threshold):
+    def __init__(self, upper_threshold, lower_threshold, target_return=0, rf=0):
         self.upper_threshold = upper_threshold
         self.lower_threshold = lower_threshold
+
+        self.target_return = target_return
+        self.rf = rf
 
     def get_exp_ret(self, positions, predictions):
         expected_returns = []
@@ -38,9 +41,9 @@ class AssetAllocation:
         expected_returns = self.get_exp_ret(positions, predictions)
         if self.check_invalid(expected_returns):
             return np.array(expected_returns)
-        print(expected_returns)
+            
         cov_arr = self.get_cov_arr(date, positions)
-        print(cov_arr)
+        
         unit_vector = np.ones(len(expected_returns))
         inv_cov_arr = np.linalg.inv(cov_arr)
         
@@ -52,7 +55,7 @@ class AssetAllocation:
         ##USE THE ABOVE FORMULAS TO CALCULATE THE EFFICIENT FRONTIER
 
         w_g = np.divide(np.dot(np.linalg.inv(cov_arr),unit_vector),A) #Weightings minimum risk portfolio
-        print(B)
+
         w_d = np.divide(np.dot(np.linalg.inv(cov_arr),expected_returns),B) #Weightings tangency portfolio for r = 0% 
         if verbose:
             print("w_d:", w_d)
@@ -75,9 +78,5 @@ class AssetAllocation:
     def get_cov_arr(self, date, positions):
         DC_arr = self.get_DC_arr(date, positions)
         cov_arr = np.cov(DC_arr)
-        #for i in range(0, len(self.positions)):
-        #    eq1 = self.positions[i].eq
-        #    for j in range(0, len(self.positions)):
-        #        eq2 = self.positions[j].eq
-        #        self.cov_arr[i, j] = Finance.covariance(eq1, eq2, init_date, days, start, stop)
+
         return cov_arr
