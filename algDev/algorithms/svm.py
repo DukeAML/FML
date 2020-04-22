@@ -168,7 +168,7 @@ class SVM:
         """
         
         pred = self.model.predict(Xi)
-        
+        print("Prediction for model ", self.title, " - ", pred, ' accuracy: ', self.metrics['acc'])
         return pred[0]
 
 

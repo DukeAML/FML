@@ -31,10 +31,11 @@ class ModelCollection:
         self.model_params = model_params
         if len(models) > 0:
             self.models = models
+            self.update_accuracy()
         else:
             assert(len(features)>0)
             self.models = self.init_models()
-        self.accuracy = 0.0
+            self.accuracy = 0.0
         
     def init_models(self):
         """Runs through all features and creates the appropriate models
@@ -98,15 +99,16 @@ class ModelCollection:
         acc = 0.0
         for model in self.models:
             acc += model.metrics['acc']
-
+        
         self.accuracy = acc/len(self.models)
+
 
     def predict(self, date, verbose=False):
         if verbose:
             print(date)
         start_index = self.eq.get_index_from_date(date)
         end_index = start_index + self.params['length']
-
+        
         predictions = []
         if self.type=='cnn':
             X_i = data_generator.get_subset(self.eq, self.features, start_index, end_index, self.type)
@@ -116,7 +118,7 @@ class ModelCollection:
             for i,f in enumerate(self.features):
                 X_i = data_generator.get_subset(self.eq, [f], start_index, end_index, self.type)
                 predictions.append(self.models[i].predict(X_i))
-        
+        print("Todays Features: ", X_i)
         return predictions
 
     def grid_search_coll(self, verbose=False):

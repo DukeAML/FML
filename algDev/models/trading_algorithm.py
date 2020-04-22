@@ -114,10 +114,11 @@ class TradingAlgorithm:
         predictions = []
         for i, eq in enumerate(self.eqs):
             pred = self.voter.predict(self.models[i], date, verbose)
+            print("Prediction for ", eq.ticker, " - ", pred)
             predictions.append(pred)
         
         return predictions
-
+ 
     def getPeriod(self):
         return self.params['period']
 

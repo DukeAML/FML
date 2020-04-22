@@ -35,10 +35,11 @@ class Voter:
         if verbose:
             print(date)
         model_predictions = model_collection.predict(date, verbose)
+        print("Model Predictions: ", model_predictions)
         predictions = {}
         for i,model in enumerate(model_collection.models):
             predictions[model.title] = (model_predictions[i], model.metrics['acc'])
-        
+        print("Updated Predictions in Voter", predictions)
         if self.voting_type == "accuracy":
 
             sum_voting = 0
@@ -49,11 +50,10 @@ class Voter:
             sum_voting = sum_voting/len(predictions)
             if sum_voting > 0.4:
                 prediction = 1
-
             else:
                 prediction = 0
 
         else:
             prediction = 'you have not selected a valid voting method'
-
+        print("Voting Output ", prediction, " for model with accuracy ", model_collection.accuracy)
         return (prediction, model_collection.accuracy)

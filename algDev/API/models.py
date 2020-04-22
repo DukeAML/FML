@@ -9,6 +9,22 @@ from algDev.algorithms.asset_allocation import AssetAllocation
 
 import pickle
 
+def parse_metrics(metric_string):
+    metrics = {}
+
+    metric_string = metric_string.replace('{','')
+    metric_string = metric_string.replace('}','')
+
+    metric_arr = metric_string.split(',')
+
+    for m in metric_arr:
+        k_v = m.split(':')
+        v = float(k_v[1].strip())
+        k = k_v[0].split('\"')[1]
+        metrics[k] = v
+
+    return metrics
+
 def loadModelCollection(modelCollectionId):
     model_collection = db_wrapper.loadModelCollection(modelCollectionId)
     ticker = model_collection[1]
@@ -19,6 +35,7 @@ def loadModelCollection(modelCollectionId):
     period = model_collection[6]
     title = model_collection[7]
     features = model_collection[8]
+    
     type = title.split(' - ')[0]
     models = []
     features = features.split(',')
@@ -28,18 +45,18 @@ def loadModelCollection(modelCollectionId):
         modelbinary = bytes(model_res[1])
         model = pickle.loads(modelbinary)
         title = model_res[2]
-        metrics = model_res[3]
-
+        metrics = parse_metrics(model_res[3])
+        
         new_model = SVM(model=model, title=title, metrics=metrics)
 
         models.append(new_model)
     params = {}
-    params['length'] = length
-    params['upper_threshold'] = uppertheshold
-    params['lower_threshold'] = lowerthreshold
-    params['period'] = period
-    mc = ModelCollection(ticker, type, params = params, models = models)
-
+    params['length'] = int(length)
+    params['upper_threshold'] = float(uppertheshold)
+    params['lower_threshold'] = float(lowerthreshold)
+    params['period'] = int(period)
+    mc = ModelCollection(ticker, type, features = features, params = params, models = models)
+    
     return mc
 
 def loadTradingAlgorithm(tradingAlgorithmId):
@@ -48,15 +65,16 @@ def loadTradingAlgorithm(tradingAlgorithmId):
     
     tickers = tradingAlgResult[1].split(',')
     features = tradingAlgResult[2].split(',')
-    length = tradingAlgResult[3]
-    upper_threshold = tradingAlgResult[4]
-    lower_threshold = tradingAlgResult[5]
-    period = tradingAlgResult[6]
+    length = int(tradingAlgResult[3])
+    upper_threshold = float(tradingAlgResult[4])
+    lower_threshold = float(tradingAlgResult[5])
+    period = int(tradingAlgResult[6])
     modelCollectionIds = tradingAlgResult[7].split(',')
     votingType = tradingAlgResult[8]
     mcs = []
     for modelCollectionId in modelCollectionIds:
         mc = loadModelCollection(modelCollectionId)
+        
         mcs.append(mc)
     model_mc = mcs[0]
     features = model_mc.features

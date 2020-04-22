@@ -15,6 +15,7 @@ class AssetAllocation:
         return expected_returns
 
     def exp_ret(self, prediction, verbose=False):
+        
         threshold = 0
         pred_val = prediction[0]
         pred_conf = prediction[1]
@@ -26,15 +27,23 @@ class AssetAllocation:
         ##ISSUE HERE IS THAT EXPECTED RETURN IS CAPPED AT THRESHOLD (condiser multiplying is by 2)
         return pred_conf * threshold
     
+    def check_invalid(self, expected_returns):
+        for r in expected_returns:
+            if r != 0:
+                return False
+        return True
     ##UPDATE THIS
     def calculate_allocations(self, date, positions, predictions, verbose=False):
         
         expected_returns = self.get_exp_ret(positions, predictions)
-
+        if self.check_invalid(expected_returns):
+            return np.array(expected_returns)
+        print(expected_returns)
         cov_arr = self.get_cov_arr(date, positions)
+        print(cov_arr)
         unit_vector = np.ones(len(expected_returns))
         inv_cov_arr = np.linalg.inv(cov_arr)
-
+        
         A = np.dot(np.dot(np.transpose(unit_vector), inv_cov_arr), unit_vector)
         B = np.dot(np.dot(np.transpose(unit_vector),inv_cov_arr), expected_returns)
         C = np.dot(np.dot(np.transpose(expected_returns), inv_cov_arr), expected_returns)
@@ -43,6 +52,7 @@ class AssetAllocation:
         ##USE THE ABOVE FORMULAS TO CALCULATE THE EFFICIENT FRONTIER
 
         w_g = np.divide(np.dot(np.linalg.inv(cov_arr),unit_vector),A) #Weightings minimum risk portfolio
+        print(B)
         w_d = np.divide(np.dot(np.linalg.inv(cov_arr),expected_returns),B) #Weightings tangency portfolio for r = 0% 
         if verbose:
             print("w_d:", w_d)
