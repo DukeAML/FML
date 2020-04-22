@@ -88,9 +88,18 @@ class Backtest():
         return dates, vals, initial_val, snp
 
     def get_snp_return(self):
-        return 1.0
+        snp = self.get_pf_values()[3]
+        initial_snp = snp[0]
+        end_snp = snp[len(snp)-1]
+
+        return (end_snp - initial_snp)/initial_snp
+
     def get_avg_free_cash(self):
-        return 1.0
+        free_cash = np.array(list(self.portfolio.free_cash.values()))
+        
+        return np.mean(free_cash)
+
+
     def get_net_rtn(self):
         rtn = self.get_return()
         snp_rtn = self.get_snp_return()
@@ -99,17 +108,27 @@ class Backtest():
 
     def get_vol(self):
 
-        return 1.0
+        return np.std(self.get_pf_values()[1])
 
     def get_sharpe(self):
         vol = self.get_vol()
         rtn = self.get_return()
-
+        if vol==0:
+            return 10000
         return rtn/vol
 
     def get_beta(self):
         beta = 1.0
-
+        rf = self.asset_strategy.asset_allocation.rf
+        rtn = self.get_return()
+        snp_rtn = self.get_snp_return()
+        er = (rtn - rf)
+        if er == 0.0:
+            return 0.0
+        em = (snp_rtn - rf)
+        if(em==0.0):
+            return 1000.0
+        beta = er/em
         return beta
 
     def get_treynor(self):
@@ -119,8 +138,11 @@ class Backtest():
         return rtn/beta
 
     def get_return(self):
+        vals = self.get_pf_values()[1]
+        initial_value = vals[0]
+        final_value = vals[len(vals)-1]
 
-        return 1.0
+        return (final_value-initial_value)/initial_value
     
     def plot_value(self, initial_value, start_date, end_date):
 
