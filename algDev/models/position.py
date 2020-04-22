@@ -28,7 +28,7 @@ class Position:
         for i in range(day_diff):
             i_day = datetime.timedelta(days=i)
             dates.append(self.init_date + i_day)
-            vals.append(self.get_values(self.init_date + i_day))
+            vals.append(1000)
 
         return dates, vals
         
