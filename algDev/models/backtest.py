@@ -18,7 +18,7 @@ class Backtest():
         self.start_date = start_date
         self.asset_strategy = asset_strategy
         self.trading_algorithm = trading_algorithm
-
+        
         self.portfolio = Portfolio(self.value, self.today, self.trading_algorithm, self.asset_strategy, verbose)
 
     def step(self, verbose=False):
@@ -42,6 +42,14 @@ class Backtest():
 
         return self.get_relevant_information()
 
+    def gen_positions(self, positions):
+
+        poss = []
+        for p in positions:
+            poss.append({'ticker':p.ticker, 'values':p.get_values[1], 'trades':p.get_trades_dictionary})
+
+        return poss
+
     def get_relevant_information(self):
         rtn = self.get_return()
         snp_rtn = self.get_snp_return()
@@ -56,8 +64,9 @@ class Backtest():
         sharpe = self.get_sharpe()
 
         dates, pf_vals, initial_val, snp_vals = self.get_pf_values()
-
-        return_val = {'return':rtn, 'snp_rtn':snp_rtn, 'net_rtn':net_rtn, 'average_free_cash':avg_free_cash, 'beta': beta, 'vol':vol, 'treynor':treynor, 'sharpe':sharpe, 'dates':dates, 'pf_vals':pf_vals, 'initial_val':initial_val, 'snp_vals':snp_vals, 'positions':self.portfolio.positions}
+        stats = [{'name': 'return', 'value':rtn}, {'name':'snp_return', 'value':snp_rtn}, {'name':'net_return', 'value':net_rtn}, {'name':'average_free_cash', 'value':avg_free_cash}, {'name':'beta', 'value': beta}, {'name':'vol','value':vol}, {'name':'treynor', 'value':treynor}, {'name':'sharpe','value':sharpe}]
+        positions = self.gen_positions(self.portfolio.positions)
+        return_val = {'stats': stats, 'dates':dates, 'portfolioValues':pf_vals, 'initialValues':initial_val, 'snpVals':snp_vals, 'positions':self.portfolio.positions}
 
         return return_val
     def get_pf_values(self):
