@@ -4,6 +4,8 @@ from algDev.models.hyperparam_tst import hyper_param_haul
 import datetime
 import csv 
 
+#Define tests to be called in run.py (in algDev)
+
 def run_test_one():
     tickers = ['AAPL']
     features = ['macd_9_18','closes','prings','kst','kstTrix', 'rsi']

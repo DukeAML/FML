@@ -4,6 +4,17 @@ from algDev.algorithms.model_collection import ModelCollection
 import csv
     
 def hyper_param_haul(features_list,ticker_list, model_params):
+    '''
+    Function for testing hyperparamters gamma, C for SVMs
+    
+    Inputs:
+        ticker_list {list of lists} -- tickers to test for each feature set, each set of params
+        feautures_list {list of lists} -- features to each test for each set of params
+        model_params {list of dictionaries} -- combinations of gamma, C to test
+    
+    -- writes results to csv for analysis, csv's in backend/hyperparam_tests--
+
+    '''
     acc_lst =[]
     cm_lst = []
     file = open('hyperparam_tst.txt', 'w')

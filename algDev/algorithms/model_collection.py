@@ -22,6 +22,8 @@ class ModelCollection:
                                     upper_threshold: documentation for label threshold,
                                     period: documentation for label period,
                                     cnn_split: number of cnns to use if necessary
+            models {list} -- any pretrained models to import
+            model_params {dictionary} -- model parameters to use (gamma, C) for all individual models
         """
         self.eq = Equity(ticker)
         self.ticker = ticker
@@ -81,10 +83,14 @@ class ModelCollection:
         self.update_accuracy()
 
     def plot_rocs(self, verbose=False):
+        """ Plot roc curve for each model
+        """
         for model in self.models:
             model.plot_roc(verbose)
 
     def get_conf_matricies(self, verbose=False):
+        """ returns confusion matrices for each model
+        """
         cm_list =[]
         for model in self.models:
             cm = model.build_conf_matrix(self.params['data_splits'])
@@ -104,6 +110,8 @@ class ModelCollection:
 
 
     def predict(self, date, verbose=False):
+        """ generate predictions for given date
+        """
         if verbose:
             print(date)
         start_index = self.eq.get_index_from_date(date)
@@ -122,6 +130,8 @@ class ModelCollection:
         return predictions
 
     def grid_search_coll(self, verbose=False):
+        ''' do grid search on model parameters gamma, C for each model
+        '''
         for model in self.models:
             model.grid_search_model(verbose)
 

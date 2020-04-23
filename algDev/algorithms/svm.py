@@ -14,11 +14,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import load_iris
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.model_selection import GridSearchCV
-#this is the file for running all versions of svm-model based voting algorithms
 
-#20-50 svm models 
-#features: combo (small bucket) of indicator, maybe only one 
-#binary category is either: postive, negative, or window
 
 class SVM:
     """Class representing the SVM models
@@ -34,11 +30,12 @@ class SVM:
             y {ndarray} -- labels
         
         Keyword Arguments:
-            C {int} -- error penalty (default: {1})
-            params {dict} -- dictionary of parameters below, if None default values are used
-                gamma {str} -- kernal parameter (default: {'auto'}, if not auto or scale - not str)
-                C {int} -- 
-                title {str} -- name of model (default: {'default'})
+            params {dict} -- dictionary of model parameters below, if None default values are used
+                gamma {int/str} -- kernal parameter , str options: 'auto', 'scale', (default: {'auto'} = 1 / n_features)
+                C {int} -- penalty factor (default)
+            title {str} -- name of model (default: {'default'})
+            model {svm object} -- option to use pretrained svm
+            metrics {dictionary} -- set saved metrics for pretrained models
             
         """
         if not bool(params) == True:
@@ -59,6 +56,9 @@ class SVM:
         self.metrics = metrics
 
     def build_conf_matrix(self, splits, X=None, y=None, verbose=False):
+        ''' build confusion matrix for svm model
+            prints the matrix, returns the command for writing cm to file 
+        '''
         if not X or not y:
             X = self.data['features']
             y = self.data['labels']
@@ -119,6 +119,8 @@ class SVM:
         self.metrics['acc'] = acc
 
     def plot_roc(self, verbose=False):
+        """ Plot ROC Curve for model
+        """
         tprs = []
         aucs = []
         mean_fpr = np.linspace(0, 1, 100)
@@ -173,16 +175,21 @@ class SVM:
 
 
     def grid_search_model(self, verbose = False):
+        """ Perform grid search to find optimal gamma, C for model
+        """
         #DATA
         X = self.data['features']
         y = self.data['labels']
 
         #grid search for values of C, gamma
+
+        #ideally run below 
         # C_range = np.logspace(-2, 10, 13)
         # gamma_range = np.logspace(-9, 3, 13)
 
+        #w/o gpu run within smaller space
         C_range = np.logspace(9, 10,4)
-        gamma_range = np.logspace(-6, 2, 2)
+        gamma_range = np.logspace(0, 2, 2)
         param_grid = dict(gamma=gamma_range, C=C_range)
         cv = StratifiedShuffleSplit(n_splits=5, test_size=0.2, random_state=42)
         grid = GridSearchCV(SVC(), param_grid=param_grid, cv=cv)

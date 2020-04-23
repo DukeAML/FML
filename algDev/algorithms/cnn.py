@@ -27,10 +27,13 @@ class CNN:
         self.title = title
         
     def build_model(self):
-        """Construct the CNN, make this more dynamic later
+        """Construct the CNN
         
         Returns:
             Sequential -- fully compiled model
+            Model architecture (static for now): 
+            Conv2D w/ 64 nodes -> Conv2D w/ 32 nodes -> Flatten -> Sigmoid
+            Optimizer: SGD
         """
         #create model
         model = Sequential()

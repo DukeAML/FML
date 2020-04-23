@@ -5,6 +5,9 @@ from models.feature_builder import build_labels_string
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
+## GENERATE IMAGES OF INDICATOR DATA -- VISUALIZE INPUT TO CNN ##
+
+
 def gen_pics(data):
     X = []
     look_back = data.shape[1]
