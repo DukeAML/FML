@@ -43,7 +43,7 @@ class Voter:
         
         predictions = {}
         for i,model in enumerate(model_collection.models):
-            predictions[model.title] = (model_predictions[i], model.metrics['acc'],model.metrics['balance'],model.metrics['False Positive Rate'])
+            predictions[model.title] = (model_predictions[i], model.metrics['acc'], model.metrics['balance'], model.metrics['False Positive Rate'])
         
         if verbose:
             print("Updated Predictions in Voter", predictions)
@@ -67,10 +67,10 @@ class Voter:
             votes_toPass= 0
             votes_toReject =0
             for title, metrics in predictions.items():
-                metrics[0] = pred
-                metrics[1] = acc
-                metrics[2] = balance
-                metrics[3] = FPR
+                pred = metrics[0]
+                acc = metrics[1] 
+                balance = metrics[2] 
+                FPR = metrics[3] 
 
                 if pred ==0 :
                     vote_to = 'reject'
