@@ -34,12 +34,21 @@ class Voter:
         """
         if verbose:
             print(date)
+        #get predictions, metrics
         model_predictions = model_collection.predict(date, verbose)
-        print("Model Predictions: ", model_predictions)
+        model_collection.get_voter_metrics()
+        
+        if verbose:
+            print("Model Predictions: ", model_predictions)
+        
         predictions = {}
         for i,model in enumerate(model_collection.models):
-            predictions[model.title] = (model_predictions[i], model.metrics['acc'])
-        print("Updated Predictions in Voter", predictions)
+            predictions[model.title] = (model_predictions[i], model.metrics['acc'],model.metrics['balance'],model.metrics['False Positive Rate'])
+        
+        if verbose:
+            print("Updated Predictions in Voter", predictions)
+        
+        
         if self.voting_type == "accuracy":
 
             sum_voting = 0
@@ -53,7 +62,14 @@ class Voter:
             else:
                 prediction = 0
 
+        elif self.voting_type == 'Penrose':
+
+            ####
+
         else:
             prediction = 'you have not selected a valid voting method'
-        print("Voting Output ", prediction, " for model with accuracy ", model_collection.accuracy)
+        
+        if verbose:
+            print("Voting Output ", prediction, " for model with accuracy ", model_collection.accuracy)
+        
         return (prediction, model_collection.accuracy)

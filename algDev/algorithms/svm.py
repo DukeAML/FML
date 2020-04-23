@@ -79,6 +79,42 @@ class SVM:
 
         return matrix
 
+    def voter_metrics(self, splits, X=None, y=None, verbose=False):
+        ''' build confusion matrix for svm model
+            prints the matrix, returns the command for writing cm to file 
+        '''
+        if not X or not y:
+            X = self.data['features']
+            y = self.data['labels']
+
+        X_train, y_train, X_test, y_test = split_data(X, y, splits)
+
+        true_neg =0
+        false_neg =0
+        true_pos =0
+        false_pos =0
+        for i,X_i in enumerate(X_test):
+            pred = self.predict(X_i.reshape(1, -1))
+            true = int(y_test[i])
+            pred = int(pred)
+
+            if true == 0 and predicted == 0:
+                true_neg += 1
+            elif true == 0 and predicted == 1:
+                false_pos += 1
+            elif true == 1 and predicted == 0:
+                false_neg += 1
+            elif true == 1 and predicted == 1:
+                true_pos += 1
+            
+        false_posR = (true_neg + false_pos)/ false_pos
+        balance = (false_neg + true_pos)/(true_neg + false_pos)
+
+        self.metrics['balance'] = balance
+        self.metrics['False Positive Rate'] = false_posR
+
+        
+
     def train(self, splits, X=None, y=None, verbose=False):
         """train the svm
         

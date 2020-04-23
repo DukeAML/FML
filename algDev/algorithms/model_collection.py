@@ -97,6 +97,14 @@ class ModelCollection:
             cm_list.append(cm)
 
         return cm_list
+
+    def get_voter_metrics(self, verbose=False):
+        """ calculates metrics for voter 
+        """
+        for model in self.models:
+            splits= self.params['data_splits']
+            model.voter_metrics(splits, verbose )
+
         
     def update_accuracy(self):
         """Update the accuracy of the entire collection by averaging the
