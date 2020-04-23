@@ -63,8 +63,34 @@ class Voter:
                 prediction = 0
 
         elif self.voting_type == 'Penrose':
+            total_votes =0
+            votes_toPass= 0
+            votes_toReject =0
+            for title, metrics in predictions.items():
+                metrics[0] = pred
+                metrics[1] = acc
+                metrics[2] = balance
+                metrics[3] = FPR
 
-            ####
+                if pred ==0 :
+                    vote_to = 'reject'
+                else:
+                    vote_to = 'Pass'
+
+                multiplier = (acc)* math.sqrt(balance*FPR)
+                votes = int(multiplier)
+
+                if vote_to == 'reject':
+                    votes_toReject += votes
+                elif vote_to == 'Pass':
+                    votes_toPass += votes
+                total_votes += votes
+            
+            ratio = votes_toPass/total_votes
+            if ratio > .5:
+                prediction = 1
+            else:
+                prediction = 0
 
         else:
             prediction = 'you have not selected a valid voting method'
