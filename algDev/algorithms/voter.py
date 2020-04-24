@@ -1,6 +1,7 @@
 from sklearn import svm
 from algDev.algorithms.svm import SVM
 from algDev.models.equity import Equity
+import math
 
 class Voter:
     """Voting algorithm class
@@ -17,7 +18,7 @@ class Voter:
         """
         super().__init__()
         self.valid_voting_types = [
-        'accuracy'
+        'accuracy', 'Penrose'
         ]
         assert voting_type in self.valid_voting_types
         self.voting_type = voting_type
@@ -79,12 +80,18 @@ class Voter:
 
                 multiplier = (acc)* math.sqrt(balance*FPR)
                 votes = int(multiplier)
+                print("votes")
+                print(votes)
+        
 
                 if vote_to == 'reject':
                     votes_toReject += votes
                 elif vote_to == 'Pass':
                     votes_toPass += votes
                 total_votes += votes
+
+                if verbose:
+                    print(title + ' casts %d votes to %s ' %(votes,vote_to))
             
             ratio = votes_toPass/total_votes
             if ratio > .5:
