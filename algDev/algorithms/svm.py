@@ -98,16 +98,16 @@ class SVM:
             true = int(y_test[i])
             pred = int(pred)
 
-            if true == 0 and predicted == 0:
+            if true == 0 and pred == 0:
                 true_neg += 1
-            elif true == 0 and predicted == 1:
+            elif true == 0 and pred == 1:
                 false_pos += 1
-            elif true == 1 and predicted == 0:
+            elif true == 1 and pred == 0:
                 false_neg += 1
-            elif true == 1 and predicted == 1:
+            elif true == 1 and pred == 1:
                 true_pos += 1
             
-        false_posR = (true_neg + false_pos)/ false_pos
+        false_posR = false_pos/ (true_neg + false_pos)
         balance = (false_neg + true_pos)/(true_neg + false_pos)
 
         self.metrics['balance'] = balance
@@ -206,7 +206,7 @@ class SVM:
         """
         
         pred = self.model.predict(Xi)
-        print("Prediction for model ", self.title, " - ", pred, ' accuracy: ', self.metrics['acc'])
+        # print("Prediction for model ", self.title, " - ", pred, ' accuracy: ', self.metrics['acc'])
         return pred[0]
 
 
