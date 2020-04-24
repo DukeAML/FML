@@ -66,7 +66,7 @@ class Backtest():
         dates, pf_vals, initial_val, snp_vals = self.get_pf_values()
         stats = [{'name': 'return', 'value':rtn}, {'name':'snp_return', 'value':snp_rtn}, {'name':'net_return', 'value':net_rtn}, {'name':'average_free_cash', 'value':avg_free_cash}, {'name':'beta', 'value': beta}, {'name':'vol','value':vol}, {'name':'treynor', 'value':treynor}, {'name':'sharpe','value':sharpe}]
         positions = self.gen_positions(self.portfolio.positions)
-        return_val = {'stats': stats, 'dates':dates, 'portfolioValues':pf_vals, 'initialValues':initial_val, 'snpVals':snp_vals, 'positions':positions}
+        return_val = {'stats': stats, 'dates':dates, 'portfolioValues':pf_vals, 'initialValues':initial_val, 'snpVals':snp_vals, 'positions':positions, 'predictions':self.portfolio.predictions}
 
         return return_val
     def get_pf_values(self):
@@ -123,8 +123,6 @@ class Backtest():
         rtn = self.get_return()
         snp_rtn = self.get_snp_return()
         er = (rtn - rf)
-        if er == 0.0:
-            return 0.0
         em = (snp_rtn - rf)
         if(em==0.0):
             return 1000.0
@@ -134,7 +132,8 @@ class Backtest():
     def get_treynor(self):
         beta = self.get_beta()
         rtn = self.get_return()
-
+        if beta==0.0:
+            return 1000
         return rtn/beta
 
     def get_return(self):

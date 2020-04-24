@@ -30,6 +30,9 @@ class ModelCollection:
         self.features = data_generator.parse_features(features)
         self.type = type
         self.params = params
+        if 'data_splits' not in self.params:
+            self.add_params({'data_splits': [0.8,0.2]})
+        
         self.model_params = model_params
         if len(models) > 0:
             self.models = models

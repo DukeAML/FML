@@ -7,7 +7,7 @@ class AssetStrategy:
 
         assert close_type in ['threshold', 'daily']
 
-        self.close_type = close_type
+        self.closing_type = close_type
 
     def allocate(self, date, positions, predictions, verbose=False):
         return self.asset_allocation.calculate_allocations( date, positions, predictions, verbose)

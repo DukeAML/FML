@@ -22,6 +22,7 @@ class Portfolio:
 
     def __init__(self, value, init_date, trading_algorithm, asset_strategy, days = 500, start_price = 'O', stop_price = 'C', verbose=False):
         self.positions = []
+        self.predictions = []
         self.free_cash = {init_date: value}
 
         self.days = days
@@ -45,6 +46,10 @@ class Portfolio:
             if p.ticker in ticker:
                 return p
 
+    def add_predictions(self, predictions, date):
+        for i, pos in enumerate(self.positions):
+            self.predictions.append({'date': date, 'ticker': pos.ticker, 'prediciton': predictions[i][0], 'confidence': predictions[i][1]})
+
     def realloc(self, date, verbose=False):
 
         ##ASK LUKE ABOUT THIS LINE
@@ -52,6 +57,7 @@ class Portfolio:
         print("Free Cash: ", self.free_cash)
         # Dictionary of tickers and tuples of prediction and confidence
         predictions = self.trading_algorithm.predict(date)
+        self.add_predictions(predictions, date)
         print("Predictions ", predictions)
         ## After that loop, predictions will be 1/0/-1 corresponding to buy/do nothing/short
         ##Confidence is the output of the model, from which we can calculate expected return
@@ -63,24 +69,24 @@ class Portfolio:
         allocations = self.asset_strategy.allocate(date, self.positions, predictions, verbose) * self.free_cash[date]
         print("Allocations in Total", allocations)
         for i, pos in enumerate(self.positions):
-            self.free_cash[date + datetime.timedelta(days=1)] = self.free_cash[date] - pos.purchase(predictions[i], allocations[i], date, verbose)
+            self.free_cash[date + datetime.timedelta(days=1)] = self.free_cash[date] - pos.purchase(predictions[i][0], allocations[i], date, verbose)
         if verbose is True:
             print("Current Free Cash: ", self.free_cash[date])
             print("Current Positions Value: ", self.getValue(date) - self.free_cash[date])
 
         self.trading_algorithm.update(date)
 
-        self.update_closings(date, verbose)
+        self.update_closings(date, self.asset_strategy.closing_type, verbose)
         return self.update(verbose)
 
     def update(self, verbose=False):
         return 0
 
-    def update_closings(self, date, verbose=False):
+    def update_closings(self, date, closing_type, verbose=False):
 
         for i, pos in enumerate(self.positions):
         
-            self.free_cash[date + datetime.timedelta(days=1)] += pos.handle_closings(self.trading_algorithm.params, date, verbose)
+            self.free_cash[date + datetime.timedelta(days=1)] += pos.handle_closings(self.trading_algorithm.params, date, closing_type, verbose)
         
     def date_ob(self, date, verbose=False):
 
