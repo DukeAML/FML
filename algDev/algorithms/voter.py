@@ -78,7 +78,9 @@ class Voter:
                 else:
                     vote_to = 'Pass'
 
-                multiplier = (acc)* math.sqrt(balance*FPR)
+                multiplier = math.exp((acc)* math.sqrt(balance*FPR))
+                print('multiplier')
+                print(multiplier)
                 votes = int(multiplier)
                 print("votes")
                 print(votes)
