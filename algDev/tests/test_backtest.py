@@ -7,8 +7,8 @@ import datetime
 def run_test():
 
     pf_value = 1234
-    start_date = datetime.datetime(2020, 3, 4)
-    end_date = datetime.datetime(2020, 3, 6)
+    start_date = datetime.datetime(2019, 3, 4)
+    end_date = datetime.datetime(2019, 4, 6)
     ta_id = '19124e2f-65e3-4dbb-b9fc-462f6eb96406'
 
     ta = loadTradingAlgorithm(ta_id)
@@ -20,6 +20,8 @@ def run_test():
     b = Backtest(ta, a_s, start_date, end_date, pf_value, True)
 
     print(b.simulate(False))
+
+    
 
     # rtn = ((after_value - pf_value) / pf_value) * 100
 

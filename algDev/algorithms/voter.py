@@ -23,7 +23,7 @@ class Voter:
         assert voting_type in self.valid_voting_types
         self.voting_type = voting_type
         
-    def predict(self, model_collection, date, verbose=False):
+    def predict(self, model_collection, date, test_mode=False, verbose=False):
         """make a prediction of the data for a given model_collection
         
         Arguments:
@@ -37,18 +37,22 @@ class Voter:
             print(date)
         #get predictions, metrics
         model_predictions = model_collection.predict(date, verbose)
-        model_collection.get_voter_metrics()
+        if(test_mode):
+            model_collection.get_voter_metrics()
         
         if verbose:
             print("Model Predictions: ", model_predictions)
         
         predictions = {}
         for i,model in enumerate(model_collection.models):
-            predictions[model.title] = (model_predictions[i], model.metrics['acc'], model.metrics['balance'], model.metrics['False Positive Rate'])
+            if(test_mode):
+                predictions[model.title] = (model_predictions[i], model.metrics['acc'], model.metrics['balance'], model.metrics['False Positive Rate'])
+            else:
+                predictions[model.title] = (model_predictions[i], model.metrics['acc'])
+
         
         if verbose:
             print("Updated Predictions in Voter", predictions)
-        
         
         if self.voting_type == "accuracy":
 
