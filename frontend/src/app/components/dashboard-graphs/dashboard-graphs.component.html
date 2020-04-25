@@ -87,28 +87,30 @@
   
   </div>
 
-
-  <div class="headings">
-    <h2>Model Performance</h2>
-    <mat-form-field>
-      <mat-label>Equity</mat-label>
-      <mat-select (selectionChange)="getModelsForEquity($event)">
-        <mat-option *ngFor="let equity of equities" [value]="equity">
-          {{equity}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="selectorsAndGraphs">
+    <div class="headings">
+      <h2>Model Performance</h2>
       <mat-form-field>
-        <mat-label>Model</mat-label>
-        <mat-select (selectionChange)="getModelData($event)">
-          <mat-option *ngFor="let model of models" [value]="model"  matTooltip="{{model.params}}" matTooltipPosition="after">
-            {{model.name}}
+        <mat-label>Equity</mat-label>
+        <mat-select (selectionChange)="getModelsForEquity($event)">
+          <mat-option *ngFor="let equity of equities" [value]="equity">
+            {{equity}}
           </mat-option>
         </mat-select>
       </mat-form-field>
+        <mat-form-field>
+          <mat-label>Model</mat-label>
+          <mat-select (selectionChange)="getModelData($event)">
+            <mat-option *ngFor="let model of models" [value]="model"  matTooltip="{{model.params}}" matTooltipPosition="before">
+              {{model.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="indicators">
+      <app-indicators [modelID]="activeModelID" *ngIf="activeModelID"></app-indicators>
+    </div>
   </div>
-    <app-indicators [modelID]="activeModelID" *ngIf="activeModelID"></app-indicators>
-
 
 </div>
 

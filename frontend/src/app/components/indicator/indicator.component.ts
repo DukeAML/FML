@@ -15,8 +15,10 @@ export class IndicatorComponent implements OnInit {
   @Input() equity: string;
   @Input() indicatorName:string;
   @Input() data:any[];
-  @Input() modelName:string;
-  @Input() prediction:number;
+
+  @Input() set prediction(value:number) {
+     this.assignColorScheme(value);
+  }
 
 
   // GRAPH FORMAT OPTIONS
@@ -35,7 +37,7 @@ export class IndicatorComponent implements OnInit {
   view: any[] = [75, 50];
   
   lineColorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#5AA454']
   };
 
   lineOnSelect(data): void {
@@ -51,15 +53,19 @@ export class IndicatorComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('indicator graph rendered with equity', this.equity);
-    console.log('indicator component rendered with model', this.modelName);
 
-    // // subscribe to data and set it here
-    // // set lineColorScheme;
+  }
+
+  assignColorScheme(prediction:number){
+    console.log('prediction arg to setter was', prediction);
+    if(prediction != 1.0){
+      let tempColorScheme = {domain: ['#A10A28']}
+      this.lineColorScheme = tempColorScheme;
+    }
   }
 
   ngOnChanges(){
-      // do I even need this here?
+    // do I need this here?
   }
 
 }

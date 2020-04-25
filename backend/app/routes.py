@@ -13,7 +13,6 @@ def getModelsAndAssets():
 @app.route('/dashboard-dropdown/<string:ticker>', methods=['GET'])
 def getModelsForEquity(ticker):
   modelCollections = mocks.getModelsForEquity(ticker)
-  print('modelcollections looks like', modelCollections)
   return jsonify({'data': modelCollections})
 
 @app.route('/asset-value-over-time/<string:name>/<string:period>', methods=['GET'])
@@ -83,8 +82,9 @@ def get_performance_stats(day):
 
 
 @app.route('/modelPerformance/<string:modelID>', methods=['GET'])
-def get_indicators_for_asset(modelID):
-  return jsonify({'data': mocks.modelData})
+def get_indicators_for_model(modelID):
+  result = mocks.getModelGraphsData(modelID)
+  return jsonify({'data': result})
 
 @app.route('/indicators/<string:indicator>/params', methods=['GET'])
 def getNumParams(indicator):

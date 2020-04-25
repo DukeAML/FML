@@ -50,7 +50,7 @@ mat-datepicker-toggle {
 
 .mat-progress-spinner circle, .mat-spinner circle {
     stroke: #DDDDDD;
-    }
+}
 
 .mat-form-field-underline {
     /*change color of underline*/

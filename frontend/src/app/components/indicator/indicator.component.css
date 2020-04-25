@@ -8,8 +8,14 @@ ngx-charts-line-chart{
     vertical-align: top;
     display: inline-block;
     text-align: center;
-    padding-left: 50%;
-    padding-right: 50%;
+    box-shadow: 0 0 15px #000000;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 0%;
+    margin-bottom: 5%;
+
 }
 
 h4{

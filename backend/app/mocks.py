@@ -7,6 +7,7 @@ import numpy as np
 import algDev.API.dataGatherer as dataGatherer
 import algDev.API.indicators as indicators
 import algDev.API.backtest as backtest
+import algDev.API.models as models
 import algDev.db.wrapper as wrapper
 
 
@@ -428,6 +429,29 @@ def getModelsForEquity(ticker):
     objList.append(tempDict)
   
   return objList
+
+
+def getModelGraphsData(modelCollectionID):
+  result = models.loadModelResult(modelCollectionID)
+  print('result from load modell collection ID is', result)
+
+  formatted = []
+
+  for item in result:
+    currentIndicator = {}
+    currentIndicator['indicator'] = item['name']
+    currentIndicator['prediction'] = item['prediction']
+    currentSeries = {'name': item['name'], 'series':[]}
+
+    for i in range(len(item['values'])):
+      seriesEntry = {'name': i, 'value': item['values'][i][0]}
+      currentSeries['series'].append(seriesEntry)
+
+    currentIndicator['data'] = [currentSeries]
+    formatted.append(currentIndicator)
+
+  return formatted
+
 
 multiseriesData = [
       {
