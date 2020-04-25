@@ -9,7 +9,7 @@ from algDev.API.indicators import get_indicator_value
 from algDev.db.wrapper import *
 from algDev.tests import trading_alg_test, asset_alloc_test, test_svm
 from algDev.db.populate_models_table import build_example_model, get_tas, test_add_model, test_add_model_collection
-from algDev.API.models import loadTradingAlgorithm
+from algDev.API.models import loadTradingAlgorithm, loadModelResult
 from algDev.tests.test_backtest import run_test
 
 def test_one():
@@ -79,3 +79,11 @@ def backtest():
 
 def getMCs():
     print(getModelCollections())
+
+def getMCData():
+    mcId = '4ac2fece-d7e8-4027-8d30-c78575b97811'
+
+    result = loadModelResult(mcId)
+
+    print(result)
+

@@ -6,7 +6,8 @@ from algDev.algorithms.svm import SVM
 from algDev.algorithms.cnn import CNN
 from algDev.algorithms.voter import Voter
 from algDev.algorithms.asset_allocation import AssetAllocation
-
+from algDev.API.indicators import get_indicator_value
+import datetime
 import pickle
 
 def parse_metrics(metric_string):
@@ -105,8 +106,17 @@ def loadModelResult(modelCollectionId):
 
     mc = loadModelCollection(modelCollectionId)
 
+    lookback = mc.params['length']
     features = mc.features
-    
+
+    preds = mc.predict(datetime.datetime.now())
+    result = []
+
+    for i,f in enumerate(features):
+        vals = get_indicator_value(mc.ticker, f)[0:lookback]
+        pred = preds[i]
+        res = {'name': f, 'values': vals, 'prediction':pred}
+        result.append(res)
     ## Get a list of all indicators, the values for the last t days
     ## Get the predicted value for each individual svm
 
