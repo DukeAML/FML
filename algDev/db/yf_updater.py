@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import yfinance as yf
 
 def update():
-    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password)
+    conn = psycopg2.connect(host="localhost",database="postgres", user=credentials.username, password=credentials.password, port=credentials.port)
     conn.autocommit = True
     cursor = conn.cursor()
 
