@@ -24,10 +24,7 @@
     margin-top: 20%;
 
 }
-::ng-deep.mat-form-field-underline {
-    /*change color of underline*/
-    background-color: #7FC6B8 !important;
-   } 
+
 
 button:hover{
     background-color: #7FC6B8;

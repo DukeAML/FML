@@ -34,6 +34,10 @@ export class DataService {
     return this.http.get(this.serverURL + '/dashboard-dropdown')
   }
 
+  getModelsForEquity(equity:string){
+    return this.http.get(this.serverURL + '/dashboard-dropdown/' + equity);
+  }
+
   getAssetValueOverTime(assetName:string, time:string="1mo"){
     return this.http.get(this.serverURL + '/asset-value-over-time/' + assetName + '/' + time);
 
@@ -43,9 +47,9 @@ export class DataService {
     return this.http.get(this.serverURL + '/performance-stats/' + day);
   }
 
-  getModelInformation(model:string, equity:string){
-    console.log('getting indicator information for model: ', model);
-    return this.http.get(this.serverURL + '/modelPerformance/' + model + '/' + equity);
+  getModelInformation(modelID:string){
+    console.log('getting indicator information for model: ', modelID);
+    return this.http.get(this.serverURL + '/modelPerformance/' + modelID);
   }
 
   getNumberOfParameters(indicator:string){

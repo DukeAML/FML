@@ -89,17 +89,25 @@
 
 
   <div class="headings">
-    <h2>Model Performance <div *ngIf="this.mostRecentEquity">for {{this.mostRecentEquity}}</div></h2>
+    <h2>Model Performance</h2>
+    <mat-form-field>
+      <mat-label>Equity</mat-label>
+      <mat-select (selectionChange)="getModelsForEquity($event)">
+        <mat-option *ngFor="let equity of equities" [value]="equity">
+          {{equity}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
       <mat-form-field>
         <mat-label>Model</mat-label>
         <mat-select (selectionChange)="getModelData($event)">
-          <mat-option *ngFor="let model of models" [value]="model">
-            {{model}}
+          <mat-option *ngFor="let model of models" [value]="model"  matTooltip="{{model.params}}" matTooltipPosition="after">
+            {{model.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
   </div>
-    <app-indicators [equity]="mostRecentEquity" [model]="activeModel" *ngIf="activeModel.length > 0"></app-indicators>
+    <app-indicators [modelID]="activeModelID" *ngIf="activeModelID"></app-indicators>
 
 
 </div>

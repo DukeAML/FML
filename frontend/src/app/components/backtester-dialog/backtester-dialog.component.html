@@ -25,7 +25,7 @@
     <mat-form-field>
         <mat-label>Model/Trading Strategy</mat-label>
         <mat-select (selectionChange)=updateModel($event)>
-          <mat-option style="background-color: #222222; color:#DDDDDD" *ngFor="let model of models" [value]="model.name" 
+          <mat-option *ngFor="let model of models" [value]="model.name" 
           matTooltip="{{model.paramsString}}" matTooltipPosition="after">
             {{model.name}}
           </mat-option>
