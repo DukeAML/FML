@@ -105,6 +105,8 @@ def loadModelResult(modelCollectionId):
 
     mc = loadModelCollection(modelCollectionId)
 
+    features = mc.features
+    
     ## Get a list of all indicators, the values for the last t days
     ## Get the predicted value for each individual svm
 

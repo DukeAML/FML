@@ -102,7 +102,7 @@ class TradingAlgorithm:
         return preds
 
 
-    def predict(self, date, verbose=False):
+    def predict(self, date, test_mode=False, verbose=False):
         """ Generate a prediction for each equity for this algorithm
         
         Arguments:
@@ -114,7 +114,7 @@ class TradingAlgorithm:
         
         predictions = []
         for i, eq in enumerate(self.eqs):
-            pred = self.voter.predict(self.models[i], date, verbose)
+            pred = self.voter.predict(self.models[i], date, test_mode,verbose)
             # print("Prediction for ", eq.ticker, " - ", pred)
             predictions.append(pred)
         
