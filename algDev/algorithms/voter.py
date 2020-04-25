@@ -39,6 +39,8 @@ class Voter:
         model_predictions = model_collection.predict(date, verbose)
         if(test_mode):
             model_collection.get_voter_metrics()
+            model_metrics = [model.metrics for model in model_collection.models]
+            print(model_metrics)
         
         if verbose:
             print("Model Predictions: ", model_predictions)
@@ -46,7 +48,7 @@ class Voter:
         predictions = {}
         for i,model in enumerate(model_collection.models):
             if(test_mode):
-                predictions[model.title] = (model_predictions[i], model.metrics['acc'], model.metrics['balance'], model.metrics['False Positive Rate'])
+                predictions[model.title] = (model_predictions[i], model.metrics['acc'], model.metrics['balance'], model.metrics['False Positive Rate'],model.metrics['pop'])
             else:
                 predictions[model.title] = (model_predictions[i], model.metrics['acc'])
 
@@ -72,22 +74,20 @@ class Voter:
             votes_toPass= 0
             votes_toReject =0
             for title, metrics in predictions.items():
+                print(title, metrics)
                 pred = metrics[0]
                 acc = metrics[1] 
                 balance = metrics[2] 
                 FPR = metrics[3] 
+                pop = metrics[4]
 
                 if pred ==0 :
                     vote_to = 'reject'
                 else:
                     vote_to = 'Pass'
 
-                multiplier = math.exp((acc))* (math.sqrt(balance*FPR))
-                print('multiplier')
-                print(multiplier)
+                multiplier = math.exp((acc)) * (math.sqrt((1/balance)*(1/FPR)*(pop)))
                 votes = int(multiplier)
-                print("votes")
-                print(votes)
         
 
                 if vote_to == 'reject':
@@ -96,8 +96,7 @@ class Voter:
                     votes_toPass += votes
                 total_votes += votes
 
-                if verbose:
-                    print(title + ' casts %d votes to %s ' %(votes,vote_to))
+                print(title + ' casts %d votes to %s ' %(votes,vote_to))
             
             ratio = votes_toPass/total_votes
             if ratio > .5:

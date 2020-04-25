@@ -80,8 +80,7 @@ class SVM:
         return matrix
 
     def voter_metrics(self, splits, X=None, y=None, verbose=False):
-        ''' build confusion matrix for svm model
-            prints the matrix, returns the command for writing cm to file 
+        ''' 
         '''
         if not X or not y:
             X = self.data['features']
@@ -106,14 +105,15 @@ class SVM:
                 false_neg += 1
             elif true == 1 and pred == 1:
                 true_pos += 1
-            
+
         false_posR = false_pos/ (true_neg + false_pos)
         balance = (false_neg + true_pos)/(true_neg + false_pos)
-
+        pop = false_neg + true_pos +true_neg + false_pos
         self.metrics['balance'] = balance
         self.metrics['False Positive Rate'] = false_posR
+        self.metrics['pop'] = pop
 
-        
+
 
     def train(self, splits, X=None, y=None, verbose=False):
         """train the svm
