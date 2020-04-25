@@ -106,7 +106,9 @@ class ModelCollection:
         """
         for model in self.models:
             splits= self.params['data_splits']
-            model.voter_metrics(splits, verbose )
+            model.voter_metrics(splits, verbose)
+        
+        
 
         
     def update_accuracy(self):
