@@ -48,7 +48,7 @@ class Portfolio:
 
     def add_predictions(self, predictions, date):
         for i, pos in enumerate(self.positions):
-            self.predictions.append({'date': date, 'ticker': pos.ticker, 'prediciton': predictions[i][0], 'confidence': predictions[i][1]})
+            self.predictions.append({'date': date, 'ticker': pos.ticker, 'prediction': predictions[i][0], 'confidence': predictions[i][1]})
 
     def realloc(self, date, verbose=False):
 

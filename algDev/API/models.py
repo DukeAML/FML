@@ -99,3 +99,14 @@ def getModels(ticker):
     models = db_wrapper.loadModelCollections(ticker)
 
     return models
+
+
+def loadModelResult(modelCollectionId):
+
+    mc = loadModelCollection(modelCollectionId)
+
+    ## Get a list of all indicators, the values for the last t days
+    ## Get the predicted value for each individual svm
+
+    # result : [{'name':'indicator_name', 'values':[10,23,...,n], 'prediction':0},{...},{...},...]
+    return result
