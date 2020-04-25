@@ -16,6 +16,7 @@ export class IndicatorComponent implements OnInit {
   @Input() indicatorName:string;
   @Input() data:any[];
   @Input() modelName:string;
+  @Input() prediction:number;
 
 
   // GRAPH FORMAT OPTIONS

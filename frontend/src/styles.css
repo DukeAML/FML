@@ -21,11 +21,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: #222222;
     color: #DDDDDD;
 }
-/* 
-.mat-expansion-panel-header.mat-expanded {
-    background: #222222;
-    color: #dddddd;
-  } */
 
 .mat-toolbar.mat-primary{background:#222222;color:#dddddd}
 
@@ -56,6 +51,29 @@ mat-datepicker-toggle {
 .mat-progress-spinner circle, .mat-spinner circle {
     stroke: #DDDDDD;
     }
+
+.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #7FC6B8 !important;
+} 
+
+.mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option{
+    background-color: #222222;
+    color: #dddddd;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+    background-color: #222222;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
+    color: #7FC6B8;
+}
+
+.mat-option:focus:not(.mat-option-disabled), .mat-option:hover:not(.mat-option-disabled){
+    background-color: #7fc6b8;
+    color: #DDDDDD;
+}
 
 mat-tooltip {
     white-space: pre-line;

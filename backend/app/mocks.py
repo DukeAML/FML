@@ -414,12 +414,20 @@ def getAssetValueOverTime(name, period):
 
 
 def getAllAssetNames():
-  # THIS IS GONNA NEED TO BE SORTED
-  return dataGatherer.getTickers()
+  return sorted(wrapper.getTickers())
 
-def getAllModels():
-  # THIS IS GONNA NEED TO BE SORTED
-  return ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5']
+def getModelsForEquity(ticker):
+  tupList = wrapper.loadModelCollections(ticker)
+
+  objList = []
+
+  for item in tupList:
+    paramsString = item[8].replace(',',', ').replace('_', ' ')
+    nameParamsID = (item[7], )
+    tempDict = {'name': item[7], 'params': paramsString, 'id': item[0]}
+    objList.append(tempDict)
+  
+  return objList
 
 multiseriesData = [
       {

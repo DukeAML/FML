@@ -18,12 +18,13 @@ export class DashboardGraphsComponent implements OnInit {
   models:string[];
   assetData:any[] = [];
   modelData:any[] = [];
-  activeModel:string = '';
+  activeModelID:string;
   indicators:string[];
   mostRecentIndicator:string;
   indicatorSelected:boolean = false;
   numParams:any;
   invalidNumParams:boolean = false;
+  equities:string[];
 
   invalidAssetField:boolean = false;
   mostRecentEquity:string;
@@ -39,8 +40,8 @@ export class DashboardGraphsComponent implements OnInit {
 
   populateDropdown(){
     this.dataService.getDropdownInfo().subscribe(result => {
-      this.models = result['models'];
       this.indicators = result['indicators'];
+      this.equities = result['equities'];
     })
     
   }
@@ -146,10 +147,24 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   getModelData($event){
-    this.activeModel = '';
+    console.log('get model data event is ', $event);
 
-    let modelName = $event['value'];
-    this.activeModel = modelName;    
+    this.activeModelID = $event['value']['id'];
+
+    // subscribe to data call, set render thing to true, input the model id into the indicators service to fetch the data
+  
+  }
+
+  getModelsForEquity($event){
+    let ticker = $event['value'];
+    console.log('event value is', $event['value']);
+
+    this.dataService.getModelsForEquity(ticker).subscribe(result => {
+      console.log('models collections stuff returned from service is', result['data']);
+      this.models = result['data'];
+
+    })
+
   }
 
 

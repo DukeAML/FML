@@ -10,21 +10,19 @@ import { DataService } from '../../services/data.service';
 export class IndicatorsComponent implements OnInit {
   constructor(private dataService:DataService) { }
 
-  @Input() equity:string;
-  @Input() model:string;
+  @Input() modelID:string;
 
   data:any[];
 
   ngOnInit() {
-    console.log('model is', this.model);
+    console.log('model ID is', this.modelID);
   }
 
   ngOnChanges() {
     // create header using child_id
-    console.log('model is', this.model);
-    console.log('equity is', this.equity);
-    let modelNumber = this.model.charAt(this.model.length-1);
-    this.dataService.getModelInformation(modelNumber, this.equity).subscribe(result => {
+    console.log('model is', this.modelID);
+
+    this.dataService.getModelInformation(this.modelID).subscribe(result => {
       this.data = result['data'];
       console.log('data coming into indicators is', this.data);
     })
