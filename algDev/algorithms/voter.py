@@ -18,7 +18,7 @@ class Voter:
         """
         super().__init__()
         self.valid_voting_types = [
-        'accuracy', 'Penrose'
+        'accuracy', 'Penrose', 'maj_rule'
         ]
         assert voting_type in self.valid_voting_types
         self.voting_type = voting_type
@@ -56,15 +56,63 @@ class Voter:
         if verbose:
             print("Updated Predictions in Voter", predictions)
         
-        if self.voting_type == "accuracy":
+        if self.voting_type == "maj_rule":
+            
+            total_votes =0
+            votes_toPass= 0
+            votes_toReject =0
 
-            sum_voting = 0
-            for pred in predictions.items():
-                pred = pred[1]
-                sum_voting += pred[0]*pred[1]
-                sum_voting += pred[0]*pred[1]
-            sum_voting = sum_voting/len(predictions)
-            if sum_voting > 0.4:
+            for title, metrics in predictions.items():
+                pred = metrics[0]
+
+                if pred ==0 :
+                    vote_to = 'reject'
+                else:
+                    vote_to = 'Pass'
+
+                if vote_to == 'reject':
+                    votes_toReject += 1
+                elif vote_to == 'Pass':
+                    votes_toPass += 1
+                total_votes += 1
+
+                print(title + ' casts %d votes to %s ' %(votes,vote_to))
+            
+            ratio = votes_toPass/total_votes
+
+            if ratio > .5:
+                prediction = 1
+            else:
+                prediction = 0
+        
+        
+        if self.voting_type == "accuracy":
+            total_votes =0
+            votes_toPass= 0
+            votes_toReject =0
+
+            for title, metrics in predictions.items():
+                pred = metrics[0]
+                acc = metrics[1] 
+
+                if pred ==0 :
+                    vote_to = 'reject'
+                else:
+                    vote_to = 'Pass'
+
+                votes = int(acc*100)
+
+                if vote_to == 'reject':
+                    votes_toReject += votes
+                elif vote_to == 'Pass':
+                    votes_toPass += votes
+                total_votes += votes
+
+                print(title + ' casts %d votes to %s ' %(votes,vote_to))
+            
+            ratio = votes_toPass/total_votes
+
+            if ratio > .5:
                 prediction = 1
             else:
                 prediction = 0
