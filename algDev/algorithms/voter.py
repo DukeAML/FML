@@ -39,8 +39,8 @@ class Voter:
         model_predictions = model_collection.predict(date, verbose)
         if(test_mode):
             model_collection.get_voter_metrics()
-            # model_metrics = [model.metrics for model in model_collection.models]
-            # print(model_metrics)
+            model_metrics = [model.metrics for model in model_collection.models]
+            print(model_metrics)
         
         if verbose:
             print("Model Predictions: ", model_predictions)
