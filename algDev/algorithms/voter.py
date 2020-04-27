@@ -70,11 +70,13 @@ class Voter:
                 else:
                     vote_to = 'Pass'
 
+                votes = 1
+
                 if vote_to == 'reject':
-                    votes_toReject += 1
+                    votes_toReject += votes
                 elif vote_to == 'Pass':
-                    votes_toPass += 1
-                total_votes += 1
+                    votes_toPass += votes
+                total_votes += votes
 
                 print(title + ' casts %d votes to %s ' %(votes,vote_to))
             
@@ -86,7 +88,7 @@ class Voter:
                 prediction = 0
         
         
-        if self.voting_type == "accuracy":
+       elif self.voting_type == "accuracy":
             total_votes =0
             votes_toPass= 0
             votes_toReject =0

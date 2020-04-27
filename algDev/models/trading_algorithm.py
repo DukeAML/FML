@@ -17,7 +17,7 @@ class TradingAlgorithm:
         TradingAlgorithm -- Object to be used to retrain and predict data points
     """
     
-    def __init__(self, tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.025, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=False, voting_type = 'accuracy', models = None, model_params = None, test_mode=False):
+    def __init__(self, tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.025, label_period = 10, data_splits = [0.8, 0.2], cnn_split=0, verbose=False, voting_type = 'maj_rule', models = None, model_params = None, test_mode=False):
         """Initialize the TradingAlgorithm Object
         
         Arguments:
