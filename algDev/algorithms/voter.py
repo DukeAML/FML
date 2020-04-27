@@ -58,24 +58,25 @@ class Voter:
         
         if self.voting_type == "maj_rule":
             
-            total_votes =0
+            total_votes = 0
             votes_toPass= 0
             votes_toReject =0
 
             for title, metrics in predictions.items():
                 pred = metrics[0]
-
-                if pred ==0 :
-                    vote_to = 'reject'
-                else:
-                    vote_to = 'Pass'
-
                 votes = 1
 
-                if vote_to == 'reject':
+                if pred == 0.0:
+                    vote_to = 'reject'
                     votes_toReject += votes
-                elif vote_to == 'Pass':
+
+                elif pred == 1.0:
+                    vote_to = 'Pass'
                     votes_toPass += votes
+               
+                else:
+                    print("your vote is not valid")
+
                 total_votes += votes
 
                 print(title + ' casts %d votes to %s ' %(votes,vote_to))
@@ -88,7 +89,7 @@ class Voter:
                 prediction = 0
         
         
-       elif self.voting_type == "accuracy":
+        elif self.voting_type == "accuracy":
             total_votes =0
             votes_toPass= 0
             votes_toReject =0
@@ -97,19 +98,18 @@ class Voter:
                 pred = metrics[0]
                 acc = metrics[1] 
 
-                if pred ==0 :
-                    vote_to = 'reject'
-                else:
-                    vote_to = 'Pass'
-
                 votes = int(acc*100)
 
-                if vote_to == 'reject':
+                if pred ==0.0 :
+                    vote_to = 'reject'
                     votes_toReject += votes
-                elif vote_to == 'Pass':
+                elif pred== 1.0:
+                    vote_to = 'Pass'
                     votes_toPass += votes
+                else:
+                    print("your vote is not valid")
                 total_votes += votes
-
+                
                 print(title + ' casts %d votes to %s ' %(votes,vote_to))
             
             ratio = votes_toPass/total_votes
@@ -123,27 +123,25 @@ class Voter:
             total_votes =0
             votes_toPass= 0
             votes_toReject =0
+
             for title, metrics in predictions.items():
-                print(title, metrics)
                 pred = metrics[0]
                 acc = metrics[1] 
                 balance = metrics[2] 
                 FPR = metrics[3] 
                 pop = metrics[4]
 
-                if pred ==0 :
-                    vote_to = 'reject'
-                else:
-                    vote_to = 'Pass'
-
                 multiplier = math.exp((acc)) * (math.sqrt((1/balance)*(1/FPR)*(pop)))
                 votes = int(multiplier)
-        
 
-                if vote_to == 'reject':
+                if pred ==0.0 :
+                    vote_to = 'reject'
                     votes_toReject += votes
-                elif vote_to == 'Pass':
+                elif pred == 1.0:
+                    vote_to = 'Pass'
                     votes_toPass += votes
+                else:
+                    print("your vote is not valid")
                 total_votes += votes
 
                 print(title + ' casts %d votes to %s ' %(votes,vote_to))
