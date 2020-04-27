@@ -89,6 +89,12 @@ def gen_svm_data(eq, feature, length, threshold, period):
 
     return X.reshape(X.shape[0],X.shape[1],),y
 
+def unison_shuffled_copies(a, b):
+    
+    assert len(a) == len(b)
+    p = np.random.permutation(len(a))
+    return a[p], b[p]
+
 def split_data(X, y, splits):
     """Splits the data for training and testing, also validation if necessary
     
@@ -103,6 +109,8 @@ def split_data(X, y, splits):
     assert len(splits) <= 3 and len(splits) >= 2
     
     assert np.sum(splits) == 1
+
+    X,y = unison_shuffled_copies(X,y)
 
     train_length = int(splits[0] * len(X))
 
