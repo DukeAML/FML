@@ -7,10 +7,10 @@ import csv
 
 def run_test_one():
     tickers = ['AAPL']
-    features = ['macd_9_18','closes','macdSig']
-    ta = TradingAlgorithm(tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.035, label_period = 10, voting_type = 'accuracy', data_splits = [0.8, 0.2], cnn_split=0, model_params = {'gamma': 100, 'C': 1}, verbose=True, test_mode = True)
+    features = ['macd_9_18','closes','kst','rsi']
+    ta = TradingAlgorithm(tickers, features, type = 'svm', data_lookback_period = 10, label_lower_threshold = -0.15, label_upper_threshold = 0.035, label_period = 10, voting_type = 'maj_rule', model_params ={'gamma':100,"C":1}, data_splits = [0.8, 0.2], cnn_split=0, verbose=True, test_mode = True)
     print(ta.models[0].accuracy)
-    ta.generate_conf_matricies(datetime.datetime(2018,1,1), datetime.datetime(2019,1,1))
+    # ta.generate_conf_matricies(datetime.datetime(2018,1,1), datetime.datetime(2019,1,1))
     # ta.plot_models_rocs()
 
 def build_confusion_matrix():

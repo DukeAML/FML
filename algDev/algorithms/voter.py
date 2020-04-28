@@ -151,7 +151,8 @@ class Voter:
                 prediction = 1
             else:
                 prediction = 0
-
+        
+        
         else:
             prediction = 'you have not selected a valid voting method'
         

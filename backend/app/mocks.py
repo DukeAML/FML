@@ -767,9 +767,6 @@ def runBacktester(start, end, portfolioValue, algID):
   startDate = toDate(start)
   endDate = toDate(end)
 
-    
-
-  
   result = backtest.run_backtest(startDate, endDate, portfolioValue, algID)
 
   for stat in result['stats']:
@@ -786,10 +783,23 @@ def runBacktester(start, end, portfolioValue, algID):
   snpSeries = []
   initialSeries = []
 
+  initialPortValue = result['portfolioValues'][0]
+  initialSNPValue = result['snpVals'][0]
+  initialInitialValue = result['initialValues'][0]
+
+  # calc percent changes
   for i in range(len(result['dates'])):
-    portObj = {'name': i, 'value': result['portfolioValues'][i]}
-    snpObj = {'name': i, 'value': result['snpVals'][i]}
-    initialObj = {'name': i, 'value': result['initialValues'][i]}
+    print('initial portfolio value:', initialPortValue)
+    print('new portfolio value:', initialPortValue)
+    portPctChange = ((result['portfolioValues'][i] - initialPortValue) / initialPortValue) * 100
+    print('port percent change', portPctChange)
+
+    snpPctChange = ((result['snpVals'][i] - initialSNPValue) / initialSNPValue) * 100
+    initialPctChange = ((result['initialValues'][i] - initialInitialValue) / initialInitialValue) * 100
+
+    portObj = {'name': i, 'value': portPctChange}
+    snpObj = {'name': i, 'value': snpPctChange}
+    initialObj = {'name': i, 'value': initialPctChange}
 
     portfolioSeries.append(portObj)
     snpSeries.append(snpObj)

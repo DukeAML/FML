@@ -67,6 +67,7 @@ export class DashboardGraphsComponent implements OnInit {
     }
     console.log('most recent equity', this.mostRecentEquity);
     this.dataService.getCustomIndicatorsInfo(formatted, this.mostRecentEquity).subscribe(result => {
+      console.log('indicator data from backend looks like', result);
       this.handleNewGraphData(result, formatted + ' ' + this.mostRecentEquity, 'indicator');
     })
   }
@@ -87,17 +88,19 @@ export class DashboardGraphsComponent implements OnInit {
   }
 
   handleNewGraphData(result:any, value:string, dataType:string){
+    console.log('data before was ', this.assetData);
     if(result['data']){
       this.invalidAssetField = false;
       let tempObjArr = result['data']
 
       for(let tempObj of tempObjArr){
         tempObj['type'] = dataType;
-        tempObj['name'] = value;
         console.log('tempObj to be added', tempObj);
         let assetDataCopy = [...this.assetData];
         assetDataCopy.push(tempObj);
         this.assetData = assetDataCopy;
+        console.log('data after is ', this.assetData);
+
       }
       // handle updating equity for indicators performance
 
@@ -190,7 +193,7 @@ export class DashboardGraphsComponent implements OnInit {
     view: any[] = [600, 400];
   
     lineColorScheme = {
-      domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+      domain: ['#5AA454', '#A10A28', '#C7B42C', '#EF6F6C', '#7FC6B8', '#AAAAAA']
     };
   
     lineOnSelect(data): void {
