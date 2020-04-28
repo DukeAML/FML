@@ -11,6 +11,7 @@ from algDev.tests import trading_alg_test, asset_alloc_test, test_svm
 from algDev.db.populate_models_table import build_example_model, get_tas, test_add_model, test_add_model_collection
 from algDev.API.models import loadTradingAlgorithm, loadModelResult
 from algDev.tests.test_backtest import run_test
+from algDev.tests.hyperparam_tst import hyper_param_haul
 
 def test_one():
     eq = Equity('QCOM')
@@ -51,7 +52,10 @@ def test_six():
     trading_alg_test.test_conf_matrix_model_coll()
 
 def test_seven():
-    trading_alg_test.hyper_param_tuning()
+    ticker_list = [['AAPL']]
+    features_list = [['macd_9_18','macdSig','closes']]
+    model_params = [{'gamma':.1, "C" :1},{'gamma':1, "C" :1},{'gamma':10, "C" : 1},{'gamma':100, "C" :1},{'gamma':.1, "C" :.1},{'gamma':1, "C" :.1},{'gamma':10, "C" :.1},{'gamma':100, "C" :.1},{'gamma':10, "C" :.001},{'gamma':100, "C" :.001}]
+    hp = hyper_param_haul(features_list,ticker_list, model_params)
 
 def test_eight():
     test_svm.run_3()

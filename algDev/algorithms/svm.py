@@ -113,8 +113,6 @@ class SVM:
         self.metrics['False Positive Rate'] = false_posR
         self.metrics['pop'] = pop
 
-
-
     def train(self, splits, X=None, y=None, verbose=False):
         """train the svm
         
@@ -153,6 +151,7 @@ class SVM:
         if verbose:
             print("Accuracy for SVM ", self.title, " - ", acc)
         self.metrics['acc'] = acc
+        
 
     def plot_roc(self, verbose=False):
         """ Plot ROC Curve for model
