@@ -75,7 +75,7 @@ export class BacktesterComponent implements OnInit {
             this.testerComplete = true;
 
             this.positions = this.formatPositions(result['positions']);
-            this.predictions = this.formatPredictions(result['predictions']);
+            // this.predictions = this.formatPredictions(result['predictions']);
             this.performanceStats =  result['stats'];
             this.graphData = result['graphData'];
           })
@@ -159,13 +159,13 @@ export class BacktesterComponent implements OnInit {
         this.renderedTrades.push(tempObj);
       }
     });
-    this.predictions.forEach(prediction => {
-      if(this.selectedPositions.indexOf(prediction['ticker']) > -1){
-        console.log(prediction);
-        let tempObj = {'name': prediction['ticker'], 'predictions': prediction['predictions'].filter(pred => (pred['date'] >= this.minVizDate && pred['date'] <= this.maxVizDate))};
-        this.renderedPredictions.push(tempObj);
-      }
-    });
+    // this.predictions.forEach(prediction => {
+    //   if(this.selectedPositions.indexOf(prediction['ticker']) > -1){
+    //     console.log(prediction);
+    //     let tempObj = {'name': prediction['ticker'], 'predictions': prediction['predictions'].filter(pred => (pred['date'] >= this.minVizDate && pred['date'] <= this.maxVizDate))};
+    //     this.renderedPredictions.push(tempObj);
+    //   }
+    // });
     console.log(this.renderedTrades);
     console.log(this.renderedPredictions);
   }

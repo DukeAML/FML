@@ -13,9 +13,9 @@ class Position:
         ts = []
         for t in self.trades:
             if t.sold:
-                sell_date = None
-            else:
                 sell_date = t.date_sold
+            else:
+                sell_date = None
             ts.append({'datePurchased': t.date_purchased, 'numShares': t.num_shares,'sold': t.sold, 'dateSold': sell_date})
 
         return ts
@@ -57,6 +57,8 @@ class Position:
         day_open = self.eq.get_price(date, 'o')
         
         num_shares = int(amt/day_open)
+        if num_shares == 0:
+            return amt
         total_purchased = num_shares * day_open
         left_over = amt - total_purchased
         if verbose:

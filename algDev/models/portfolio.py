@@ -23,7 +23,8 @@ class Portfolio:
     def __init__(self, value, init_date, trading_algorithm, asset_strategy, days = 500, start_price = 'O', stop_price = 'C', verbose=False):
         self.positions = []
         self.predictions = []
-        self.free_cash = {init_date: value}
+        day_before = init_date - datetime.timedelta(days=1)
+        self.free_cash = {day_before: value}
 
         self.days = days
         self.start_price = start_price
@@ -33,11 +34,16 @@ class Portfolio:
         self.asset_strategy = asset_strategy        
 
         self.init_positions(init_date, days, verbose)
+        self.init_preds()
 
     def init_positions(self, init_date, days = 500, verbose=False):
         for eq in self.trading_algorithm.eqs:
             position = Position(eq, init_date, days, verbose)
             self.positions.append(position)
+    
+    def init_preds(self):
+        for eq in self.trading_algorithm.eqs:
+            self.predictions.append({'ticker':eq.ticker, 'predictions':[]})
     
     def getPosition(self, ticker, verbose=False):
 
@@ -47,8 +53,9 @@ class Portfolio:
                 return p
 
     def add_predictions(self, predictions, date):
+
         for i, pos in enumerate(self.positions):
-            self.predictions.append({'date': date, 'ticker': pos.ticker, 'prediction': predictions[i][0], 'confidence': predictions[i][1]})
+            self.predictions[i]['predictions'].append({'date': date, 'prediction': predictions[i][0], 'confidence': predictions[i][1]})
 
     def realloc(self, date, verbose=False):
 
@@ -65,18 +72,19 @@ class Portfolio:
         
         ## for first try, we will just ignore allocation, but this should turn allcations into dollar amounts
         print("Allocation Breakdown ", self.asset_strategy.allocate(date, self.positions, predictions, verbose))
-        print("Todays Cash ", self.free_cash[date])
         allocations = self.asset_strategy.allocate(date, self.positions, predictions, verbose) * self.free_cash[date]
         print("Allocations in Total", allocations)
         for i, pos in enumerate(self.positions):
-            self.free_cash[date + datetime.timedelta(days=1)] = self.free_cash[date] - pos.purchase(predictions[i][0], allocations[i], date, verbose)
+            self.free_cash[date] = self.free_cash[date] - pos.purchase(predictions[i][0], allocations[i], date, verbose)
         if verbose is True:
             print("Current Free Cash: ", self.free_cash[date])
             print("Current Positions Value: ", self.getValue(date) - self.free_cash[date])
-
+        
+        print("Todays Cash after making purchases", self.free_cash[date])
         self.trading_algorithm.update(date)
 
         self.update_closings(date, self.asset_strategy.closing_type, verbose)
+        print("Todays Cash after making sales", self.free_cash[date])
         return self.update(verbose)
 
     def update(self, verbose=False):
@@ -86,7 +94,7 @@ class Portfolio:
 
         for i, pos in enumerate(self.positions):
         
-            self.free_cash[date + datetime.timedelta(days=1)] += pos.handle_closings(self.trading_algorithm.params, date, closing_type, verbose)
+            self.free_cash[date] += pos.handle_closings(self.trading_algorithm.params, date, closing_type, verbose)
         
     def date_ob(self, date, verbose=False):
 

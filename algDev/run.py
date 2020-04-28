@@ -54,7 +54,7 @@ def test_seven():
     trading_alg_test.hyper_param_tuning()
 
 def test_eight():
-    test_svm.run_2()
+    test_svm.run_3()
 
 def test_nine():
     build_example_model()
