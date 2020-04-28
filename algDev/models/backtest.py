@@ -69,6 +69,17 @@ class Backtest():
         return_val = {'stats': stats, 'dates':dates, 'portfolioValues':pf_vals, 'initialValues':initial_val, 'snpVals':snp_vals, 'positions':positions, 'predictions':self.portfolio.predictions}
 
         return return_val
+
+    def get_rtns(self):
+        vals = self.get_pf_values()
+        vals = vals[1]
+        
+        rtns = []
+        for val in vals:
+            rtns.append((val-vals[0])/vals[0])
+
+        return rtns
+
     def get_pf_values(self):
 
         day_diff = (self.end_date - self.start_date).days
@@ -108,7 +119,7 @@ class Backtest():
 
     def get_vol(self):
 
-        return np.std(self.get_pf_values()[1])
+        return np.std(self.get_rtns())
 
     def get_sharpe(self):
         vol = self.get_vol()

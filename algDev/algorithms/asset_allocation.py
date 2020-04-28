@@ -65,7 +65,7 @@ class AssetAllocation:
             total += alloc
         
         ## Allocate one tenth of free cash
-        allocations = w_d/(total * 10)
+        allocations = w_d/(total * 3)
 
         return allocations
 

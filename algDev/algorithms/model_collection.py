@@ -57,7 +57,8 @@ class ModelCollection:
             for feature in self.features:
                 X,y = data_generator.gen_svm_data(self.eq, [feature], self.params['length'], self.params['upper_threshold'], self.params['period'])
                 
-                models.append(SVM(X,y,title=feature, params= self.model_params))
+                models.append(SVM(X,y,title=feature, params= self.model_params,metrics={}))
+
         return models
 
     def update_params(self, params):
@@ -83,6 +84,7 @@ class ModelCollection:
             print("Training Models for ", self.eq.ticker)
         for i, model in enumerate(self.models):
             model.train(self.params['data_splits'], verbose = verbose)
+            
         self.update_accuracy()
 
     def plot_rocs(self, verbose=False):
@@ -117,6 +119,8 @@ class ModelCollection:
         """
         acc = 0.0
         for model in self.models:
+
+            print("Model ", model.title, " acc ", model.metrics['acc'])
             acc += model.metrics['acc']
         
         self.accuracy = acc/len(self.models)
