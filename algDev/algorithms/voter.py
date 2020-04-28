@@ -151,7 +151,22 @@ class Voter:
                 prediction = 1
             else:
                 prediction = 0
+        
+        
+        elif self.voting_type == "svm":
+            X =[]
+            for title, metrics in predictions.items():
+                pred = metrics[0]
+                acc = metrics[1] 
 
+            
+
+            if ratio > .5:
+                prediction = 1
+            else:
+                prediction = 0
+        
+        
         else:
             prediction = 'you have not selected a valid voting method'
         
